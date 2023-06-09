@@ -1,13 +1,13 @@
-import { GameGuard, Side } from '../types';
+import { GameGuard, Side } from "../types";
 
-export const canJoinGuard: GameGuard<'join'> = (context, event) => {
+export const canJoinGuard: GameGuard<"join"> = (context, event) => {
   return (
     context.players.length < 6 &&
     context.players.find((p) => p.id === event.playerId) === undefined
   );
 };
 
-export const canChooseSideGuard: GameGuard<'chooseSide'> = (context, event) => {
+export const canChooseSideGuard: GameGuard<"chooseSide"> = (context, event) => {
   return (
     [Side.HEROES, Side.THANOS].includes(event.side) &&
     context.players.find((p) => p.id === event.playerId) !== undefined &&
@@ -15,19 +15,19 @@ export const canChooseSideGuard: GameGuard<'chooseSide'> = (context, event) => {
   );
 };
 
-export const canLeaveGuard: GameGuard<'leave'> = (context, event) => {
+export const canLeaveGuard: GameGuard<"leave"> = (context, event) => {
   return true; // TODO
 };
 
-export const canStartGameGuard: GameGuard<'start'> = (context, event) => {
+export const canStartGameGuard: GameGuard<"start"> = (context, event) => {
   return true; // TODO
 };
-export const isWiningMoveGuard: GameGuard<'chooseAbility'> = (
+export const isWiningMoveGuard: GameGuard<"chooseAbility"> = (
   context,
   event
 ) => {
   return true; // TODO
 };
-export const canAbilityGuard: GameGuard<'chooseAbility'> = (context, event) => {
+export const canAbilityGuard: GameGuard<"chooseAbility"> = (context, event) => {
   return true; // TODO
 };

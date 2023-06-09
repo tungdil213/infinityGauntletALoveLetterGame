@@ -1,5 +1,5 @@
-import { interpret, InterpreterFrom } from 'xstate';
-import { createModel } from 'xstate/lib/model';
+import { interpret, InterpreterFrom } from "xstate";
+import { createModel } from "xstate/lib/model";
 import {
   chooseSideAction,
   joinGameAction,
@@ -7,7 +7,7 @@ import {
   restartAction,
   setCurrentPlayerAction,
   nextPlayerAction,
-} from './actions';
+} from "./actions";
 import {
   canAbilityGuard,
   canChooseSideGuard,
@@ -15,7 +15,7 @@ import {
   canLeaveGuard,
   canStartGameGuard,
   isWiningMoveGuard,
-} from './guards';
+} from "./guards";
 import {
   GameContext,
   GameStates,
@@ -24,30 +24,30 @@ import {
   Team,
   Side,
   ThanosAbilities,
-} from '../types';
+} from "../types";
 
 export const GameModel = createModel(
   {
     players: [] as Player[],
-    currentPlayer: null as null | Player['id'],
+    currentPlayer: null as null | Player["id"],
     thanos: {} as Team,
     heroes: {} as Team,
   },
   {
     events: {
-      join: (playerId: Player['id'], name: Player['name']) => ({
+      join: (playerId: Player["id"], name: Player["name"]) => ({
         playerId,
         name,
       }),
-      leave: (playerId: Player['id']) => ({ playerId }),
-      chooseSide: (playerId: Player['id'], side: Side) => ({
+      leave: (playerId: Player["id"]) => ({ playerId }),
+      chooseSide: (playerId: Player["id"], side: Side) => ({
         playerId,
         side,
       }),
-      start: (playerId: Player['id']) => ({ playerId }),
-      restart: (playerId: Player['id']) => ({ playerId }),
+      start: (playerId: Player["id"]) => ({ playerId }),
+      restart: (playerId: Player["id"]) => ({ playerId }),
       chooseAbility: (
-        playerId: Player['id'],
+        playerId: Player["id"],
         ability: HeroesAbilities | ThanosAbilities
       ) => ({ playerId, ability }),
     },
@@ -55,7 +55,7 @@ export const GameModel = createModel(
 );
 
 export const GameMachine = GameModel.createMachine({
-  id: 'game',
+  id: "game",
   context: GameModel.initialContext,
   initial: GameStates.LOBBY,
   states: {
@@ -130,7 +130,6 @@ export function makeGame(
       ...context,
     })
   ).start();
-  GameMachine;
-  machine.state.value = state;
+  machine.getSnapshot().value = state;
   return machine;
 }

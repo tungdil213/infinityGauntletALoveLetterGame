@@ -1,15 +1,15 @@
-import { getThanos, randomPlayerOrder, nextPlayer } from '../func/game';
-import { GameAction, GameContext } from '../types';
+import { getThanos, randomPlayerOrder, nextPlayer } from "../func/game";
+import { GameAction, GameContext } from "../types";
 
-export const joinGameAction: GameAction<'join'> = (context, event) => ({
+export const joinGameAction: GameAction<"join"> = (context, event) => ({
   // TODO
 });
 
-export const leaveGameAction: GameAction<'leave'> = (context, event) => ({
+export const leaveGameAction: GameAction<"leave"> = (context, event) => ({
   // TODO
 });
 
-export const chooseSideAction: GameAction<'chooseSide'> = (context, event) => ({
+export const chooseSideAction: GameAction<"chooseSide"> = (context, event) => ({
   players: context.players.map((p) => {
     if (p.id === event.playerId) {
       return { ...p, side: event.side };
@@ -27,14 +27,14 @@ export const nextPlayerAction = (context: GameContext) => ({
   currentPlayer: nextPlayer(context).id,
 });
 
-export const saveWiningPositionsActions: GameAction<'chooseAbility'> = (
+export const saveWiningPositionsActions: GameAction<"chooseAbility"> = (
   context,
   event
 ) => ({
   // TODO
 });
 
-export const restartAction: GameAction<'restart'> = (context) => ({
+export const restartAction: GameAction<"restart"> = (context) => ({
   // TODO
   // winingPositions: [],
   // currentPlayer: null

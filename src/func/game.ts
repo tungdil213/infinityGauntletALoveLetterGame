@@ -1,4 +1,4 @@
-import { GameContext, Player, Side, Players } from '../types';
+import { GameContext, Player, Side, Players } from "../types";
 
 export function winingAction(context: GameContext) {
   return null; // TODO
@@ -7,7 +7,7 @@ export function winingAction(context: GameContext) {
 export function currentPlayer(context: GameContext): Player {
   const player = context.players.find((p) => p.id === context.currentPlayer);
   if (player === undefined) {
-    throw new Error('Impossible to recover current player');
+    throw new Error("Impossible to recover current player");
   }
   return player;
 }
@@ -15,7 +15,7 @@ export function currentPlayer(context: GameContext): Player {
 export function getThanos(context: GameContext): Player {
   const player = context.players.find((p) => p.side === Side.THANOS);
   if (player === undefined) {
-    throw new Error('Impossible to recover thanos');
+    throw new Error("Impossible to recover thanos");
   }
   return player;
 }
@@ -36,7 +36,7 @@ export function nextPlayer(context: GameContext): Player {
 export function playersSide(context: GameContext, side: Side): Players {
   const players = context.players.filter((p) => p.side === side);
   if (players.length === 0) {
-    throw new Error('Impossible to recover ${side}');
+    throw new Error("Impossible to recover ${side}");
   }
   return players;
 }

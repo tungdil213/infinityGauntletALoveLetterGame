@@ -28,7 +28,7 @@ In Infinity Gauntlet: A Love Letter Game, 1 player is the Mad Titan Thanos, atte
 
 6. Take the life-tracker card and place 1 slider on the top space of the hero track. Then place the other slider on the space of the Thanos track matching the player count (including Thanos).
 
-    Place the life-tracker card in the middle of the table in everyone's view.
+   Place the life-tracker card in the middle of the table in everyone's view.
 
 ### Game Play
 
@@ -52,6 +52,6 @@ The game ends when either team has no life left or when Thanos collects all 6 In
 - Machine à état (tester tant que possible)
 - Interface
 - Jeu hors ligne
-- Mise en place du serveur *
-- Jeu en ligne *
+- Mise en place du serveur \*
+- Jeu en ligne \*
 - Mise en ligne (déploiement)
