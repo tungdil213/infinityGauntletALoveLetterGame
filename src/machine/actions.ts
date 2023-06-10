@@ -2,7 +2,7 @@ import { getThanos, randomPlayerOrder, nextPlayer } from "../func/game";
 import { GameAction, GameContext } from "../types";
 
 export const joinGameAction: GameAction<"join"> = (context, event) => ({
-  // TODO
+  players: [...context.players, { id: event.playerId, name: event.name }],
 });
 
 export const leaveGameAction: GameAction<"leave"> = (context, event) => ({
@@ -18,7 +18,7 @@ export const chooseSideAction: GameAction<"chooseSide"> = (context, event) => ({
   }),
 });
 
-export const setCurrentPlayerAction = (context: GameContext) => ({
+export const setDefaultPlayerAction = (context: GameContext) => ({
   players: randomPlayerOrder(context),
   currentPlayer: getThanos(context).id,
 });

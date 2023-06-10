@@ -61,3 +61,7 @@ export function randomPlayerOrder(context: GameContext): Players {
 
   return [theThanosPlayer, ...heroPlayers];
 }
+
+export function isPlayerTurn(context: GameContext, playerId: string): boolean {
+  return context.currentPlayer === playerId;
+}

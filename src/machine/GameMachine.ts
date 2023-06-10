@@ -5,7 +5,7 @@ import {
   joinGameAction,
   leaveGameAction,
   restartAction,
-  setCurrentPlayerAction,
+  setDefaultPlayerAction,
   nextPlayerAction,
 } from "./actions";
 import {
@@ -79,7 +79,7 @@ export const GameMachine = GameModel.createMachine({
         start: {
           cond: canStartGameGuard,
           target: GameStates.PLAY,
-          actions: [GameModel.assign(setCurrentPlayerAction)],
+          actions: [GameModel.assign(setDefaultPlayerAction)],
         },
       },
     },

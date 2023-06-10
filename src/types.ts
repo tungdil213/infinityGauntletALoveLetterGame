@@ -9,8 +9,8 @@ export enum Side {
 export enum ThanosAbilities {
   GUESS_1_OPPONENTS_HAND = "GUESS_1_OPPONENTS_HAND", // 2 cartes
   GUESS_ALL_OPPONENTS_HANDS = "GUESS_2_OGUESS_ALL_OPPONENTS_HANDSPPONENTS_HAND", // 1 cartes
-  DEFEAT_3_MINUS = "DEFEAT_3_MINUS", // 1 cartes
-  DEFEAT_3_PLUS = "DEFEAT_3_PLUS", // 1 cartes
+  DEFEAT_3_LOWER = "DEFEAT_3_LOWER", // 1 cartes
+  DEFEAT_3_HIGHER = "DEFEAT_3_HIGHER", // 1 cartes
   MAY_FIGHT_1_OPPONENT = "MAY_FIGHT_1_OPPONENT", // 1 cartes
   MAY_FIGHT_2_OPPONENT = "MAY_FIGHT_2_OPPONENT", // 1 cartes
   TAKE_1_POWER_TOKEN = "TAKE_1_POWER_TOKEN", // 1 cartes
@@ -41,17 +41,20 @@ export type Player = {
   name: string;
   side?: Side;
   hand?: Card[];
-  powerTokens: number;
+  powerTokens?: number;
 };
 
 export type Players = Player[];
 
 export type Card = {
+  id: number;
   name: string;
-  describtion: string;
   ability: ThanosAbilities | HeroesAbilities;
+  side: Side;
+  power: number;
   numberOf: number;
-  asset: string;
+  asset?: string;
+  stone?: boolean;
 };
 
 export type Team = {
