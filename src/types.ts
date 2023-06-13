@@ -40,7 +40,7 @@ export type Player = {
   id: string;
   name: string;
   side?: Side;
-  hand?: Card[];
+  hand?: Deck;
   powerTokens?: number;
 };
 

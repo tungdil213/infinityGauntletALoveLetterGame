@@ -1,4 +1,4 @@
-import { GameContext, Player, Side, Players } from "../types";
+import { GameContext, Player, Side, Players, Deck } from "../types";
 
 export function winingAction(context: GameContext) {
   return null; // TODO
@@ -64,4 +64,29 @@ export function randomPlayerOrder(context: GameContext): Players {
 
 export function isPlayerTurn(context: GameContext, playerId: string): boolean {
   return context.currentPlayer === playerId;
+}
+
+export function isGameOver(context: GameContext): boolean {
+  return context.players.length === 0;
+}
+
+export function setFirstPlayer(context: GameContext): GameContext {
+  return {
+    ...context,
+    players: randomPlayerOrder(context),
+    currentPlayer: getThanos(context).id,
+  };
+}
+
+export function getDeckSize(deck: Deck): number {
+  return deck.length;
+}
+
+export function getHandOfThanos(context: GameContext): Deck {
+  const thanos = getThanos(context);
+  const thanosHand = thanos?.hand ?? ([] as Deck);
+  if (thanosHand.length === 0) {
+    throw new Error("Impossible to recover thanos hand");
+  }
+  return thanosHand;
 }
