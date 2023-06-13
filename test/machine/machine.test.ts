@@ -32,37 +32,7 @@ describe("machine/GameMachine", () => {
     });
   });
 
-  // describe("makeAbility", () => {
-  //   let machine: InterpreterFrom<typeof GameMachine>;
-
-  //   beforeEach(() => {
-  //     machine = makeGame(GameStates.PLAY, {
-  //       players: [
-  //         {
-  //           id: "1",
-  //           name: "1",
-  //           side: Side.THANOS,
-  //           powerTokens: 0,
-  //         },
-  //         {
-  //           id: "2",
-  //           name: "2",
-  //           side: Side.HEROES,
-  //           powerTokens: 0,
-  //         },
-  //         {
-  //           id: "3",
-  //           name: "3",
-  //           side: Side.HEROES,
-  //           powerTokens: 0,
-  //         },
-  //       ],
-  //       currentPlayer: "1",
-  //     });
-  //   });
-  // });
-
-  describe("chooseSide", () => {
+  describe("machine/chooseSide", () => {
     let machine: InterpreterFrom<typeof GameMachine>;
 
     beforeEach(() => {
@@ -73,8 +43,6 @@ describe("machine/GameMachine", () => {
       expect(machine.send(GameModel.events.join("1", "1")).changed).toBe(true);
       expect(machine.send(GameModel.events.join("2", "2")).changed).toBe(true);
       expect(machine.send(GameModel.events.join("3", "3")).changed).toBe(true);
-      console.log(machine.getSnapshot().context.players);
-      console.log(GameModel.events.chooseSide("3", Side.HEROES));
       expect(
         machine.send(GameModel.events.chooseSide("1", Side.HEROES)).changed
       ).toBe(true);
