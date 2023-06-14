@@ -14,7 +14,7 @@ import {
   canJoinGuard,
   canLeaveGuard,
   canStartGameGuard,
-  isWiningMoveGuard,
+  canWinnigGuard,
 } from "./guards";
 import {
   GameContext,
@@ -46,6 +46,7 @@ export const GameModel = createModel(
       }),
       start: (playerId: Player["id"]) => ({ playerId }),
       restart: (playerId: Player["id"]) => ({ playerId }),
+      winingEvent: () => ({}),
       chooseAbility: (
         playerId: Player["id"],
         ability: HeroesAbilities | ThanosAbilities
@@ -91,14 +92,11 @@ export const GameMachine = GameModel.createMachine({
         },
       },
       on: {
+        winingEvent: {
+          cond: canWinnigGuard,
+          target: GameStates.VICTORY,
+        },
         chooseAbility: [
-          {
-            cond: isWiningMoveGuard,
-            target: GameStates.VICTORY,
-            actions: [
-              // TODO
-            ],
-          },
           {
             cond: canAbilityGuard,
             target: GameStates.PLAY,

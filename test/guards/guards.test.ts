@@ -4,6 +4,7 @@ import {
   canJoinGuard,
   canChooseSideGuard,
   canStartGameGuard,
+  canWinnigGuard,
 } from "../../src/machine/guards";
 import { describe, expect, it } from "vitest";
 import { GameMachine, makeGame } from "../../src/machine/GameMachine";
@@ -14,7 +15,7 @@ describe("machine/Guards", () => {
 
   describe("canJoinGuard", () => {
     it("should return true if the player can join", () => {
-      machine = makeGame(GameStates.PLAY, {
+      machine = makeGame(GameStates.LOBBY, {
         players: [
           {
             id: "1",
@@ -35,7 +36,7 @@ describe("machine/Guards", () => {
     });
 
     it("should return false if the player is already in the game", () => {
-      machine = makeGame(GameStates.PLAY, {
+      machine = makeGame(GameStates.LOBBY, {
         players: [
           {
             id: "1",
@@ -60,7 +61,7 @@ describe("machine/Guards", () => {
     });
 
     it("should return false if the game is full", () => {
-      machine = makeGame(GameStates.PLAY, {
+      machine = makeGame(GameStates.LOBBY, {
         players: [
           {
             id: "1",
@@ -99,7 +100,7 @@ describe("machine/Guards", () => {
 
   describe("canChooseSideGuard", () => {
     it("should return true if the player can choose a side", () => {
-      machine = makeGame(GameStates.PLAY, {
+      machine = makeGame(GameStates.LOBBY, {
         players: [
           {
             id: "1",
@@ -122,7 +123,7 @@ describe("machine/Guards", () => {
     });
 
     it("must send back true if the player can choose a side several times", () => {
-      machine = makeGame(GameStates.PLAY, {
+      machine = makeGame(GameStates.LOBBY, {
         players: [
           {
             id: "1",
@@ -156,7 +157,7 @@ describe("machine/Guards", () => {
     });
 
     it("should return false if the player is not in the game", () => {
-      machine = makeGame(GameStates.PLAY, {
+      machine = makeGame(GameStates.LOBBY, {
         players: [
           {
             id: "1",
@@ -181,7 +182,7 @@ describe("machine/Guards", () => {
 
   describe("canStartGameGuard", () => {
     it("should return true if the game can be started", () => {
-      machine = makeGame(GameStates.PLAY, {
+      machine = makeGame(GameStates.LOBBY, {
         players: [
           {
             id: "1",
@@ -207,7 +208,7 @@ describe("machine/Guards", () => {
     });
 
     it("should return false if there are not enough players", () => {
-      machine = makeGame(GameStates.PLAY, {
+      machine = makeGame(GameStates.LOBBY, {
         players: [{ id: "1", name: "1", side: Side.HEROES }],
       });
       const event = { playerId: "1", type: "start" as const };
@@ -217,7 +218,7 @@ describe("machine/Guards", () => {
     });
 
     it("should return false if there are too many players", () => {
-      machine = makeGame(GameStates.PLAY, {
+      machine = makeGame(GameStates.LOBBY, {
         players: [
           { id: "1", name: "1", side: Side.HEROES },
           { id: "2", name: "2", side: Side.HEROES },
@@ -234,7 +235,7 @@ describe("machine/Guards", () => {
     });
 
     it("should return false if the player is not in the game", () => {
-      machine = makeGame(GameStates.PLAY, {
+      machine = makeGame(GameStates.LOBBY, {
         players: [
           { id: "1", name: "1", side: Side.HEROES },
           { id: "2", name: "2", side: Side.HEROES },
@@ -248,7 +249,7 @@ describe("machine/Guards", () => {
     });
 
     it("should return false if not all players have chosen a side", () => {
-      machine = makeGame(GameStates.PLAY, {
+      machine = makeGame(GameStates.LOBBY, {
         players: [
           { id: "1", name: "1", side: Side.HEROES },
           { id: "2", name: "2", side: Side.THANOS },
@@ -262,7 +263,7 @@ describe("machine/Guards", () => {
     });
 
     it("should return false if there are no heroes", () => {
-      machine = makeGame(GameStates.PLAY, {
+      machine = makeGame(GameStates.LOBBY, {
         players: [
           { id: "1", name: "1", side: Side.THANOS },
           { id: "2", name: "2", side: Side.THANOS },
@@ -276,7 +277,7 @@ describe("machine/Guards", () => {
     });
 
     it("should return false if there are no thanos", () => {
-      machine = makeGame(GameStates.PLAY, {
+      machine = makeGame(GameStates.LOBBY, {
         players: [
           { id: "1", name: "1", side: Side.HEROES },
           { id: "2", name: "2", side: Side.HEROES },
@@ -287,6 +288,89 @@ describe("machine/Guards", () => {
       expect(canStartGameGuard(machine.getSnapshot().context, event)).toBe(
         false
       );
+    });
+  });
+
+  describe("canWinnigGuard", () => {
+    it("should return true if the heroes have no lives left", () => {
+      machine = makeGame(GameStates.PLAY, {
+        players: [
+          {
+            id: "1",
+            name: "1",
+            side: Side.THANOS,
+          },
+          {
+            id: "2",
+            name: "2",
+            side: Side.HEROES,
+          },
+          {
+            id: "3",
+            name: "3",
+            side: Side.HEROES,
+          },
+        ],
+        currentPlayer: "2",
+        heroes: { lives: 0, name: "hero", deckused: [], deck: [] },
+        thanos: { lives: 2, name: "thanos", deckused: [], deck: [] },
+      });
+      const event = { type: "winingEvent" as const };
+      expect(canWinnigGuard(machine.getSnapshot().context, event)).toBe(true);
+    });
+
+    it("should return true if Thanos has no lives left", () => {
+      machine = makeGame(GameStates.PLAY, {
+        players: [
+          {
+            id: "1",
+            name: "1",
+            side: Side.THANOS,
+          },
+          {
+            id: "2",
+            name: "2",
+            side: Side.HEROES,
+          },
+          {
+            id: "3",
+            name: "3",
+            side: Side.HEROES,
+          },
+        ],
+        currentPlayer: "2",
+        heroes: { lives: 2, name: "hero", deckused: [], deck: [] },
+        thanos: { lives: 0, name: "thanos", deckused: [], deck: [] },
+      });
+      const event = { type: "winingEvent" as const };
+      expect(canWinnigGuard(machine.getSnapshot().context, event)).toBe(true);
+    });
+
+    it("should return false if both sides have lives left", () => {
+      machine = makeGame(GameStates.PLAY, {
+        players: [
+          {
+            id: "1",
+            name: "1",
+            side: Side.THANOS,
+          },
+          {
+            id: "2",
+            name: "2",
+            side: Side.HEROES,
+          },
+          {
+            id: "3",
+            name: "3",
+            side: Side.HEROES,
+          },
+        ],
+        currentPlayer: "2",
+        heroes: { lives: 2, name: "hero", deckused: [], deck: [] },
+        thanos: { lives: 2, name: "thanos", deckused: [], deck: [] },
+      });
+      const event = { type: "winingEvent" as const };
+      expect(canWinnigGuard(machine.getSnapshot().context, event)).toBe(false);
     });
   });
 });

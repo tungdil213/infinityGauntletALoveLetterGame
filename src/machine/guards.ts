@@ -25,11 +25,8 @@ export const canStartGameGuard: GameGuard<"start"> = (context, event) => {
     context.players.find((p) => p.side === Side.THANOS) !== undefined
   );
 };
-export const isWiningMoveGuard: GameGuard<"chooseAbility"> = (
-  context,
-  event
-) => {
-  return true; // TODO
+export const canWinnigGuard: GameGuard<"winingEvent"> = (context, event) => {
+  return context.heroes.lives < 1 || context.thanos.lives < 1;
 };
 export const canAbilityGuard: GameGuard<"chooseAbility"> = (context, event) => {
   return true; // TODO
