@@ -29,5 +29,10 @@ export const canWinnigGuard: GameGuard<"winingEvent"> = (context, event) => {
   return context.heroes.lives < 1 || context.thanos.lives < 1;
 };
 export const canAbilityGuard: GameGuard<"chooseAbility"> = (context, event) => {
-  return true; // TODO
+  return (
+    context.currentPlayer === event.playerId &&
+    context.players
+      .find((p) => p.id === event.playerId)
+      ?.hand?.find((c) => c.ability === event.ability) !== undefined
+  );
 };

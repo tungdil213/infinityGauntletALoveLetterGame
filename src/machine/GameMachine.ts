@@ -51,6 +51,16 @@ export const GameModel = createModel(
         playerId: Player["id"],
         ability: HeroesAbilities | ThanosAbilities
       ) => ({ playerId, ability }),
+      endDraw: (playerId: Player["id"]) => ({ playerId }),
+      endPlay: (playerId: Player["id"]) => ({ playerId }),
+      endChooseAction: (playerId: Player["id"]) => ({ playerId }),
+      endTurn: (playerId: Player["id"]) => ({ playerId }),
+      GUESS_1_OPPONENTS_HAND: (playerId: Player["id"]) => ({ playerId }),
+      GUESS_ALL_OPPONENTS_HANDS: (playerId: Player["id"]) => ({ playerId }),
+      DEFEAT_3_LOWER: (playerId: Player["id"]) => ({ playerId }),
+      GUESS_THANOS_HAND: (playerId: Player["id"]) => ({ playerId }),
+      TEAMMATE_SEES_CARD: (playerId: Player["id"]) => ({ playerId }),
+      MAY_FIGHT_THANOS: (playerId: Player["id"]) => ({ playerId }),
     },
   }
 );
@@ -85,10 +95,48 @@ export const GameMachine = GameModel.createMachine({
       },
     },
     [GameStates.PLAY]: {
-      after: {
-        20000: {
-          target: GameStates.PLAY,
-          actions: [GameModel.assign(nextPlayerAction)],
+      initial: "DrawCard",
+      states: {
+        DrawCard: {
+          on: {
+            endDraw: {
+              target: "PlayCard",
+              actions: [
+                // TODO: Actions associées à la fin du tirage d'une carte
+              ],
+            },
+          },
+        },
+        PlayCard: {
+          on: {
+            endPlay: {
+              target: "ChooseAction",
+              actions: [
+                // TODO: Actions associées à la fin de la pose d'une carte
+              ],
+            },
+          },
+        },
+        ChooseAction: {
+          on: {
+            // Continuer pour les autres capacités...
+            endChooseAction: {
+              target: "EndTurn",
+              actions: [
+                // TODO: Actions associées à la fin du choix d'action
+              ],
+            },
+          },
+        },
+        EndTurn: {
+          on: {
+            endTurn: {
+              target: "DrawCard",
+              actions: [
+                // TODO: Actions associées à la fin du tour
+              ],
+            },
+          },
         },
       },
       on: {
@@ -96,15 +144,6 @@ export const GameMachine = GameModel.createMachine({
           cond: canWinnigGuard,
           target: GameStates.VICTORY,
         },
-        chooseAbility: [
-          {
-            cond: canAbilityGuard,
-            target: GameStates.PLAY,
-            actions: [
-              // TODO
-            ],
-          },
-        ],
       },
     },
     [GameStates.VICTORY]: {
