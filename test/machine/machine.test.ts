@@ -5,7 +5,7 @@ import {
   GameModel,
   makeGame,
 } from "../../src/machine/GameMachine";
-import { GameStates, Side } from "../../src/types";
+import { Side } from "../../src/types/gameEnums";
 
 describe("machine/GameMachine", () => {
   describe("join", () => {

@@ -1,4 +1,3 @@
-import { ThanosAbilities } from "./../../src/types";
 import { InterpreterFrom } from "xstate";
 import {
   canJoinGuard,
@@ -8,7 +7,7 @@ import {
 } from "../../src/machine/guards";
 import { describe, expect, it } from "vitest";
 import { GameMachine, makeGame } from "../../src/machine/GameMachine";
-import { GameStates, Side } from "../../src/types";
+import { GameStates, Side } from "../../src/types/gameEnums";
 
 describe("machine/Guards", () => {
   let machine: InterpreterFrom<typeof GameMachine>;
@@ -315,8 +314,7 @@ describe("machine/Guards", () => {
         heroes: { lives: 0, name: "hero", deckused: [], deck: [] },
         thanos: { lives: 2, name: "thanos", deckused: [], deck: [] },
       });
-      const event = { type: "winingEvent" as const };
-      expect(canWinnigGuard(machine.getSnapshot().context, event)).toBe(true);
+      expect(canWinnigGuard(machine.getSnapshot().context)).toBe(true);
     });
 
     it("should return true if Thanos has no lives left", () => {
@@ -342,8 +340,7 @@ describe("machine/Guards", () => {
         heroes: { lives: 2, name: "hero", deckused: [], deck: [] },
         thanos: { lives: 0, name: "thanos", deckused: [], deck: [] },
       });
-      const event = { type: "winingEvent" as const };
-      expect(canWinnigGuard(machine.getSnapshot().context, event)).toBe(true);
+      expect(canWinnigGuard(machine.getSnapshot().context)).toBe(true);
     });
 
     it("should return false if both sides have lives left", () => {
@@ -369,8 +366,7 @@ describe("machine/Guards", () => {
         heroes: { lives: 2, name: "hero", deckused: [], deck: [] },
         thanos: { lives: 2, name: "thanos", deckused: [], deck: [] },
       });
-      const event = { type: "winingEvent" as const };
-      expect(canWinnigGuard(machine.getSnapshot().context, event)).toBe(false);
+      expect(canWinnigGuard(machine.getSnapshot().context)).toBe(false);
     });
   });
 });

@@ -1,4 +1,6 @@
-import { GameContext, Player, Side, Players, Deck } from "../types";
+import { Side } from "../types/gameEnums";
+import { GameContext } from "../types/gameStateMachineTypes";
+import { Player, Players } from "../types/gameTypes";
 
 export function winingAction(context: GameContext) {
   return null; // TODO
@@ -75,6 +77,20 @@ export function setFirstPlayer(context: GameContext): GameContext {
     ...context,
     players: randomPlayerOrder(context),
     currentPlayer: getThanos(context).id,
+  };
+}
+
+export function shuffleDeck(context: GameContext, side: Side): GameContext {
+  const team = side === Side.HEROES ? context.heroes : context.thanos;
+  const deck = team.deck;
+  const deckUsed = team.deckused;
+  return {
+    ...context,
+    [side === Side.HEROES ? "heroes" : "thanos"]: {
+      ...team,
+      deck: deckUsed,
+      deckused: deck,
+    },
   };
 }
 

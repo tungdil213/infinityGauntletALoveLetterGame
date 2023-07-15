@@ -4,27 +4,34 @@ import {
   chooseSideAction,
   joinGameAction,
   leaveGameAction,
-  restartAction,
   setDefaultPlayerAction,
-  nextPlayerAction,
+  restartGameAction,
+  drawCardAction,
+  shuffleDeckAction,
+  playCard,
 } from "./actions";
 import {
-  canAbilityGuard,
   canChooseSideGuard,
+  canDrawCardGuard,
   canJoinGuard,
   canLeaveGuard,
   canStartGameGuard,
-  canWinnigGuard,
+  canUseAbilityGuard,
+  deckIsEmptyGuard,
+  has6StonesGuard,
 } from "./guards";
 import {
-  GameContext,
   GameStates,
   HeroesAbilities,
-  Player,
-  Team,
+  PlayStates,
   Side,
   ThanosAbilities,
-} from "../types";
+} from "../types/gameEnums";
+import { Player, Team } from "../types/gameTypes";
+import { GameContext } from "../types/gameStateMachineTypes";
+import { shuffleDeck } from "../func/game";
+
+export const gameID = "infinityGuantlet";
 
 export const GameModel = createModel(
   {
@@ -35,6 +42,7 @@ export const GameModel = createModel(
   },
   {
     events: {
+      // Lobby
       join: (playerId: Player["id"], name: Player["name"]) => ({
         playerId,
         name,
@@ -45,28 +53,25 @@ export const GameModel = createModel(
         side,
       }),
       start: (playerId: Player["id"]) => ({ playerId }),
+      // Victory
       restart: (playerId: Player["id"]) => ({ playerId }),
-      winingEvent: () => ({}),
-      chooseAbility: (
+
+      deckIsEmpty: (playerId: Player["id"]) => ({ playerId }),
+      startDraw: (playerId: Player["id"]) => ({ playerId }),
+      endDrawCard: (playerId: Player["id"]) => ({ playerId }),
+      startChooseAbility: (
         playerId: Player["id"],
-        ability: HeroesAbilities | ThanosAbilities
-      ) => ({ playerId, ability }),
-      endDraw: (playerId: Player["id"]) => ({ playerId }),
-      endPlay: (playerId: Player["id"]) => ({ playerId }),
-      endChooseAction: (playerId: Player["id"]) => ({ playerId }),
-      endTurn: (playerId: Player["id"]) => ({ playerId }),
-      GUESS_1_OPPONENTS_HAND: (playerId: Player["id"]) => ({ playerId }),
-      GUESS_ALL_OPPONENTS_HANDS: (playerId: Player["id"]) => ({ playerId }),
-      DEFEAT_3_LOWER: (playerId: Player["id"]) => ({ playerId }),
-      GUESS_THANOS_HAND: (playerId: Player["id"]) => ({ playerId }),
-      TEAMMATE_SEES_CARD: (playerId: Player["id"]) => ({ playerId }),
-      MAY_FIGHT_THANOS: (playerId: Player["id"]) => ({ playerId }),
+        ability: ThanosAbilities | HeroesAbilities
+      ) => ({
+        playerId,
+        ability,
+      }),
     },
   }
 );
 
 export const GameMachine = GameModel.createMachine({
-  id: "game",
+  id: gameID,
   context: GameModel.initialContext,
   initial: GameStates.LOBBY,
   states: {
@@ -95,54 +100,47 @@ export const GameMachine = GameModel.createMachine({
       },
     },
     [GameStates.PLAY]: {
-      initial: "DrawCard",
+      initial: PlayStates.PLAYER_TURN,
       states: {
-        DrawCard: {
-          on: {
-            endDraw: {
-              target: "PlayCard",
-              actions: [
-                // TODO: Actions associées à la fin du tirage d'une carte
+        [PlayStates.PLAYER_TURN]: {
+          initial: PlayStates.DRAW_CARD,
+          states: {
+            [PlayStates.DRAW_CARD]: {
+              always: [
+                {
+                  cond: deckIsEmptyGuard,
+                  actions: [GameModel.assign(shuffleDeckAction)],
+                },
+              ],
+              on: {
+                endDrawCard: {
+                  cond: canDrawCardGuard,
+                  target: PlayStates.CHOOSE_ABILITY,
+                  actions: [GameModel.assign(drawCardAction)],
+                },
+              },
+            },
+            [PlayStates.TEST_THANOS_WIN]: {
+              always: [
+                {
+                  cond: has6StonesGuard,
+                  target: `#${gameID}.${GameStates.VICTORY}`,
+                },
+                {
+                  target: PlayStates.CHOOSE_ABILITY,
+                },
               ],
             },
-          },
-        },
-        PlayCard: {
-          on: {
-            endPlay: {
-              target: "ChooseAction",
-              actions: [
-                // TODO: Actions associées à la fin de la pose d'une carte
-              ],
+            [PlayStates.CHOOSE_ABILITY]: {
+              on: {
+                startChooseAbility: {
+                  cond: canUseAbilityGuard,
+                  target: PlayStates.CHOOSE_ABILITY,
+                  actions: [GameModel.assign(playCard)],
+                },
+              },
             },
           },
-        },
-        ChooseAction: {
-          on: {
-            // Continuer pour les autres capacités...
-            endChooseAction: {
-              target: "EndTurn",
-              actions: [
-                // TODO: Actions associées à la fin du choix d'action
-              ],
-            },
-          },
-        },
-        EndTurn: {
-          on: {
-            endTurn: {
-              target: "DrawCard",
-              actions: [
-                // TODO: Actions associées à la fin du tour
-              ],
-            },
-          },
-        },
-      },
-      on: {
-        winingEvent: {
-          cond: canWinnigGuard,
-          target: GameStates.VICTORY,
         },
       },
     },
@@ -150,7 +148,7 @@ export const GameMachine = GameModel.createMachine({
       on: {
         restart: {
           target: GameStates.LOBBY,
-          actions: [GameModel.assign(restartAction)],
+          actions: [GameModel.assign(restartGameAction)],
         },
       },
     },
