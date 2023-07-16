@@ -2,9 +2,10 @@ import {
   getThanos,
   randomPlayerOrder,
   nextPlayer,
-  currentPlayer,
+  currentTeam,
+  shuffleDeck,
+  drawCard,
 } from "../func/game";
-import { Side } from "../types/gameEnums";
 import { GameAction, GameContext } from "../types/gameStateMachineTypes";
 
 export const joinGameAction: GameAction<"join"> = (context, event) => ({
@@ -37,15 +38,12 @@ export const nextPlayerAction = (context: GameContext) => ({
   currentPlayer: nextPlayer(context).id,
 });
 
-export const shuffleDeckAction = (context: GameContext) => ({
-  // TODO
-});
+export const shuffleDeckAction = (context: GameContext) =>
+  shuffleDeck(context, currentTeam(context));
 
 export const drawCardAction: GameAction<"endDrawCard"> = (
   context: GameContext
-) => ({
-  // TODO
-});
+) => drawCard(context);
 
 export const playCard: GameAction<"startChooseAbility"> = (
   context: GameContext

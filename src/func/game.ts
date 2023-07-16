@@ -1,6 +1,7 @@
 import { Side } from "../types/gameEnums";
 import { GameContext } from "../types/gameStateMachineTypes";
-import { Player, Players } from "../types/gameTypes";
+import { Deck, Player, Players } from "../types/gameTypes";
+import { shuffle } from "../utils/deckUtils";
 
 export function winingAction(context: GameContext) {
   return null; // TODO
@@ -12,6 +13,17 @@ export function currentPlayer(context: GameContext): Player {
     throw new Error("Impossible to recover current player");
   }
   return player;
+}
+
+export function currentTeam(context: GameContext): Side {
+  const player = context.players.find((p) => p.id === context.currentPlayer);
+  if (player === undefined) {
+    throw new Error("Impossible to recover current player");
+  }
+  if (player.side === undefined) {
+    throw new Error("Impossible to recover current team");
+  }
+  return player.side;
 }
 
 export function getThanos(context: GameContext): Player {
@@ -81,15 +93,14 @@ export function setFirstPlayer(context: GameContext): GameContext {
 }
 
 export function shuffleDeck(context: GameContext, side: Side): GameContext {
-  const team = side === Side.HEROES ? context.heroes : context.thanos;
-  const deck = team.deck;
-  const deckUsed = team.deckused;
+  const team = context[side];
+  const [deck, deckUsed] = [shuffle(team.deckused), team.deck];
   return {
     ...context,
-    [side === Side.HEROES ? "heroes" : "thanos"]: {
+    [side]: {
       ...team,
-      deck: deckUsed,
-      deckused: deck,
+      deck,
+      deckUsed,
     },
   };
 }
@@ -105,4 +116,37 @@ export function getHandOfThanos(context: GameContext): Deck {
     throw new Error("Impossible to recover thanos hand");
   }
   return thanosHand;
+}
+
+export function updatePlayerList(
+  players: Players,
+  updatedPlayer: Player
+): Players {
+  return players.map((player) => {
+    if (player.id === updatedPlayer.id) {
+      return updatedPlayer; // Remplace l'utilisateur courant par son nouvel état
+    }
+    return player; // Garde les autres joueurs inchangés
+  });
+}
+
+export function drawCard(context: GameContext): GameContext {
+  const side = currentTeam(context);
+  const team = { ...context[side] };
+  const player = currentPlayer(context);
+  const [oneCard, ...restDeck] = team.deck;
+
+  const updatedPlayer = {
+    ...player,
+    hand: [oneCard, ...(player.hand ?? [])],
+  };
+
+  return {
+    ...context,
+    [side]: {
+      ...team,
+      deck: restDeck,
+    },
+    players: updatePlayerList(context.players, updatedPlayer),
+  };
 }

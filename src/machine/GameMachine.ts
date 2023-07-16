@@ -29,7 +29,6 @@ import {
 } from "../types/gameEnums";
 import { Player, Team } from "../types/gameTypes";
 import { GameContext } from "../types/gameStateMachineTypes";
-import { shuffleDeck } from "../func/game";
 
 export const gameID = "infinityGuantlet";
 
@@ -37,8 +36,8 @@ export const GameModel = createModel(
   {
     players: [] as Player[],
     currentPlayer: null as null | Player["id"],
-    thanos: {} as Team,
-    heroes: {} as Team,
+    [Side.THANOS]: {} as Team,
+    [Side.HEROES]: {} as Team,
   },
   {
     events: {

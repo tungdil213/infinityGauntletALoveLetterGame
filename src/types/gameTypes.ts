@@ -29,3 +29,5 @@ export interface Team {
   deckused: Deck;
   deck: Deck;
 }
+
+export const NUMBER_OF_STONES = 6;

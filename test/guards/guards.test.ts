@@ -311,8 +311,8 @@ describe("machine/Guards", () => {
           },
         ],
         currentPlayer: "2",
-        heroes: { lives: 0, name: "hero", deckused: [], deck: [] },
-        thanos: { lives: 2, name: "thanos", deckused: [], deck: [] },
+        [Side.HEROES]: { lives: 0, name: "hero", deckused: [], deck: [] },
+        [Side.THANOS]: { lives: 2, name: "thanos", deckused: [], deck: [] },
       });
       expect(canWinnigGuard(machine.getSnapshot().context)).toBe(true);
     });
@@ -337,8 +337,8 @@ describe("machine/Guards", () => {
           },
         ],
         currentPlayer: "2",
-        heroes: { lives: 2, name: "hero", deckused: [], deck: [] },
-        thanos: { lives: 0, name: "thanos", deckused: [], deck: [] },
+        [Side.HEROES]: { lives: 2, name: "hero", deckused: [], deck: [] },
+        [Side.THANOS]: { lives: 0, name: "thanos", deckused: [], deck: [] },
       });
       expect(canWinnigGuard(machine.getSnapshot().context)).toBe(true);
     });
@@ -363,8 +363,8 @@ describe("machine/Guards", () => {
           },
         ],
         currentPlayer: "2",
-        heroes: { lives: 2, name: "hero", deckused: [], deck: [] },
-        thanos: { lives: 2, name: "thanos", deckused: [], deck: [] },
+        [Side.HEROES]: { lives: 2, name: "hero", deckused: [], deck: [] },
+        [Side.THANOS]: { lives: 2, name: "thanos", deckused: [], deck: [] },
       });
       expect(canWinnigGuard(machine.getSnapshot().context)).toBe(false);
     });

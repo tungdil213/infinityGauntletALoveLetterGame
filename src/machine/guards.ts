@@ -2,9 +2,9 @@ import {
   GameGuard,
   GameGuardWithoutEvent,
 } from "../types/gameStateMachineTypes";
-import { currentPlayer, getHandOfThanos } from "../func/game";
-import { PlayStates, Side } from "../types/gameEnums";
-import { Team } from "../types/gameTypes";
+import { currentTeam, getHandOfThanos } from "../func/game";
+import { Side } from "../types/gameEnums";
+import { Deck, NUMBER_OF_STONES } from "../types/gameTypes";
 
 export const canJoinGuard: GameGuard<"join"> = (context, event) => {
   return (
@@ -33,7 +33,7 @@ export const canStartGameGuard: GameGuard<"start"> = (context, event) => {
 };
 
 export const canWinnigGuard: GameGuardWithoutEvent<any> = (context) => {
-  return context.heroes.lives < 1 || context.thanos.lives < 1;
+  return context[Side.HEROES].lives < 1 || context[Side.THANOS].lives < 1;
 };
 
 export const canUseAbilityGuard: GameGuard<"startChooseAbility"> = (
@@ -48,21 +48,25 @@ export const canUseAbilityGuard: GameGuard<"startChooseAbility"> = (
   );
 };
 
-// export const canEndDrawGuard: GameGuard<"endDraw"> = (context, event) => {
-//   return context.currentPlayer === event.playerId;
-// };
-
 export const canDrawCardGuard: GameGuard<"endDrawCard"> = (context, event) => {
   return context.currentPlayer === event.playerId;
 };
 
 export const deckIsEmptyGuard: GameGuard<any> = (context, event) => {
-  const sidePlayer = currentPlayer(context).side;
-  const team = sidePlayer === Side.HEROES ? context.heroes : context.thanos;
+  const sidePlayer = currentTeam(context);
+  const team = context[sidePlayer];
   return team.deck.length === 0;
 };
 
 export const has6StonesGuard: GameGuardWithoutEvent<any> = (context) => {
-  const ThanosHand = getHandOfThanos(context);
-  return false; // TODO
+  const thanosCards: Deck = [
+    ...getHandOfThanos(context),
+    ...context[Side.THANOS].deckused,
+  ];
+
+  const numberOfStones = thanosCards.filter(
+    (card) => card?.stone === true
+  ).length;
+
+  return numberOfStones >= NUMBER_OF_STONES;
 };
