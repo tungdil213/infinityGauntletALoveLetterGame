@@ -1,4 +1,4 @@
-import { Side } from "../types/gameEnums";
+import { GameStates, Side } from "../types/gameEnums";
 import { GameContext } from "../types/gameStateMachineTypes";
 import { Deck, Player, Players } from "../types/gameTypes";
 import { shuffle } from "../utils/deckUtils";
@@ -7,8 +7,10 @@ export function winingAction(context: GameContext) {
   return null; // TODO
 }
 
-export function currentPlayer(context: GameContext): Player {
-  const player = context.players.find((p) => p.id === context.currentPlayer);
+export function currentPlayer(context: GameContext): Player<"PLAY"> {
+  const player = context.players.find(
+    (p) => p.id === context.currentPlayer?.id
+  );
   if (player === undefined) {
     throw new Error("Impossible to recover current player");
   }
@@ -16,7 +18,9 @@ export function currentPlayer(context: GameContext): Player {
 }
 
 export function currentTeam(context: GameContext): Side {
-  const player = context.players.find((p) => p.id === context.currentPlayer);
+  const player = context.players.find(
+    (p) => p.id === context.currentPlayer?.id
+  );
   if (player === undefined) {
     throw new Error("Impossible to recover current player");
   }
@@ -26,7 +30,7 @@ export function currentTeam(context: GameContext): Side {
   return player.side;
 }
 
-export function getThanos(context: GameContext): Player {
+export function getThanos(context: GameContext): Player<GameStates> {
   const player = context.players.find((p) => p.side === Side.THANOS);
   if (player === undefined) {
     throw new Error("Impossible to recover thanos");
@@ -34,10 +38,14 @@ export function getThanos(context: GameContext): Player {
   return player;
 }
 
-export function nextPlayer(context: GameContext): Player {
+export function nextPlayer(context: GameContext): Player<"PLAY"> {
   const currentIndex = context.players.findIndex(
-    (p) => p.id === context.currentPlayer
+    (p) => p.id === context.currentPlayer?.id
   );
+
+  if (currentIndex === -1) {
+    throw new Error("Impossible to recover current player");
+  }
 
   if (currentIndex === -1 || currentIndex === context.players.length - 1) {
     return context.players[0];

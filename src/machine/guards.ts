@@ -1,7 +1,4 @@
-import {
-  GameGuard,
-  GameGuardWithoutEvent,
-} from "../types/gameStateMachineTypes";
+import { GameGuard } from "../types/gameStateMachineTypes";
 import { currentTeam, getHandOfThanos } from "../func/game";
 import { Side } from "../types/gameEnums";
 import { Deck, NUMBER_OF_STONES } from "../types/gameTypes";
@@ -32,7 +29,8 @@ export const canStartGameGuard: GameGuard<"start"> = (context, event) => {
   );
 };
 
-export const canWinnigGuard: GameGuardWithoutEvent<any> = (context) => {
+//TODO : change the any type
+export const canWinnigGuard: GameGuard<any> = (context) => {
   return context[Side.HEROES].lives < 1 || context[Side.THANOS].lives < 1;
 };
 
@@ -58,7 +56,7 @@ export const deckIsEmptyGuard: GameGuard<any> = (context, event) => {
   return team.deck.length === 0;
 };
 
-export const has6StonesGuard: GameGuardWithoutEvent<
+export const has6StonesGuard: GameGuard<
   "endDrawCard" | "startChooseAbility"
 > = (context) => {
   const thanosCards: Deck = [

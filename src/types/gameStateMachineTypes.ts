@@ -9,9 +9,6 @@ export type GameGuard<T extends GameEvents["type"]> = (
   context: GameContext,
   event: GameEvent<T>
 ) => boolean;
-export type GameGuardWithoutEvent<T extends GameEvents["type"]> = (
-  context: GameContext
-) => boolean;
 export type GameAction<T extends GameEvents["type"]> = (
   context: GameContext,
   event: GameEvent<T>

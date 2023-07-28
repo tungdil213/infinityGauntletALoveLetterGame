@@ -9,6 +9,7 @@ import {
   drawCardAction,
   shuffleDeckAction,
   playCard,
+  setReadyPlayerAction,
 } from "./actions";
 import {
   canChooseSideGuard,
@@ -26,40 +27,43 @@ import {
   Side,
   ThanosAbilities,
 } from "../types/gameEnums";
-import { Player, Team } from "../types/gameTypes";
+import { IIngamePlayer, Player, Players, Team } from "../types/gameTypes";
 import { GameContext } from "../types/gameStateMachineTypes";
-import { PlayerInGame } from "../func/playerInGame";
 
 export const gameID = "infinityGuantlet";
 
 export const GameModel = createModel(
   {
-    players: [] as PlayerInGame[] | Player[],
-    currentPlayer: null as null | Player["id"],
+    players: [] as Players<unknown>,
+    currentPlayer: null as null | IIngamePlayer,
     THANOS: {} as Team,
     HEROES: {} as Team,
   },
   {
     events: {
       // Lobby
-      join: (playerId: Player["id"], name: Player["name"]) => ({
+      join: (
+        playerId: Player<"LOBBY">["id"],
+        name: Player<"LOBBY">["name"]
+      ) => ({
         playerId,
         name,
       }),
-      leave: (playerId: Player["id"]) => ({ playerId }),
-      chooseSide: (playerId: Player["id"], side: Side) => ({
+      leave: (playerId: Player<"PLAY">["id"]) => ({ playerId }),
+      chooseSide: (playerId: Player<"PLAY">["id"], side: Side) => ({
         playerId,
         side,
       }),
-      start: (playerId: Player["id"]) => ({ playerId }),
+      start: (playerId: Player<"PLAY">["id"]) => ({ playerId }),
+      playerReady: (playerId: Player<"PLAY">["id"]) => ({ playerId }),
       // Victory
-      restart: (playerId: Player["id"]) => ({ playerId }),
+      restart: (playerId: Player<"PLAY">["id"]) => ({ playerId }),
 
-      deckIsEmpty: (playerId: Player["id"]) => ({ playerId }),
-      startDraw: (playerId: Player["id"]) => ({ playerId }),
-      endDrawCard: (playerId: Player["id"]) => ({ playerId }),
+      deckIsEmpty: (playerId: Player<"PLAY">["id"]) => ({ playerId }),
+      startDraw: (playerId: Player<"PLAY">["id"]) => ({ playerId }),
+      endDrawCard: (playerId: Player<"PLAY">["id"]) => ({ playerId }),
       startChooseAbility: (
-        playerId: Player["id"],
+        playerId: Player<"PLAY">["id"],
         ability: ThanosAbilities | HeroesAbilities
       ) => ({
         playerId,
@@ -90,6 +94,11 @@ export const GameMachine = GameModel.createMachine({
           cond: canChooseSideGuard,
           target: "LOBBY",
           actions: [GameModel.assign(chooseSideAction)],
+        },
+        playerReady: {
+          cond: canStartGameGuard,
+          target: "LOBBY",
+          actions: [GameModel.assign(setReadyPlayerAction)],
         },
         start: {
           cond: canStartGameGuard,
