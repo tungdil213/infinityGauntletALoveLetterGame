@@ -58,7 +58,9 @@ export const deckIsEmptyGuard: GameGuard<any> = (context, event) => {
   return team.deck.length === 0;
 };
 
-export const has6StonesGuard: GameGuardWithoutEvent<any> = (context) => {
+export const has6StonesGuard: GameGuardWithoutEvent<
+  "endDrawCard" | "startChooseAbility"
+> = (context) => {
   const thanosCards: Deck = [
     ...getHandOfThanos(context),
     ...context[Side.THANOS].deckused,

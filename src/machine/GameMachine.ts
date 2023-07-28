@@ -23,21 +23,21 @@ import {
 import {
   GameStates,
   HeroesAbilities,
-  PlayStates,
   Side,
   ThanosAbilities,
 } from "../types/gameEnums";
 import { Player, Team } from "../types/gameTypes";
 import { GameContext } from "../types/gameStateMachineTypes";
+import { PlayerInGame } from "../func/playerInGame";
 
 export const gameID = "infinityGuantlet";
 
 export const GameModel = createModel(
   {
-    players: [] as Player[],
+    players: [] as PlayerInGame[] | Player[],
     currentPlayer: null as null | Player["id"],
-    [Side.THANOS]: {} as Team,
-    [Side.HEROES]: {} as Team,
+    THANOS: {} as Team,
+    HEROES: {} as Team,
   },
   {
     events: {
@@ -72,39 +72,39 @@ export const GameModel = createModel(
 export const GameMachine = GameModel.createMachine({
   id: gameID,
   context: GameModel.initialContext,
-  initial: GameStates.LOBBY,
+  initial: "LOBBY",
   states: {
-    [GameStates.LOBBY]: {
+    LOBBY: {
       on: {
         join: {
           cond: canJoinGuard,
           actions: [GameModel.assign(joinGameAction)],
-          target: GameStates.LOBBY,
+          target: "LOBBY",
         },
         leave: {
           cond: canLeaveGuard,
           actions: [GameModel.assign(leaveGameAction)],
-          target: GameStates.LOBBY,
+          target: "LOBBY",
         },
         chooseSide: {
           cond: canChooseSideGuard,
-          target: GameStates.LOBBY,
+          target: "LOBBY",
           actions: [GameModel.assign(chooseSideAction)],
         },
         start: {
           cond: canStartGameGuard,
-          target: GameStates.PLAY,
+          target: "PLAY",
           actions: [GameModel.assign(setDefaultPlayerAction)],
         },
       },
     },
-    [GameStates.PLAY]: {
-      initial: PlayStates.PLAYER_TURN,
+    PLAY: {
+      initial: "PLAYER_TURN",
       states: {
-        [PlayStates.PLAYER_TURN]: {
-          initial: PlayStates.DRAW_CARD,
+        PLAYER_TURN: {
+          initial: "DRAW_CARD",
           states: {
-            [PlayStates.DRAW_CARD]: {
+            DRAW_CARD: {
               always: [
                 {
                   cond: deckIsEmptyGuard,
@@ -114,27 +114,27 @@ export const GameMachine = GameModel.createMachine({
               on: {
                 endDrawCard: {
                   cond: canDrawCardGuard,
-                  target: PlayStates.CHOOSE_ABILITY,
+                  target: "CHOOSE_ABILITY",
                   actions: [GameModel.assign(drawCardAction)],
                 },
               },
             },
-            [PlayStates.TEST_THANOS_WIN]: {
+            TEST_THANOS_WIN: {
               always: [
                 {
                   cond: has6StonesGuard,
-                  target: `#${gameID}.${GameStates.VICTORY}`,
+                  target: `#VICTORY`,
                 },
                 {
-                  target: PlayStates.CHOOSE_ABILITY,
+                  target: "CHOOSE_ABILITY",
                 },
               ],
             },
-            [PlayStates.CHOOSE_ABILITY]: {
+            CHOOSE_ABILITY: {
               on: {
                 startChooseAbility: {
                   cond: canUseAbilityGuard,
-                  target: PlayStates.CHOOSE_ABILITY,
+                  target: "CHOOSE_ABILITY",
                   actions: [GameModel.assign(playCard)],
                 },
               },
@@ -143,10 +143,11 @@ export const GameMachine = GameModel.createMachine({
         },
       },
     },
-    [GameStates.VICTORY]: {
+    VICTORY: {
+      id: "VICTORY",
       on: {
         restart: {
-          target: GameStates.LOBBY,
+          target: "LOBBY",
           actions: [GameModel.assign(restartGameAction)],
         },
       },
@@ -155,7 +156,7 @@ export const GameMachine = GameModel.createMachine({
 });
 
 export function makeGame(
-  state: GameStates = GameStates.LOBBY,
+  state: GameStates = "LOBBY",
   context: Partial<GameContext> = {}
 ): InterpreterFrom<typeof GameMachine> {
   const machine = interpret(
