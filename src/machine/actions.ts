@@ -6,17 +6,16 @@ import {
   shuffleDeck,
   drawCard,
 } from "../func/game";
-import { LobbyPlayer } from "../func/lobbyPlayer";
+import { Player } from "../func/Player";
 import { GameAction, GameContext } from "../types/gameStateMachineTypes";
-import { ILobbyPlayer } from "../types/gameTypes";
 
 export const joinGameAction: GameAction<"join"> = (
   context,
-  event: ILobbyPlayer
+  event: { playerId: string; name: string }
 ) => ({
   players: [
     ...context.players,
-    new LobbyPlayer({ id: event.playerId, name: event.name }),
+    new Player({ id: event.playerId, name: event.name }),
   ],
 });
 
@@ -51,7 +50,7 @@ export const restartGameAction: GameAction<"restart"> = (context, event) => ({
 
 export const setDefaultPlayerAction = (context: GameContext) => ({
   players: randomPlayerOrder(context),
-  currentPlayer: getThanos(context).id,
+  currentPlayer: getThanos(context),
 });
 
 export const nextPlayerAction = (context: GameContext) => ({

@@ -1,25 +1,17 @@
 import { HeroesAbilities, Side, ThanosAbilities } from "./gameEnums";
 
-export interface ILobbyPlayer {
-  id: string;
-  name: string;
-  side?: Side;
-  ready?: boolean;
-  changeReady(): boolean;
-  changeSide(side: Side): void;
-}
-
-export interface IIngamePlayer {
+export interface IPlayer {
   id: string;
   name: string;
   side: Side;
   hand?: Deck;
   powerTokens?: number;
+  ready?: boolean;
+  changeReady(ready: boolean | null): boolean;
+  changeSide(side: Side | null): void;
 }
 
-export type Player<T> = T extends "PLAY" ? IIngamePlayer : ILobbyPlayer;
-
-export type Players<T> = Player<T>[];
+export type Players = IPlayer[];
 
 export interface Card {
   id: number;

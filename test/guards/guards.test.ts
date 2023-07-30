@@ -7,7 +7,31 @@ import {
 } from "../../src/machine/guards";
 import { describe, expect, it } from "vitest";
 import { GameMachine, makeGame } from "../../src/machine/GameMachine";
-import { GameStates, Side } from "../../src/types/gameEnums";
+import { Side } from "../../src/types/gameEnums";
+import { Player } from "../../src/func/Player";
+
+const createPlayer = (
+  id: string,
+  name: string,
+  side?: Side,
+  ready?: boolean
+) => {
+  const player = new Player({ id, name });
+  if (side) {
+    player.changeSide(side);
+  }
+  if (ready) {
+    player.changeReady(ready);
+  }
+  return player;
+};
+
+const createPlayers = (
+  playersData: { id: string; name: string; side?: Side; ready?: boolean }[]
+) =>
+  playersData.map((data) =>
+    createPlayer(data.id, data.name, data?.side, data?.ready)
+  );
 
 describe("machine/Guards", () => {
   let machine: InterpreterFrom<typeof GameMachine>;
@@ -15,7 +39,7 @@ describe("machine/Guards", () => {
   describe("canJoinGuard", () => {
     it("should return true if the player can join", () => {
       machine = makeGame("LOBBY", {
-        players: [
+        players: createPlayers([
           {
             id: "1",
             name: "1",
@@ -24,7 +48,7 @@ describe("machine/Guards", () => {
             id: "2",
             name: "2",
           },
-        ],
+        ]),
       });
       const event = {
         playerId: "3",
@@ -36,7 +60,7 @@ describe("machine/Guards", () => {
 
     it("should return false if the player is already in the game", () => {
       machine = makeGame("LOBBY", {
-        players: [
+        players: createPlayers([
           {
             id: "1",
             name: "1",
@@ -49,7 +73,7 @@ describe("machine/Guards", () => {
             id: "3",
             name: "3",
           },
-        ],
+        ]),
       });
       const event = {
         playerId: "3",
@@ -61,7 +85,7 @@ describe("machine/Guards", () => {
 
     it("should return false if the game is full", () => {
       machine = makeGame("LOBBY", {
-        players: [
+        players: createPlayers([
           {
             id: "1",
             name: "1",
@@ -86,7 +110,7 @@ describe("machine/Guards", () => {
             id: "6",
             name: "6",
           },
-        ],
+        ]),
       });
       const event = {
         playerId: "7",
@@ -100,7 +124,7 @@ describe("machine/Guards", () => {
   describe("canChooseSideGuard", () => {
     it("should return true if the player can choose a side", () => {
       machine = makeGame("LOBBY", {
-        players: [
+        players: createPlayers([
           {
             id: "1",
             name: "1",
@@ -109,7 +133,7 @@ describe("machine/Guards", () => {
             id: "2",
             name: "2",
           },
-        ],
+        ]),
       });
       const event = {
         playerId: "2",
@@ -123,7 +147,7 @@ describe("machine/Guards", () => {
 
     it("must send back true if the player can choose a side several times", () => {
       machine = makeGame("LOBBY", {
-        players: [
+        players: createPlayers([
           {
             id: "1",
             name: "1",
@@ -132,7 +156,7 @@ describe("machine/Guards", () => {
             id: "2",
             name: "2",
           },
-        ],
+        ]),
       });
       const eventHeros = {
         playerId: "2",
@@ -157,7 +181,7 @@ describe("machine/Guards", () => {
 
     it("should return false if the player is not in the game", () => {
       machine = makeGame("LOBBY", {
-        players: [
+        players: createPlayers([
           {
             id: "1",
             name: "1",
@@ -166,7 +190,7 @@ describe("machine/Guards", () => {
             id: "2",
             name: "2",
           },
-        ],
+        ]),
       });
       const event = {
         playerId: "3",
@@ -182,23 +206,26 @@ describe("machine/Guards", () => {
   describe("canStartGameGuard", () => {
     it("should return true if the game can be started", () => {
       machine = makeGame("LOBBY", {
-        players: [
+        players: createPlayers([
           {
             id: "1",
             name: "1",
             side: Side.THANOS,
+            ready: true,
           },
           {
             id: "2",
             name: "2",
             side: Side.HEROES,
+            ready: true,
           },
           {
             id: "3",
             name: "3",
             side: Side.HEROES,
+            ready: true,
           },
-        ],
+        ]),
       });
       const event = { playerId: "1", type: "start" as const };
       expect(canStartGameGuard(machine.getSnapshot().context, event)).toBe(
@@ -208,7 +235,7 @@ describe("machine/Guards", () => {
 
     it("should return false if there are not enough players", () => {
       machine = makeGame("LOBBY", {
-        players: [{ id: "1", name: "1", side: Side.HEROES }],
+        players: createPlayers([{ id: "1", name: "1", side: Side.HEROES }]),
       });
       const event = { playerId: "1", type: "start" as const };
       expect(canStartGameGuard(machine.getSnapshot().context, event)).toBe(
@@ -218,14 +245,14 @@ describe("machine/Guards", () => {
 
     it("should return false if there are too many players", () => {
       machine = makeGame("LOBBY", {
-        players: [
+        players: createPlayers([
           { id: "1", name: "1", side: Side.HEROES },
           { id: "2", name: "2", side: Side.HEROES },
           { id: "3", name: "3", side: Side.THANOS },
           { id: "4", name: "4", side: Side.THANOS },
           { id: "5", name: "5", side: Side.THANOS },
           { id: "6", name: "6", side: Side.THANOS },
-        ],
+        ]),
       });
       const event = { playerId: "1", type: "start" as const };
       expect(canStartGameGuard(machine.getSnapshot().context, event)).toBe(
@@ -235,11 +262,11 @@ describe("machine/Guards", () => {
 
     it("should return false if the player is not in the game", () => {
       machine = makeGame("LOBBY", {
-        players: [
+        players: createPlayers([
           { id: "1", name: "1", side: Side.HEROES },
           { id: "2", name: "2", side: Side.HEROES },
           { id: "3", name: "3", side: Side.THANOS },
-        ],
+        ]),
       });
       const event = { playerId: "4", type: "start" as const };
       expect(canStartGameGuard(machine.getSnapshot().context, event)).toBe(
@@ -249,11 +276,11 @@ describe("machine/Guards", () => {
 
     it("should return false if not all players have chosen a side", () => {
       machine = makeGame("LOBBY", {
-        players: [
+        players: createPlayers([
           { id: "1", name: "1", side: Side.HEROES },
           { id: "2", name: "2", side: Side.THANOS },
           { id: "3", name: "3" },
-        ],
+        ]),
       });
       const event = { playerId: "1", type: "start" as const };
       expect(canStartGameGuard(machine.getSnapshot().context, event)).toBe(
@@ -263,11 +290,11 @@ describe("machine/Guards", () => {
 
     it("should return false if there are no heroes", () => {
       machine = makeGame("LOBBY", {
-        players: [
+        players: createPlayers([
           { id: "1", name: "1", side: Side.THANOS },
           { id: "2", name: "2", side: Side.THANOS },
           { id: "3", name: "3", side: Side.THANOS },
-        ],
+        ]),
       });
       const event = { playerId: "1", type: "start" as const };
       expect(canStartGameGuard(machine.getSnapshot().context, event)).toBe(
@@ -277,11 +304,11 @@ describe("machine/Guards", () => {
 
     it("should return false if there are no thanos", () => {
       machine = makeGame("LOBBY", {
-        players: [
+        players: createPlayers([
           { id: "1", name: "1", side: Side.HEROES },
           { id: "2", name: "2", side: Side.HEROES },
           { id: "3", name: "3", side: Side.HEROES },
-        ],
+        ]),
       });
       const event = { playerId: "1", type: "start" as const };
       expect(canStartGameGuard(machine.getSnapshot().context, event)).toBe(
@@ -293,7 +320,7 @@ describe("machine/Guards", () => {
   describe("canWinnigGuard", () => {
     it("should return true if the heroes have no lives left", () => {
       machine = makeGame("PLAY", {
-        players: [
+        players: createPlayers([
           {
             id: "1",
             name: "1",
@@ -309,17 +336,18 @@ describe("machine/Guards", () => {
             name: "3",
             side: Side.HEROES,
           },
-        ],
-        currentPlayer: "2",
+        ]),
+        currentPlayer: createPlayer("2", "2", Side.HEROES),
         [Side.HEROES]: { lives: 0, name: "hero", deckused: [], deck: [] },
         [Side.THANOS]: { lives: 2, name: "thanos", deckused: [], deck: [] },
       });
-      expect(canWinnigGuard(machine.getSnapshot().context)).toBe(true);
+      const event = { playerId: "1", type: "any" as any };
+      expect(canWinnigGuard(machine.getSnapshot().context, event)).toBe(true);
     });
 
     it("should return true if Thanos has no lives left", () => {
       machine = makeGame("PLAY", {
-        players: [
+        players: createPlayers([
           {
             id: "1",
             name: "1",
@@ -335,17 +363,18 @@ describe("machine/Guards", () => {
             name: "3",
             side: Side.HEROES,
           },
-        ],
-        currentPlayer: "2",
+        ]),
+        currentPlayer: createPlayer("2", "2", Side.HEROES),
         [Side.HEROES]: { lives: 2, name: "hero", deckused: [], deck: [] },
         [Side.THANOS]: { lives: 0, name: "thanos", deckused: [], deck: [] },
       });
-      expect(canWinnigGuard(machine.getSnapshot().context)).toBe(true);
+      const event = { playerId: "1", type: "any" as any };
+      expect(canWinnigGuard(machine.getSnapshot().context, event)).toBe(true);
     });
 
     it("should return false if both sides have lives left", () => {
       machine = makeGame("PLAY", {
-        players: [
+        players: createPlayers([
           {
             id: "1",
             name: "1",
@@ -361,12 +390,13 @@ describe("machine/Guards", () => {
             name: "3",
             side: Side.HEROES,
           },
-        ],
-        currentPlayer: "2",
+        ]),
+        currentPlayer: createPlayer("2", "2", Side.HEROES),
         [Side.HEROES]: { lives: 2, name: "hero", deckused: [], deck: [] },
         [Side.THANOS]: { lives: 2, name: "thanos", deckused: [], deck: [] },
       });
-      expect(canWinnigGuard(machine.getSnapshot().context)).toBe(false);
+      const event = { playerId: "1", type: "any" as any };
+      expect(canWinnigGuard(machine.getSnapshot().context, event)).toBe(false);
     });
   });
 });

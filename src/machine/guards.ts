@@ -1,17 +1,19 @@
 import { GameGuard } from "../types/gameStateMachineTypes";
 import { currentTeam, getHandOfThanos } from "../func/game";
 import { Side } from "../types/gameEnums";
-import { Deck, NUMBER_OF_STONES } from "../types/gameTypes";
+import { Card, Deck, IPlayer, NUMBER_OF_STONES } from "../types/gameTypes";
 
 export const canJoinGuard: GameGuard<"join"> = (context, event) => {
   return (
     context.players.length < 6 &&
-    context.players.find((p) => p.id === event.playerId) === undefined
+    context.players.find((p: IPlayer) => p.id === event.playerId) === undefined
   );
 };
 
 export const canChooseSideGuard: GameGuard<"chooseSide"> = (context, event) => {
-  return context.players.find((p) => p.id === event.playerId) !== undefined;
+  return (
+    context.players.find((p: IPlayer) => p.id === event.playerId) !== undefined
+  );
 };
 
 export const canLeaveGuard: GameGuard<"leave"> = (context, event) => {
@@ -22,10 +24,13 @@ export const canStartGameGuard: GameGuard<"start"> = (context, event) => {
   return (
     1 < context.players.length &&
     context.players.length < 6 &&
-    context.players.find((p) => p.id === event.playerId) !== undefined &&
-    context.players.every((p) => "side" in p) &&
-    context.players.find((p) => p.side === Side.HEROES) !== undefined &&
-    context.players.find((p) => p.side === Side.THANOS) !== undefined
+    context.players.find((p: IPlayer) => p.id === event.playerId) !==
+      undefined &&
+    context.players.every((p: IPlayer) => p.ready) &&
+    context.players.every((p: IPlayer) => "side" in p) &&
+    context.players.find((p: IPlayer) => p.side === Side.HEROES) !==
+      undefined &&
+    context.players.find((p: IPlayer) => p.side === Side.THANOS) !== undefined
   );
 };
 
@@ -39,15 +44,15 @@ export const canUseAbilityGuard: GameGuard<"startChooseAbility"> = (
   event
 ) => {
   return (
-    context.currentPlayer === event.playerId &&
+    context.currentPlayer.id === event.playerId &&
     context.players
-      .find((p) => p.id === event.playerId)
-      ?.hand?.find((c) => c.ability === event.ability) !== undefined
+      .find((p: IPlayer) => p.id === event.playerId)
+      ?.hand?.find((c: Card) => c.ability === event.ability) !== undefined
   );
 };
 
 export const canDrawCardGuard: GameGuard<"endDrawCard"> = (context, event) => {
-  return context.currentPlayer === event.playerId;
+  return context.currentPlayer.id === event.playerId;
 };
 
 export const deckIsEmptyGuard: GameGuard<any> = (context, event) => {
@@ -56,9 +61,7 @@ export const deckIsEmptyGuard: GameGuard<any> = (context, event) => {
   return team.deck.length === 0;
 };
 
-export const has6StonesGuard: GameGuard<
-  "endDrawCard" | "startChooseAbility"
-> = (context) => {
+export const has6StonesGuard: GameGuard<any> = (context) => {
   const thanosCards: Deck = [
     ...getHandOfThanos(context),
     ...context[Side.THANOS].deckused,

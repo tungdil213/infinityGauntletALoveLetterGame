@@ -27,43 +27,40 @@ import {
   Side,
   ThanosAbilities,
 } from "../types/gameEnums";
-import { IIngamePlayer, Player, Players, Team } from "../types/gameTypes";
+import { IPlayer, Players, Team } from "../types/gameTypes";
 import { GameContext } from "../types/gameStateMachineTypes";
 
 export const gameID = "infinityGuantlet";
 
 export const GameModel = createModel(
   {
-    players: [] as Players<unknown>,
-    currentPlayer: null as null | IIngamePlayer,
+    players: [] as Players,
+    currentPlayer: {} as IPlayer,
     THANOS: {} as Team,
     HEROES: {} as Team,
   },
   {
     events: {
       // Lobby
-      join: (
-        playerId: Player<"LOBBY">["id"],
-        name: Player<"LOBBY">["name"]
-      ) => ({
+      join: (playerId: IPlayer["id"], name: IPlayer["name"]) => ({
         playerId,
         name,
       }),
-      leave: (playerId: Player<"PLAY">["id"]) => ({ playerId }),
-      chooseSide: (playerId: Player<"PLAY">["id"], side: Side) => ({
+      leave: (playerId: IPlayer["id"]) => ({ playerId }),
+      chooseSide: (playerId: IPlayer["id"], side: Side) => ({
         playerId,
         side,
       }),
-      start: (playerId: Player<"PLAY">["id"]) => ({ playerId }),
-      playerReady: (playerId: Player<"PLAY">["id"]) => ({ playerId }),
+      start: (playerId: IPlayer["id"]) => ({ playerId }),
+      playerReady: (playerId: IPlayer["id"]) => ({ playerId }),
       // Victory
-      restart: (playerId: Player<"PLAY">["id"]) => ({ playerId }),
+      restart: (playerId: IPlayer["id"]) => ({ playerId }),
 
-      deckIsEmpty: (playerId: Player<"PLAY">["id"]) => ({ playerId }),
-      startDraw: (playerId: Player<"PLAY">["id"]) => ({ playerId }),
-      endDrawCard: (playerId: Player<"PLAY">["id"]) => ({ playerId }),
+      deckIsEmpty: (playerId: IPlayer["id"]) => ({ playerId }),
+      startDraw: (playerId: IPlayer["id"]) => ({ playerId }),
+      endDrawCard: (playerId: IPlayer["id"]) => ({ playerId }),
       startChooseAbility: (
-        playerId: Player<"PLAY">["id"],
+        playerId: IPlayer["id"],
         ability: ThanosAbilities | HeroesAbilities
       ) => ({
         playerId,
@@ -96,7 +93,6 @@ export const GameMachine = GameModel.createMachine({
           actions: [GameModel.assign(chooseSideAction)],
         },
         playerReady: {
-          cond: canStartGameGuard,
           target: "LOBBY",
           actions: [GameModel.assign(setReadyPlayerAction)],
         },
