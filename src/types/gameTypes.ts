@@ -1,15 +1,14 @@
 import { HeroesAbilities, Side, ThanosAbilities } from "./gameEnums";
 
-export interface IPlayer {
+export type IPlayer = {
   id: string;
   name: string;
   side: Side;
   hand?: Deck;
   powerTokens?: number;
   ready?: boolean;
-  changeReady(ready: boolean | null): boolean;
-  changeSide(side: Side | null): void;
-}
+  team: ITeam;
+};
 
 export type Players = IPlayer[];
 
@@ -26,11 +25,12 @@ export interface Card {
 
 export type Deck = Card[];
 
-export interface Team {
+export interface ITeam {
   name: string;
   lives: number;
   deckused: Deck;
   deck: Deck;
+  players: Players;
 }
 
 export const NUMBER_OF_STONES = 6;

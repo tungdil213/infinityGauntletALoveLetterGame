@@ -1,20 +1,16 @@
 import { Side } from "../types/gameEnums";
-import { Deck } from "../types/gameTypes";
-import { IPlayer } from "../types/gameTypes";
+import { Card, Deck, IPlayer } from "../types/gameTypes";
+import { Team } from "./Team";
 
-interface IInitPlayer {
-  id: string;
-  name: string;
-}
-
+/**
+ *
+ *
+ * @export
+ * @class Player
+ * @implements {IPlayer}
+ * @description Class for the player
+ */
 export class Player implements IPlayer {
-  id: string;
-  name: string;
-  side: Side;
-  hand?: Deck;
-  powerTokens: number;
-  ready: boolean;
-
   /**
    * Constructor for the Player class.
    * @param player Player to create
@@ -29,19 +25,21 @@ export class Player implements IPlayer {
    * @throws Error if the player doesn't have a name
    * @throws Error if the player doesn't have a side
    */
-  constructor({ id, name }: IInitPlayer) {
-    if (!id) {
+  constructor(
+    private _id: string,
+    private _name: string,
+    private _choiceOfSide: Side,
+    private _hand: Deck = [],
+    private _powerTokens: number = 0,
+    private _ready: boolean = false,
+    private _team?: Team
+  ) {
+    if (!this._id) {
       throw new Error("Player must have an id");
     }
-    if (!name) {
+    if (!this._name) {
       throw new Error("Player must have a name");
     }
-    this.id = id;
-    this.name = name;
-    this.side = Side.HEROES;
-    this.hand = [];
-    this.powerTokens = 0;
-    this.ready = false;
   }
 
   /**
@@ -52,7 +50,7 @@ export class Player implements IPlayer {
    * @returns boolean
    */
   isCurentPlayer(currentPlayerId: string): boolean {
-    return this.id === currentPlayerId;
+    return this._id === currentPlayerId;
   }
 
   /**
@@ -62,35 +60,41 @@ export class Player implements IPlayer {
    * @param numberOfTokens Number of tokens to add. Default is 3 for Thanos and 1 for Heroes
    * @returns The new number of power tokens
    */
-  addPowerTokens(numberOfTokens: number | undefined): number {
-    const tokensToAdd =
-      numberOfTokens === undefined
-        ? this.side === Side.THANOS
-          ? 3
-          : 1
-        : numberOfTokens;
+  addPowerTokens(): number {
+    if (!this._team) {
+      throw new Error("Player must have a team");
+    }
 
-    this.powerTokens += tokensToAdd;
-    return this.powerTokens;
+    const tokensToAdd = this._team.earnTokens();
+
+    this._powerTokens += tokensToAdd;
+    return this._powerTokens;
   }
 
-  /**
-   * changeReady
-   * Change the ready status of the player
-   * @returns The new ready status
-   */
-  changeReady(ready: boolean | null): boolean {
-    this.ready = ready !== null ? ready : !this.ready;
-    return this.ready;
+  get ready(): boolean {
+    return this._ready;
   }
 
-  /**
-   * changeSide
-   * Change the side of the player
-   * @param side New side of the player
-   * @returns void
-   */
-  changeSide(side: Side): void {
-    this.side = side;
+  toggleReady(): void {
+    this._ready = !this._ready;
+  }
+
+  set choiceOfSide(side: Side) {
+    this._choiceOfSide = side;
+  }
+
+  get teamName(): Side {
+    if (!this._team) {
+      throw new Error("Player must have a team");
+    }
+    return this._team.name;
+  }
+
+  addCard(card: Card): void {
+    this._hand.push(card);
+  }
+
+  get id(): string {
+    return this._id;
   }
 }

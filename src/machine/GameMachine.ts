@@ -27,7 +27,7 @@ import {
   Side,
   ThanosAbilities,
 } from "../types/gameEnums";
-import { IPlayer, Players, Team } from "../types/gameTypes";
+import { IPlayer, Players, ITeam } from "../types/gameTypes";
 import { GameContext } from "../types/gameStateMachineTypes";
 
 export const gameID = "infinityGuantlet";
@@ -36,8 +36,8 @@ export const GameModel = createModel(
   {
     players: [] as Players,
     currentPlayer: {} as IPlayer,
-    THANOS: {} as Team,
-    HEROES: {} as Team,
+    THANOS: {} as ITeam,
+    HEROES: {} as ITeam,
   },
   {
     events: {

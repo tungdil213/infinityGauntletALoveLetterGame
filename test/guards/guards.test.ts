@@ -21,7 +21,7 @@ const createPlayer = (
     player.changeSide(side);
   }
   if (ready) {
-    player.changeReady(ready);
+    player.changeReady();
   }
   return player;
 };
