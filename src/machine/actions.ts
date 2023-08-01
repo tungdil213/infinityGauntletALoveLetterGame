@@ -1,22 +1,20 @@
 import {
-  getThanos,
-  randomPlayerOrder,
+  assignPlayerOrderAndTeams,
   nextPlayer,
   currentTeam,
   shuffleDeck,
   drawCard,
 } from "../func/game";
 import { Player } from "../func/Player";
+import { Team } from "../func/Team";
+import { Side } from "../types/gameEnums";
 import { GameAction, GameContext } from "../types/gameStateMachineTypes";
 
 export const joinGameAction: GameAction<"join"> = (
   context,
   event: { playerId: string; name: string }
 ) => ({
-  players: [
-    ...context.players,
-    new Player({ id: event.playerId, name: event.name }),
-  ],
+  players: [...context.players, new Player(event.playerId, event.name)],
 });
 
 export const leaveGameAction: GameAction<"leave"> = (context, event) => ({
@@ -26,7 +24,7 @@ export const leaveGameAction: GameAction<"leave"> = (context, event) => ({
 export const chooseSideAction: GameAction<"chooseSide"> = (context, event) => ({
   players: context.players.map((p) => {
     if (p.id === event.playerId) {
-      return { ...p, side: event.side };
+      return { ...p, choiceOfSide: event.side };
     }
     return p;
   }),
@@ -36,9 +34,9 @@ export const setReadyPlayerAction: GameAction<"playerReady"> = (
   context,
   event
 ) => ({
-  players: context.players.map((p) => {
+  players: (context.players as Player[]).map((p: Player) => {
     if (p.id === event.playerId) {
-      p.changeReady();
+      p.toggleReady();
     }
     return p;
   }),
@@ -48,10 +46,23 @@ export const restartGameAction: GameAction<"restart"> = (context, event) => ({
   // TODO
 });
 
-export const setDefaultPlayerAction = (context: GameContext) => ({
-  players: randomPlayerOrder(context),
-  currentPlayer: getThanos(context),
-});
+export const initialiseTheGame = (context: GameContext) => {
+  const teams = initialiseTeams();
+  const players = assignPlayerOrderAndTeams({ ...context, ...teams });
+  return {
+    ...context,
+    ...teams,
+    players,
+    currentPlayer: players[0],
+  };
+};
+
+export const initialiseTeams = () => {
+  return {
+    [Side.THANOS]: new Team(Side.THANOS),
+    [Side.HEROES]: new Team(Side.HEROES),
+  };
+};
 
 export const nextPlayerAction = (context: GameContext) => ({
   currentPlayer: nextPlayer(context).id,

@@ -3,7 +3,7 @@ import { HeroesAbilities, Side, ThanosAbilities } from "./gameEnums";
 export type IPlayer = {
   id: string;
   name: string;
-  side: Side;
+  choiceOfSide: Side;
   hand?: Deck;
   powerTokens?: number;
   ready?: boolean;

@@ -4,7 +4,7 @@ import {
   chooseSideAction,
   joinGameAction,
   leaveGameAction,
-  setDefaultPlayerAction,
+  initialiseTheGame,
   restartGameAction,
   drawCardAction,
   shuffleDeckAction,
@@ -36,8 +36,8 @@ export const GameModel = createModel(
   {
     players: [] as Players,
     currentPlayer: {} as IPlayer,
-    THANOS: {} as ITeam,
-    HEROES: {} as ITeam,
+    [Side.THANOS]: {} as ITeam,
+    [Side.HEROES]: {} as ITeam,
   },
   {
     events: {
@@ -99,7 +99,7 @@ export const GameMachine = GameModel.createMachine({
         start: {
           cond: canStartGameGuard,
           target: "PLAY",
-          actions: [GameModel.assign(setDefaultPlayerAction)],
+          actions: [GameModel.assign(initialiseTheGame)],
         },
       },
     },

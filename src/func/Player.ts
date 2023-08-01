@@ -28,7 +28,7 @@ export class Player implements IPlayer {
   constructor(
     private _id: string,
     private _name: string,
-    private _choiceOfSide: Side,
+    private _choiceOfSide: Side = Side.HEROES,
     private _hand: Deck = [],
     private _powerTokens: number = 0,
     private _ready: boolean = false,
@@ -90,11 +90,44 @@ export class Player implements IPlayer {
     return this._team.name;
   }
 
+  get choiceOfSide(): Side {
+    return this._choiceOfSide;
+  }
+
+  get name(): string {
+    return this._name;
+  }
+
+  get hand(): Deck {
+    return this._hand;
+  }
+
+  get powerTokens(): number {
+    return this._powerTokens;
+  }
+
+  get team(): Team {
+    if (!this._team) {
+      throw new Error("Player must have a team");
+    }
+    return this._team;
+  }
+
   addCard(card: Card): void {
     this._hand.push(card);
   }
 
   get id(): string {
     return this._id;
+  }
+
+  set Team(team: Team) {
+    if (this._team) {
+      throw new Error("Player already has a team");
+    }
+    this._team = team;
+    if (!this._team.players.find((p: IPlayer) => p.id === this._id)) {
+      this._team.addPlayer(this);
+    }
   }
 }

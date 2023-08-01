@@ -1,4 +1,4 @@
-import { HeroesAbilities, Side } from "../types/gameEnums";
+import { Side } from "../types/gameEnums";
 import { Card } from "../types/gameTypes";
 
 export const Cards: Card[] = [

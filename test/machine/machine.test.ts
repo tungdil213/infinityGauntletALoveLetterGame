@@ -1,10 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest";
 import { interpret, InterpreterFrom } from "xstate";
-import {
-  GameMachine,
-  GameModel,
-  makeGame,
-} from "../../src/machine/GameMachine";
+import { GameMachine, GameModel } from "../../src/machine/GameMachine";
 import { Side } from "../../src/types/gameEnums";
 
 describe("machine/GameMachine", () => {

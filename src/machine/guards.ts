@@ -28,9 +28,10 @@ export const canStartGameGuard: GameGuard<"start"> = (context, event) => {
       undefined &&
     context.players.every((p: IPlayer) => p.ready) &&
     context.players.every((p: IPlayer) => "side" in p) &&
-    context.players.find((p: IPlayer) => p.side === Side.HEROES) !==
+    context.players.find((p: IPlayer) => p.choiceOfSide === Side.HEROES) !==
       undefined &&
-    context.players.find((p: IPlayer) => p.side === Side.THANOS) !== undefined
+    context.players.find((p: IPlayer) => p.choiceOfSide === Side.THANOS) !==
+      undefined
   );
 };
 

@@ -1,4 +1,4 @@
-import { GameStates, Side } from "../types/gameEnums";
+import { Side } from "../types/gameEnums";
 import { GameContext } from "../types/gameStateMachineTypes";
 import { Deck, IPlayer, Players } from "../types/gameTypes";
 import { shuffle } from "../utils/deckUtils";
@@ -21,14 +21,16 @@ export function currentTeam(context: GameContext): Side {
   if (player === undefined) {
     throw new Error("Impossible to recover current player");
   }
-  if (player.side === undefined) {
+  if (player.choiceOfSide === undefined) {
     throw new Error("Impossible to recover current team");
   }
-  return player.side;
+  return player.choiceOfSide;
 }
 
 export function getThanos(context: GameContext): IPlayer {
-  const player = context.players.find((p: IPlayer) => p.side === Side.THANOS);
+  const player = context.players.find(
+    (p: IPlayer) => p.choiceOfSide === Side.THANOS
+  );
   if (player === undefined) {
     throw new Error("Impossible to recover thanos");
   }
@@ -57,7 +59,9 @@ export function nextPlayer(context: GameContext): IPlayer {
 }
 
 export function playersSide(context: GameContext, side: Side): Players {
-  const players = context.players.filter((p: IPlayer) => p.side === side);
+  const players = context.players.filter(
+    (p: IPlayer) => p.choiceOfSide === side
+  );
   if (players.length === 0) {
     throw new Error("Impossible to recover ${side}");
   }
@@ -69,7 +73,7 @@ export function heros(context: GameContext): Players {
   return players;
 }
 
-export function randomPlayerOrder(context: GameContext): Players {
+export function assignPlayerOrderAndTeams(context: GameContext): Players {
   const PlayersWantingToPlayThanos = playersSide(context, Side.THANOS);
 
   const theThanosPlayer: IPlayer =
@@ -77,9 +81,11 @@ export function randomPlayerOrder(context: GameContext): Players {
       Math.floor(Math.random() * PlayersWantingToPlayThanos.length)
     ];
 
+  theThanosPlayer.team = context[Side.THANOS];
+
   const heroPlayers = context.players
     .filter((p: IPlayer) => p.id !== theThanosPlayer.id)
-    .map((p: IPlayer) => ({ ...p, side: Side.HEROES }))
+    .map((p: IPlayer) => ({ ...p, team: context[Side.HEROES] }))
     .sort(() => Math.random() - 0.5);
 
   return [theThanosPlayer, ...heroPlayers];
@@ -91,14 +97,6 @@ export function isPlayerTurn(context: GameContext, playerId: string): boolean {
 
 export function isGameOver(context: GameContext): boolean {
   return context.players.length === 0;
-}
-
-export function setFirstPlayer(context: GameContext): GameContext {
-  return {
-    ...context,
-    players: randomPlayerOrder(context),
-    currentPlayer: getThanos(context),
-  };
 }
 
 export function shuffleDeck(context: GameContext, side: Side): GameContext {
