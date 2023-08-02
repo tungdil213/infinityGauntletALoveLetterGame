@@ -16,7 +16,7 @@ export class Team implements ITeam {
     }
 
     //TODO FIX THIS
-    this._lives = this._name === Side.THANOS ? 12 : 24;
+    this._lives = this._name === "THANOS" ? 12 : 24;
 
     this._deck = Cards.filter((card: Card) => card.side === this._name);
   }
@@ -42,7 +42,7 @@ export class Team implements ITeam {
   }
 
   earnTokens(): number {
-    return this._name === Side.THANOS ? 3 : 1;
+    return this._name === "THANOS" ? 3 : 1;
   }
 
   deckLength(): number {
@@ -73,7 +73,7 @@ export class Team implements ITeam {
     }
     this._players.push(player);
     if (player.teamName !== this._name) {
-      player.Team = this;
+      player.team = this;
     }
   }
 }

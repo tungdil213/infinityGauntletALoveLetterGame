@@ -28,16 +28,16 @@ export const canStartGameGuard: GameGuard<"start"> = (context, event) => {
       undefined &&
     context.players.every((p: IPlayer) => p.ready) &&
     context.players.every((p: IPlayer) => "side" in p) &&
-    context.players.find((p: IPlayer) => p.choiceOfSide === Side.HEROES) !==
+    context.players.find((p: IPlayer) => p.choiceOfSide === "HEROES") !==
       undefined &&
-    context.players.find((p: IPlayer) => p.choiceOfSide === Side.THANOS) !==
+    context.players.find((p: IPlayer) => p.choiceOfSide === "THANOS") !==
       undefined
   );
 };
 
 //TODO : change the any type
 export const canWinnigGuard: GameGuard<any> = (context) => {
-  return context[Side.HEROES].lives < 1 || context[Side.THANOS].lives < 1;
+  return context["HEROES"].lives < 1 || context["THANOS"].lives < 1;
 };
 
 export const canUseAbilityGuard: GameGuard<"startChooseAbility"> = (
@@ -65,7 +65,7 @@ export const deckIsEmptyGuard: GameGuard<any> = (context, event) => {
 export const has6StonesGuard: GameGuard<any> = (context) => {
   const thanosCards: Deck = [
     ...getHandOfThanos(context),
-    ...context[Side.THANOS].deckused,
+    ...context["THANOS"].deckused,
   ];
 
   const numberOfStones = thanosCards.filter(

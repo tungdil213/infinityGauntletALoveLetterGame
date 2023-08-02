@@ -7,7 +7,6 @@ import {
 } from "../func/game";
 import { Player } from "../func/Player";
 import { Team } from "../func/Team";
-import { Side } from "../types/gameEnums";
 import { GameAction, GameContext } from "../types/gameStateMachineTypes";
 
 export const joinGameAction: GameAction<"join"> = (
@@ -59,8 +58,8 @@ export const initialiseTheGame = (context: GameContext) => {
 
 export const initialiseTeams = () => {
   return {
-    [Side.THANOS]: new Team(Side.THANOS),
-    [Side.HEROES]: new Team(Side.HEROES),
+    ["THANOS"]: new Team("THANOS"),
+    ["HEROES"]: new Team("HEROES"),
   };
 };
 

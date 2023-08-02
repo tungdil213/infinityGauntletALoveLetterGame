@@ -6,7 +6,7 @@ export const Cards: Card[] = [
   {
     id: 1,
     name: "card.thanos",
-    side: Side.THANOS,
+    side: "THANOS",
     ability: "CANNOT_BE_PLAYED",
     numberOf: 1,
     power: 7,
@@ -14,7 +14,7 @@ export const Cards: Card[] = [
   {
     id: 2,
     name: "card.mindStone",
-    side: Side.THANOS,
+    side: "THANOS",
     ability: "GUESS_ALL_OPPONENTS_HANDS",
     numberOf: 3,
     stone: true,
@@ -23,7 +23,7 @@ export const Cards: Card[] = [
   {
     id: 3,
     name: "card.soulStone",
-    side: Side.THANOS,
+    side: "THANOS",
     ability: "DEFEAT_3_HIGHER",
     numberOf: 2,
     stone: true,
@@ -32,7 +32,7 @@ export const Cards: Card[] = [
   {
     id: 4,
     name: "card.spaceStone",
-    side: Side.THANOS,
+    side: "THANOS",
     ability: "MAY_FIGHT_2_OPPONENT",
     numberOf: 2,
     stone: true,
@@ -41,7 +41,7 @@ export const Cards: Card[] = [
   {
     id: 5,
     name: "card.powerStone",
-    side: Side.THANOS,
+    side: "THANOS",
     ability: "TAKE_3_POWER_TOKEN",
     numberOf: 2,
     power: 4,
@@ -49,7 +49,7 @@ export const Cards: Card[] = [
   {
     id: 6,
     name: "card.realityStone",
-    side: Side.THANOS,
+    side: "THANOS",
     ability: "DRAW_2_2_CARD_ON_BOTTOM",
     numberOf: 2,
     power: 5,
@@ -57,7 +57,7 @@ export const Cards: Card[] = [
   {
     id: 7,
     name: "card.timeStone",
-    side: Side.THANOS,
+    side: "THANOS",
     ability: "COPY_A_CARD_EFFECT",
     numberOf: 2,
     power: 6,
@@ -65,7 +65,7 @@ export const Cards: Card[] = [
   {
     id: 8,
     name: "card.outrider",
-    side: Side.THANOS,
+    side: "THANOS",
     ability: "GUESS_1_OPPONENTS_HAND",
     numberOf: 2,
     power: 1,
@@ -73,7 +73,7 @@ export const Cards: Card[] = [
   {
     id: 9,
     name: "card.outrider",
-    side: Side.THANOS,
+    side: "THANOS",
     ability: "GUESS_1_OPPONENTS_HAND",
     numberOf: 3,
     power: 1,
@@ -81,7 +81,7 @@ export const Cards: Card[] = [
   {
     id: 10,
     name: "card.corvusGlaive",
-    side: Side.THANOS,
+    side: "THANOS",
     ability: "DEFEAT_3_LOWER",
     numberOf: 2,
     power: 2,
@@ -89,7 +89,7 @@ export const Cards: Card[] = [
   {
     id: 10,
     name: "card.blackDwarf",
-    side: Side.THANOS,
+    side: "THANOS",
     ability: "MAY_FIGHT_1_OPPONENT",
     numberOf: 2,
     power: 3,
@@ -97,7 +97,7 @@ export const Cards: Card[] = [
   {
     id: 11,
     name: "card.proximaMidnight",
-    side: Side.THANOS,
+    side: "THANOS",
     ability: "TAKE_1_POWER_TOKEN",
     numberOf: 2,
     power: 4,
@@ -105,7 +105,7 @@ export const Cards: Card[] = [
   {
     id: 12,
     name: "card.ebonyMaw",
-    side: Side.THANOS,
+    side: "THANOS",
     ability: "DRAW_1_1_CARD_ON_BOTTOM",
     numberOf: 2,
     power: 5,
@@ -115,7 +115,7 @@ export const Cards: Card[] = [
   {
     id: 13,
     name: "card.nebula",
-    side: Side.HEROES,
+    side: "HEROES",
     ability: "GUESS_THANOS_HAND",
     numberOf: 3,
     power: 1,
@@ -123,7 +123,7 @@ export const Cards: Card[] = [
   {
     id: 14,
     name: "card.spiderMan",
-    side: Side.HEROES,
+    side: "HEROES",
     ability: "GUESS_THANOS_HAND",
     numberOf: 3,
     power: 1,
@@ -131,7 +131,7 @@ export const Cards: Card[] = [
   {
     id: 15,
     name: "card.starLord",
-    side: Side.HEROES,
+    side: "HEROES",
     ability: "GUESS_THANOS_HAND",
     numberOf: 3,
     power: 1,
@@ -139,7 +139,7 @@ export const Cards: Card[] = [
   {
     id: 16,
     name: "card.blackWidow",
-    side: Side.HEROES,
+    side: "HEROES",
     ability: "TEAMMATE_SEES_CARD",
     numberOf: 3,
     power: 2,
@@ -147,7 +147,7 @@ export const Cards: Card[] = [
   {
     id: 17,
     name: "card.gamora",
-    side: Side.HEROES,
+    side: "HEROES",
     ability: "TEAMMATE_SEES_CARD",
     numberOf: 3,
     power: 2,
@@ -156,7 +156,7 @@ export const Cards: Card[] = [
     id: 18,
 
     name: "card.antManWasp",
-    side: Side.HEROES,
+    side: "HEROES",
     ability: "TEAMMATE_SEES_CARD",
     numberOf: 3,
     power: 2,
@@ -164,7 +164,7 @@ export const Cards: Card[] = [
   {
     id: 19,
     name: "card.captainAmerica",
-    side: Side.HEROES,
+    side: "HEROES",
     ability: "MAY_FIGHT_THANOS",
     numberOf: 3,
     power: 3,
@@ -172,7 +172,7 @@ export const Cards: Card[] = [
   {
     id: 20,
     name: "card.hulk",
-    side: Side.HEROES,
+    side: "HEROES",
     ability: "MAY_FIGHT_THANOS",
     numberOf: 3,
     power: 3,
@@ -180,7 +180,7 @@ export const Cards: Card[] = [
   {
     id: 21,
     name: "card.thor",
-    side: Side.HEROES,
+    side: "HEROES",
     ability: "MAY_FIGHT_THANOS",
     numberOf: 3,
     power: 3,
@@ -188,7 +188,7 @@ export const Cards: Card[] = [
   {
     id: 22,
     name: "card.blackPanther",
-    side: Side.HEROES,
+    side: "HEROES",
     ability: "GIVE_1_POWER_TOKEN",
     numberOf: 3,
     power: 4,
@@ -196,7 +196,7 @@ export const Cards: Card[] = [
   {
     id: 23,
     name: "card.falcon",
-    side: Side.HEROES,
+    side: "HEROES",
     ability: "GIVE_1_POWER_TOKEN",
     numberOf: 3,
     power: 4,
@@ -204,7 +204,7 @@ export const Cards: Card[] = [
   {
     id: 24,
     name: "card.doctorStrange",
-    side: Side.HEROES,
+    side: "HEROES",
     ability: "GIVE_1_POWER_TOKEN",
     numberOf: 3,
     power: 4,
@@ -212,7 +212,7 @@ export const Cards: Card[] = [
   {
     id: 25,
     name: "card.scarletWitch",
-    side: Side.HEROES,
+    side: "HEROES",
     ability: "REARRANGE_TOP_3_CARDS",
     numberOf: 2,
     power: 5,
@@ -220,7 +220,7 @@ export const Cards: Card[] = [
   {
     id: 26,
     name: "card.vision",
-    side: Side.HEROES,
+    side: "HEROES",
 
     ability: "REARRANGE_TOP_3_CARDS",
     numberOf: 2,
@@ -229,7 +229,7 @@ export const Cards: Card[] = [
   {
     id: 27,
     name: "card.captainMarvel",
-    side: Side.HEROES,
+    side: "HEROES",
     ability: "YOU_OR_TEAMMATE_MAY_FIGHT",
     numberOf: 2,
     power: 6,
@@ -237,7 +237,7 @@ export const Cards: Card[] = [
   {
     id: 28,
     name: "card.ironMan",
-    side: Side.HEROES,
+    side: "HEROES",
     ability: "YOU_OR_TEAMMATE_MAY_FIGHT",
     numberOf: 2,
     power: 6,

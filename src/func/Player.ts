@@ -16,7 +16,7 @@ export class Player implements IPlayer {
    * @param player Player to create
    * @param id Id of the player
    * @param name Name of the player
-   * @param side Side of the player
+   * @param choiceOfSide Select the side to choose
    * @param hand (optional) Hand of the player. Default is an empty array
    * @param powerTokens (optional) Number of power tokens of the player. Default is 0
    * @param ready (optional) If the player is ready. Default is false
@@ -28,7 +28,7 @@ export class Player implements IPlayer {
   constructor(
     private _id: string,
     private _name: string,
-    private _choiceOfSide: Side = Side.HEROES,
+    private _choiceOfSide: Side = "HEROES",
     private _hand: Deck = [],
     private _powerTokens: number = 0,
     private _ready: boolean = false,
@@ -42,8 +42,65 @@ export class Player implements IPlayer {
     }
   }
 
+  // Getters and Setters
+  get id(): string {
+    return this._id;
+  }
+
+  get name(): string {
+    return this._name;
+  }
+
+  get choiceOfSide(): Side {
+    return this._choiceOfSide;
+  }
+
+  set choiceOfSide(side: Side) {
+    this._choiceOfSide = side;
+  }
+
+  get hand(): Deck {
+    return this._hand;
+  }
+
+  get powerTokens(): number {
+    return this._powerTokens;
+  }
+
+  get ready(): boolean {
+    return this._ready;
+  }
+
+  toggleReady(): void {
+    this._ready = !this._ready;
+  }
+
+  get team(): Team {
+    if (!this._team) {
+      throw new Error("Player must have a team");
+    }
+    return this._team;
+  }
+
+  set team(team: Team) {
+    if (this._team) {
+      throw new Error("Player already has a team");
+    }
+    this._team = team;
+    if (!this._team.players.find((p: IPlayer) => p.id === this._id)) {
+      this._team.addPlayer(this);
+    }
+  }
+
+  get teamName(): Side {
+    if (!this._team) {
+      throw new Error("Player must have a team");
+    }
+    return this._team.name;
+  }
+
+  // Methods
   /**
-   *
    * isCurentPlayer
    * Check if the player is the current player
    * @param currentPlayerId Id of the current player
@@ -54,7 +111,6 @@ export class Player implements IPlayer {
   }
 
   /**
-   *
    * addPowerTokens
    * Add power tokens to the player
    * @param numberOfTokens Number of tokens to add. Default is 3 for Thanos and 1 for Heroes
@@ -71,63 +127,7 @@ export class Player implements IPlayer {
     return this._powerTokens;
   }
 
-  get ready(): boolean {
-    return this._ready;
-  }
-
-  toggleReady(): void {
-    this._ready = !this._ready;
-  }
-
-  set choiceOfSide(side: Side) {
-    this._choiceOfSide = side;
-  }
-
-  get teamName(): Side {
-    if (!this._team) {
-      throw new Error("Player must have a team");
-    }
-    return this._team.name;
-  }
-
-  get choiceOfSide(): Side {
-    return this._choiceOfSide;
-  }
-
-  get name(): string {
-    return this._name;
-  }
-
-  get hand(): Deck {
-    return this._hand;
-  }
-
-  get powerTokens(): number {
-    return this._powerTokens;
-  }
-
-  get team(): Team {
-    if (!this._team) {
-      throw new Error("Player must have a team");
-    }
-    return this._team;
-  }
-
   addCard(card: Card): void {
     this._hand.push(card);
-  }
-
-  get id(): string {
-    return this._id;
-  }
-
-  set Team(team: Team) {
-    if (this._team) {
-      throw new Error("Player already has a team");
-    }
-    this._team = team;
-    if (!this._team.players.find((p: IPlayer) => p.id === this._id)) {
-      this._team.addPlayer(this);
-    }
   }
 }

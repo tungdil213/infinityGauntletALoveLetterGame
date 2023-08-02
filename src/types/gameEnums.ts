@@ -1,7 +1,4 @@
-export enum Side {
-  THANOS = "THANOS",
-  HEROES = "HEROES",
-}
+export type Side = "THANOS" | "HEROES";
 
 export type ThanosAbilities =
   | "GUESS_1_OPPONENTS_HAND"

@@ -40,20 +40,20 @@ describe("machine/GameMachine", () => {
       expect(machine.send(GameModel.events.join("2", "2")).changed).toBe(true);
       expect(machine.send(GameModel.events.join("3", "3")).changed).toBe(true);
       expect(
-        machine.send(GameModel.events.chooseSide("1", Side.HEROES)).changed
+        machine.send(GameModel.events.chooseSide("1", "HEROES")).changed
       ).toBe(true);
       expect(
-        machine.send(GameModel.events.chooseSide("1", Side.THANOS)).changed
+        machine.send(GameModel.events.chooseSide("1", "THANOS")).changed
       ).toBe(true);
       expect(
-        machine.send(GameModel.events.chooseSide("2", Side.HEROES)).changed
+        machine.send(GameModel.events.chooseSide("2", "HEROES")).changed
       ).toBe(true);
       expect(
-        machine.send(GameModel.events.chooseSide("3", Side.HEROES)).changed
+        machine.send(GameModel.events.chooseSide("3", "HEROES")).changed
       ).toBe(true);
       expect(machine.send(GameModel.events.join("4", "4")).changed).toBe(true);
       expect(
-        machine.send(GameModel.events.chooseSide("4", Side.THANOS)).changed
+        machine.send(GameModel.events.chooseSide("4", "THANOS")).changed
       ).toBe(true);
     });
   });

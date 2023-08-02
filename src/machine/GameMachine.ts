@@ -36,8 +36,8 @@ export const GameModel = createModel(
   {
     players: [] as Players,
     currentPlayer: {} as IPlayer,
-    [Side.THANOS]: {} as ITeam,
-    [Side.HEROES]: {} as ITeam,
+    ["THANOS"]: {} as ITeam,
+    ["HEROES"]: {} as ITeam,
   },
   {
     events: {
