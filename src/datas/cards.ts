@@ -1,7 +1,6 @@
-import { Side } from "../types/gameEnums";
-import { Card } from "../types/gameTypes";
+import { Cards } from "../types/gameTypes";
 
-export const Cards: Card[] = [
+export const allCards: Cards = [
   // Thanos cards
   {
     id: 1,

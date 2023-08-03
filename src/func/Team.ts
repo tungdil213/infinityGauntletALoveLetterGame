@@ -1,14 +1,14 @@
 import { Side } from "../types/gameEnums";
-import { Card, Deck, IPlayer, ITeam, Players } from "../types/gameTypes";
+import { IPlayer, ITeam, Players } from "../types/gameTypes";
+import { Deck } from "./Deck";
 import { Player } from "./Player";
-import { Cards } from "./cards";
 
 export class Team implements ITeam {
   constructor(
     private _name: Side,
     private _lives: number = 0,
-    private _deckused: Deck = [],
-    private _deck: Deck = [],
+    private _deckused: Deck = {} as Deck,
+    private _deck: Deck = {} as Deck,
     private _players: Players = []
   ) {
     if (!this._name) {
@@ -18,7 +18,8 @@ export class Team implements ITeam {
     //TODO FIX THIS
     this._lives = this._name === "THANOS" ? 12 : 24;
 
-    this._deck = Cards.filter((card: Card) => card.side === this._name);
+    this._deck = new Deck("DECK", this._name);
+    this._deckused = new Deck("DISCARD", this._name);
   }
 
   get name() {
@@ -41,6 +42,14 @@ export class Team implements ITeam {
     return this._players;
   }
 
+  get numberOfStones(): number {
+    if (this.name !== "THANOS") {
+      throw new Error("Team must be THANOS");
+    }
+
+    return this._deckused.numberOfStones + this._players[0].hand.numberOfStones;
+  }
+
   earnTokens(): number {
     return this._name === "THANOS" ? 3 : 1;
   }
@@ -58,13 +67,12 @@ export class Team implements ITeam {
       throw new Error("Deck is empty");
     }
 
-    if (this._players.find((p: IPlayer) => p.id === player.id) === undefined) {
+    if (this._players.find((p) => p.id === player.id) === undefined) {
       throw new Error("Player is not in the team");
     }
 
-    const [oneCard, ...restDeck] = this._deck;
-    player.addCard(oneCard);
-    this._deck = restDeck;
+    const card = this._deck.draw();
+    player.addCard(card);
   }
 
   addPlayer(player: Player): void {
@@ -75,5 +83,10 @@ export class Team implements ITeam {
     if (player.teamName !== this._name) {
       player.team = this;
     }
+  }
+
+  public swapDeckUsedToDeck(): void {
+    this._deck = this._deckused;
+    this._deckused = new Deck("DISCARD", this._name);
   }
 }

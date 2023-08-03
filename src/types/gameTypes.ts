@@ -1,4 +1,7 @@
-import { HeroesAbilities, Side, ThanosAbilities } from "./gameEnums";
+import { Deck } from "../func/Deck";
+import { Player } from "../func/Player";
+import { Team } from "../func/Team";
+import { HeroesAbilities, Side, ThanosAbilities, DeckUsage } from "./gameEnums";
 
 export type IPlayer = {
   id: string;
@@ -10,9 +13,9 @@ export type IPlayer = {
   team: ITeam;
 };
 
-export type Players = IPlayer[];
+export type Players = Player[];
 
-export interface Card {
+export interface ICard {
   id: number;
   name: string;
   ability: ThanosAbilities | HeroesAbilities;
@@ -23,8 +26,13 @@ export interface Card {
   stone?: boolean;
 }
 
-export type Deck = Card[];
+export type Cards = ICard[];
 
+export interface IDeck {
+  cards: Cards;
+  usage: DeckUsage;
+  side: Side;
+}
 export interface ITeam {
   name: string;
   lives: number;
@@ -34,3 +42,5 @@ export interface ITeam {
 }
 
 export const NUMBER_OF_STONES = 6;
+
+export type ITeams = Record<string, Team>;

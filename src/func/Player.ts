@@ -1,5 +1,6 @@
 import { Side } from "../types/gameEnums";
-import { Card, Deck, IPlayer } from "../types/gameTypes";
+import { ICard, IPlayer } from "../types/gameTypes";
+import { Deck } from "./Deck";
 import { Team } from "./Team";
 
 /**
@@ -29,9 +30,9 @@ export class Player implements IPlayer {
     private _id: string,
     private _name: string,
     private _choiceOfSide: Side = "HEROES",
-    private _hand: Deck = [],
     private _powerTokens: number = 0,
     private _ready: boolean = false,
+    private _hand?: Deck,
     private _team?: Team
   ) {
     if (!this._id) {
@@ -60,6 +61,9 @@ export class Player implements IPlayer {
   }
 
   get hand(): Deck {
+    if (!this._hand) {
+      throw new Error("Player must have a hand");
+    }
     return this._hand;
   }
 
@@ -116,7 +120,7 @@ export class Player implements IPlayer {
    * @param numberOfTokens Number of tokens to add. Default is 3 for Thanos and 1 for Heroes
    * @returns The new number of power tokens
    */
-  addPowerTokens(): number {
+  addPowerTokens(): void {
     if (!this._team) {
       throw new Error("Player must have a team");
     }
@@ -124,10 +128,39 @@ export class Player implements IPlayer {
     const tokensToAdd = this._team.earnTokens();
 
     this._powerTokens += tokensToAdd;
-    return this._powerTokens;
   }
 
-  addCard(card: Card): void {
-    this._hand.push(card);
+  /**
+   * removePowerTokens
+   * Remove power tokens to the player
+   * @param numberOfTokens Number of tokens to remove
+   * @returns The new number of power tokens
+   * @throws Error if the player doesn't have enough power tokens
+   */
+  removePowerTokens(): void {
+    if (this._powerTokens < 1) {
+      throw new Error("Player doesn't have enough power tokens");
+    }
+    this._powerTokens -= 1;
+  }
+
+  addCard(card: ICard): void {
+    if (!this._hand) {
+      throw new Error("Player must have a hand");
+    }
+    this._hand.addCards(card);
+  }
+
+  removeCard(card: ICard): void {
+    if (!this._hand) {
+      throw new Error("Player must have a hand");
+    }
+    this._hand.removeCards([card]);
+  }
+
+  initialisePlayer(): void {
+    this._ready = false;
+    this._powerTokens = 0;
+    this._hand = new Deck("HAND", this.team.name);
   }
 }

@@ -1,5 +1,13 @@
 export type Side = "THANOS" | "HEROES";
 
+export type AddTo = "TOP" | "BOTTOM";
+
+export type DeckUsage = "DECK" | "DISCARD" | "HAND";
+
+export const MINUMUM_PLAYERS = 2;
+
+export const MAXIMUM_PLAYERS = 6;
+
 export type ThanosAbilities =
   | "GUESS_1_OPPONENTS_HAND"
   | "GUESS_ALL_OPPONENTS_HANDS"

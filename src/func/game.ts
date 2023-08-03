@@ -1,10 +1,23 @@
 import { Side } from "../types/gameEnums";
 import { GameContext } from "../types/gameStateMachineTypes";
-import { Deck, IPlayer, ITeam, Players } from "../types/gameTypes";
-import { shuffle } from "../utils/deckUtils";
+import { IPlayer, ITeam, Players } from "../types/gameTypes";
+import { Deck } from "./Deck";
+import { Player } from "./Player";
 
 export function winingAction(context: GameContext) {
   return null; // TODO
+}
+
+export function currentTeamName(context: GameContext): Side {
+  if (context.currentPlayer === null) {
+    throw new Error("currentPlayer is null");
+  }
+
+  if (context.currentPlayer.team === null) {
+    throw new Error("currentPlayer has no team");
+  }
+
+  return context.currentPlayer.teamName;
 }
 
 export function currentTeam(context: GameContext): ITeam {
@@ -19,30 +32,16 @@ export function currentTeam(context: GameContext): ITeam {
   return context.currentPlayer.team;
 }
 
-export function getThanos(context: GameContext): IPlayer {
+export function getThanos(context: GameContext): Player {
   if (context.THANOS.players[0] === undefined) {
     throw new Error("Impossible to recover thanos");
   }
   return context.THANOS.players[0];
 }
 
-export function nextPlayer(context: GameContext): IPlayer {
-  const currentPlayer = context.currentPlayer;
-
-  if (currentPlayer === null) {
-    throw new Error("currentPlayer is null");
-  }
-  const currentIndex = context.players.findIndex(
-    (p: IPlayer) => p.id === currentPlayer.id
-  );
-
-  if (currentIndex === -1) {
-    throw new Error("Impossible to recover current player");
-  }
-
-  const nextIndex = (currentIndex + 1) % context.players.length;
-
-  return context.players[nextIndex];
+export function changePlayer(context: GameContext): Player {
+  context.players.moveFirstPlayerToEnd();
+  return context.players.currentPlayer;
 }
 
 export function playersSide(context: GameContext, side: Side): Players {
@@ -54,9 +53,9 @@ export function playersSide(context: GameContext, side: Side): Players {
 }
 
 export function playersChoiseSide(context: GameContext, side: Side): Players {
-  const players = context[side].players;
+  const players = context.players.filter((p) => p.choiceOfSide === side);
   if (players.length === 0) {
-    throw new Error("Impossible to recover ${side}");
+    throw new Error("Impossible to recover the choise ${side}");
   }
   return players;
 }
@@ -67,7 +66,7 @@ export function heros(context: GameContext): Players {
 }
 
 export function assignPlayerOrderAndTeams(context: GameContext): Players {
-  const PlayersWantingToPlayThanos = playersSide(context, "THANOS");
+  const PlayersWantingToPlayThanos = playersChoiseSide(context, "THANOS");
 
   const theThanosPlayer: IPlayer =
     PlayersWantingToPlayThanos[
@@ -77,11 +76,11 @@ export function assignPlayerOrderAndTeams(context: GameContext): Players {
   theThanosPlayer.team = context["THANOS"];
 
   const heroPlayers = context.players
-    .filter((p: IPlayer) => p.id !== theThanosPlayer.id)
+    .allWithoutPlayer(theThanosPlayer.id)
     .map((p: IPlayer) => ({ ...p, team: context["HEROES"] }))
     .sort(() => Math.random() - 0.5);
 
-  return [theThanosPlayer, ...heroPlayers];
+  return [theThanosPlayer, ...heroPlayers] as Players;
 }
 
 export function isPlayerTurn(context: GameContext, playerId: string): boolean {
@@ -92,61 +91,24 @@ export function isGameOver(context: GameContext): boolean {
   return context.players.length === 0;
 }
 
-export function shuffleDeck(context: GameContext, side: Side): GameContext {
+export function swapDeckUsedToDeck(
+  context: GameContext,
+  side: Side
+): GameContext {
   const team = context[side];
-  const [deck, deckUsed] = [shuffle(team.deckused), team.deck];
-  return {
-    ...context,
-    [side]: {
-      ...team,
-      deck,
-      deckUsed,
-    },
-  };
+  team.swapDeckUsedToDeck();
+  return context;
 }
 
-export function getDeckSize(deck: Deck): number {
-  return deck.length;
+export function shuffleDeck(context: GameContext, side: Side): GameContext {
+  context[side].deck.shuffle();
+  return context;
 }
 
 export function getHandOfThanos(context: GameContext): Deck {
-  const thanos = getThanos(context);
-  const thanosHand = thanos?.hand ?? ([] as Deck);
+  const thanosHand = getThanos(context).hand;
   if (thanosHand.length === 0) {
     throw new Error("Impossible to recover thanos hand");
   }
   return thanosHand;
-}
-
-export function updatePlayerList(
-  players: Players,
-  updatedPlayer: IPlayer
-): Players {
-  return players.map((player) => {
-    if (player.id === updatedPlayer.id) {
-      return updatedPlayer; // Remplace l'utilisateur courant par son nouvel état
-    }
-    return player; // Garde les autres joueurs inchangés
-  });
-}
-
-export function drawCard(context: GameContext): GameContext {
-  const side = currentTeam(context);
-  const team = { ...context[side] };
-  const player = context.currentPlayer;
-  const [oneCard, ...restDeck] = team.deck;
-
-  const updatedPlayer = {
-    ...player,
-    hand: [oneCard, ...(player.hand ?? [])],
-  };
-
-  return {
-    ...context,
-    [side]: {
-      ...team,
-      deck: restDeck,
-    },
-    players: updatePlayerList(context.players, updatedPlayer),
-  };
 }
