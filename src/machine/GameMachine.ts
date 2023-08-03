@@ -17,21 +17,24 @@ import {
 import { PlayerList } from "../func/PlayerList";
 import { Player } from "../func/Player";
 import { Team } from "../func/Team";
-import {
-  Side,
-  ThanosAbilities,
-  HeroesAbilities,
-  GameStates,
-} from "../types/gameEnums";
+import { Side, GameStates } from "../types/gameEnums";
 import { GameContext } from "../types/gameStateMachineTypes";
-import { IPlayer } from "../types/gameTypes";
+import { ICard, IPlayer } from "../types/gameTypes";
 import {
   deckIsEmptyGuard,
   canDrawCardGuard,
   has6StonesGuard,
   canUseAbilityGuard,
+  canChangePlayerGuard,
+  has6StonesGuardOrTeamHasNoLife,
 } from "./guards/play";
-import { shuffleDeckAction } from "./actions/play";
+import {
+  changePlayerAction,
+  drawCardAction,
+  playCardAction,
+  restartGameAction,
+  shuffleDeckAction,
+} from "./actions/play";
 
 export const gameID = "infinityGuantlet";
 
@@ -63,13 +66,12 @@ export const GameModel = createModel(
       deckIsEmpty: (playerId: IPlayer["id"]) => ({ playerId }),
       startDraw: (playerId: IPlayer["id"]) => ({ playerId }),
       endDrawCard: (playerId: IPlayer["id"]) => ({ playerId }),
-      startChooseAbility: (
-        playerId: IPlayer["id"],
-        ability: ThanosAbilities | HeroesAbilities
-      ) => ({
+      startChooseAbility: (playerId: IPlayer["id"], card: ICard["id"]) => ({
         playerId,
-        ability,
+        card,
       }),
+
+      endTurn: (playerId: IPlayer["id"]) => ({ playerId }),
 
       // Victory
       restart: (playerId: IPlayer["id"]) => ({ playerId }),
@@ -127,7 +129,7 @@ export const GameMachine = GameModel.createMachine({
               on: {
                 endDrawCard: {
                   cond: canDrawCardGuard,
-                  target: "CHOOSE_ABILITY",
+                  target: "TEST_THANOS_WIN",
                   actions: [GameModel.assign(drawCardAction)],
                 },
               },
@@ -148,7 +150,27 @@ export const GameMachine = GameModel.createMachine({
                 startChooseAbility: {
                   cond: canUseAbilityGuard,
                   target: "CHOOSE_ABILITY",
-                  actions: [GameModel.assign(playCard)],
+                  actions: [GameModel.assign(playCardAction)],
+                },
+              },
+            },
+            TEST_TEAM_WIN: {
+              always: [
+                {
+                  cond: has6StonesGuardOrTeamHasNoLife,
+                  target: `#VICTORY`,
+                },
+                {
+                  target: "END_TURN",
+                },
+              ],
+            },
+            END_TURN: {
+              on: {
+                endTurn: {
+                  cond: canChangePlayerGuard,
+                  target: "DRAW_CARD",
+                  actions: [GameModel.assign(changePlayerAction)],
                 },
               },
             },

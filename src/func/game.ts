@@ -39,11 +39,6 @@ export function getThanos(context: GameContext): Player {
   return context.THANOS.players[0];
 }
 
-export function changePlayer(context: GameContext): Player {
-  context.players.moveFirstPlayerToEnd();
-  return context.players.currentPlayer;
-}
-
 export function playersSide(context: GameContext, side: Side): Players {
   const players = context[side].players;
   if (players.length === 0) {
@@ -111,4 +106,10 @@ export function getHandOfThanos(context: GameContext): Deck {
     throw new Error("Impossible to recover thanos hand");
   }
   return thanosHand;
+}
+
+export function drawCard(context: GameContext): GameContext {
+  const team = context.currentPlayer.team;
+  team.drawCard(context.currentPlayer);
+  return context;
 }

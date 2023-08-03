@@ -1,23 +1,24 @@
-import { changePlayer, currentTeamName, shuffleDeck } from "../../func/game";
-import { GameContext } from "../../types/gameStateMachineTypes";
-
-export const changePlayerAction = (context: GameContext) => ({
-  currentPlayer: changePlayer(context).id,
-});
+import { currentTeamName, drawCard, shuffleDeck } from "../../func/game";
+import { GameAction, GameContext } from "../../types/gameStateMachineTypes";
 
 export const shuffleDeckAction = (context: GameContext) =>
   shuffleDeck(context, currentTeamName(context));
 
-// export const drawCardAction: GameAction<"endDrawCard"> = (
-//   context: GameContext
-// ) => drawCard(context);
+export const drawCardAction: GameAction<"endDrawCard"> = (
+  context: GameContext
+) => drawCard(context);
 
-// export const playCard: GameAction<"startChooseAbility"> = (
-//   context: GameContext
-// ) => ({
-//   // TODO
-// });
+export function changePlayerAction(context: GameContext): GameContext {
+  context.players.moveFirstPlayerToEnd();
+  return context;
+}
 
-// export const restartGameAction: GameAction<"restart"> = (context, event) => ({
-//     // TODO
-//   });
+export const playCardAction: GameAction<"startChooseAbility"> = (
+  context: GameContext
+) => ({
+  // TODO
+});
+
+export const restartGameAction: GameAction<"restart"> = (context, event) => ({
+  // TODO
+});
