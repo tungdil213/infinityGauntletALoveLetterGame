@@ -1,7 +1,7 @@
-import { allCards } from "../datas/cards";
-import { AddTo, DeckUsage, Side } from "../types/gameEnums";
-import { Cards, ICard, IDeck } from "../types/gameTypes";
-import { shuffle } from "../utils/deckUtils";
+import { allCards } from "../../data/cards";
+import { AddTo, DeckUsage, Side } from "../../types/gameEnums";
+import { Cards, ICard, IDeck } from "../../types/gameTypes";
+import { shuffle } from "../../utils/deckUtils";
 
 /**
  * Represents a deck of cards in the game.

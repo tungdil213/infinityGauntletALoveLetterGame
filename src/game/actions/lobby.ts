@@ -1,10 +1,10 @@
 // Imports (grouped for readability)
-import { Player } from "../../func/Player";
-import { PlayerList } from "../../func/PlayerList";
-import { Team } from "../../func/Team";
-import { assignPlayerOrderAndTeams } from "../../func/game";
+import { Player } from "../../game/entities/Player";
+import { PlayerList } from "../../game/entities/PlayerList";
+import { Team } from "../../game/entities/Team";
 import { GameAction, GameContext } from "../../types/gameStateMachineTypes";
 import { ITeams } from "../../types/gameTypes";
+import { assignPlayerOrderAndTeams } from "../game";
 
 /**
  * Join the game action.

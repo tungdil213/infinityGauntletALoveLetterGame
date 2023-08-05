@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { Player } from "../../src/func/Player";
-import { PlayerList } from "../../src/func/PlayerList";
+import { Player } from "../../../src/game/entities/Player";
+import { PlayerList } from "../../../src/game/entities/PlayerList";
 
 describe("PlayerList", () => {
   let playerList: PlayerList;

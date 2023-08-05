@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it } from "vitest";
+import { describe, expect, it } from "vitest";
 import { shuffle } from "../../src/utils/deckUtils";
 
 describe("shuffle", () => {

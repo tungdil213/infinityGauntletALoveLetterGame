@@ -1,5 +1,5 @@
 import { ContextFrom, EventFrom } from "xstate";
-import { GameModel } from "../machine/GameMachine";
+import { GameModel } from "../game/machine/GameMachine";
 
 export type GameContext = ContextFrom<typeof GameModel>;
 export type GameEvents = EventFrom<typeof GameModel>;

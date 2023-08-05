@@ -1,8 +1,8 @@
 import { Side } from "../types/gameEnums";
 import { GameContext } from "../types/gameStateMachineTypes";
 import { IPlayer, ITeam, Players } from "../types/gameTypes";
-import { Deck } from "./Deck";
-import { Player } from "./Player";
+import { Deck } from "./entities/Deck";
+import { Player } from "./entities/Player";
 
 export const winingAction = (context: GameContext) => {
   return null; // TODO

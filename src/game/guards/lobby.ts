@@ -1,5 +1,5 @@
-import { GameGuard } from "../../types/gameStateMachineTypes";
 import { MAXIMUM_PLAYERS, MINIMUM_PLAYERS } from "../../types/gameEnums";
+import { GameGuard } from "../../types/gameStateMachineTypes";
 
 /**
  * Guard: Check if the player can join the game.

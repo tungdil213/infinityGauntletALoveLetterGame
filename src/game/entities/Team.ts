@@ -1,5 +1,5 @@
-import { Side } from "../types/gameEnums";
-import { ITeam, Players } from "../types/gameTypes";
+import { Side } from "../../types/gameEnums";
+import { ITeam, Players } from "../../types/gameTypes";
 import { Deck } from "./Deck";
 import { Player } from "./Player";
 

@@ -1,6 +1,6 @@
-import { currentTeam } from "../../func/game";
-import { GameGuard } from "../../types/gameStateMachineTypes";
-import { NUMBER_OF_STONES } from "../../types/gameTypes";
+import { GameGuard } from "../../../types/gameStateMachineTypes";
+import { NUMBER_OF_STONES } from "../../../types/gameTypes";
+import { currentTeam } from "../../game";
 
 /**
  * Guard: Check if either team has won the game.

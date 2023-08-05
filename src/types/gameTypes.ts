@@ -1,7 +1,7 @@
-import { Deck } from "../func/Deck";
-import { Player } from "../func/Player";
-import { Team } from "../func/Team";
-import { HeroesAbilities, Side, ThanosAbilities, DeckUsage } from "./gameEnums";
+import { Deck } from "../game/entities/Deck";
+import { Player } from "../game/entities/Player";
+import { Team } from "../game/entities/Team";
+import { DeckUsage, HeroesAbilities, Side, ThanosAbilities } from "./gameEnums";
 
 export type IPlayer = {
   id: string;

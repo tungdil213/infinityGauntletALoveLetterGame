@@ -1,14 +1,14 @@
 import { describe, expect, it } from "vitest";
-import { PlayerList } from "../../src/func/PlayerList";
-import { GameContext } from "../../src/types/gameStateMachineTypes";
-import { Player } from "../../src/func/Player";
+import { Player } from "../../../src/game/entities/Player";
+import { PlayerList } from "../../../src/game/entities/PlayerList";
 import {
   canChooseIsReadyGuard,
   canChooseSideGuard,
   canJoinGuard,
   canLeaveGuard,
   canStartGameGuard,
-} from "../../src/machine/guards/lobby";
+} from "../../../src/game/guards/lobby";
+import { GameContext } from "../../../src/types/gameStateMachineTypes";
 
 describe("canJoinGuard", () => {
   it("should allow player to join if there are fewer than maximum players and the player is not already in the game", () => {

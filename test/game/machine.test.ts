@@ -1,7 +1,6 @@
-import { beforeEach, describe, expect, it } from "vitest";
-import { interpret, InterpreterFrom } from "xstate";
-import { GameMachine, GameModel } from "../../src/machine/GameMachine";
-import { Side } from "../../src/types/gameEnums";
+import { beforeEach, describe, it } from "vitest";
+import { InterpreterFrom, interpret } from "xstate";
+import { GameMachine } from "../../src/game/machine/GameMachine";
 
 // describe("machine/GameMachine", () => {
 //   describe("join", () => {

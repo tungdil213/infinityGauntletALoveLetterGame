@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { Deck } from "../../src/func/Deck";
-import { Player } from "../../src/func/Player";
-import { Team } from "../../src/func/Team";
-import { Side } from "../../src/types/gameEnums";
+import { Deck } from "../../../src/game/entities/Deck";
+import { Player } from "../../../src/game/entities/Player";
+import { Team } from "../../../src/game/entities/Team";
+import { Side } from "../../../src/types/gameEnums";
 
 describe("Team", () => {
   let team: Team;

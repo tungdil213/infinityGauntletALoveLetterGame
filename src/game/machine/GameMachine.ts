@@ -2,39 +2,39 @@ import { interpret, InterpreterFrom } from "xstate";
 import { createModel } from "xstate/lib/model";
 import {
   chooseSideAction,
+  initialiseTheGame,
   joinGameAction,
   leaveGameAction,
-  initialiseTheGame,
   setReadyPlayerAction,
-} from "./actions/lobby";
-import {
-  canJoinGuard,
-  canLeaveGuard,
-  canChooseSideGuard,
-  canChooseIsReadyGuard,
-  canStartGameGuard,
-} from "./guards/lobby";
-import { PlayerList } from "../func/PlayerList";
-import { Player } from "../func/Player";
-import { Team } from "../func/Team";
-import { Side, GameStates } from "../types/gameEnums";
-import { GameContext } from "../types/gameStateMachineTypes";
-import { ICard, IPlayer } from "../types/gameTypes";
-import {
-  deckIsEmptyGuard,
-  canDrawCardGuard,
-  has6StonesGuard,
-  canUseAbilityGuard,
-  canChangePlayerGuard,
-  has6StonesGuardOrTeamHasNoLife,
-} from "./guards/play";
+} from "../../game/actions/lobby";
 import {
   changePlayerAction,
   drawCardAction,
   playCardAction,
   restartGameAction,
   shuffleDeckAction,
-} from "./actions/play";
+} from "../../game/actions/play";
+import { GameStates, Side } from "../../types/gameEnums";
+import { GameContext } from "../../types/gameStateMachineTypes";
+import { ICard, IPlayer } from "../../types/gameTypes";
+import { Player } from "../entities/Player";
+import { PlayerList } from "../entities/PlayerList";
+import { Team } from "../entities/Team";
+import {
+  canChooseIsReadyGuard,
+  canChooseSideGuard,
+  canJoinGuard,
+  canLeaveGuard,
+  canStartGameGuard,
+} from "../guards/lobby";
+import {
+  canChangePlayerGuard,
+  canDrawCardGuard,
+  canUseAbilityGuard,
+  deckIsEmptyGuard,
+  has6StonesGuard,
+  has6StonesGuardOrTeamHasNoLife,
+} from "../guards/play";
 
 export const gameID = "infinityGuantlet";
 

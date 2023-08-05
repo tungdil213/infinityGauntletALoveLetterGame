@@ -1,8 +1,8 @@
 import { beforeEach, describe, expect, it } from "vitest";
-import { Deck } from "../../src/func/Deck";
-import { Player } from "../../src/func/Player";
-import { Team } from "../../src/func/Team";
-import { ICard } from "../../src/types/gameTypes";
+import { Deck } from "../../../src/game/entities/Deck";
+import { Player } from "../../../src/game/entities/Player";
+import { Team } from "../../../src/game/entities/Team";
+import { ICard } from "../../../src/types/gameTypes";
 
 describe("Player", () => {
   let player: Player;

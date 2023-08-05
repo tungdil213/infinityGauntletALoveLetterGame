@@ -1,6 +1,6 @@
 // Imports (grouped for readability)
-import { currentTeamName, drawCard, shuffleDeck } from "../../func/game";
 import { GameAction, GameContext } from "../../types/gameStateMachineTypes";
+import { currentTeamName, drawCard, shuffleDeck } from "../game";
 
 /**
  * Shuffle the deck action.
