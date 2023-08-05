@@ -91,7 +91,7 @@ export class PlayerList {
         .length === 1 &&
       this._players.filter((player: Player) => player.choiceOfSide === "HEROES")
         .length ===
-        this._players.length - 1
+        this.length - 1
     );
   }
 
@@ -129,6 +129,9 @@ export class PlayerList {
    * playerList.addPlayer(new Player("3", "Player 3"));
    */
   public addPlayer(player: Player): void {
+    if (this._players.find((p: Player) => p.id === player.id)) {
+      throw new Error(`Player with ID ${player.id} already exists.`);
+    }
     this._players.push(player);
   }
 

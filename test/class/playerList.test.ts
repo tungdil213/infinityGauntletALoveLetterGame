@@ -127,4 +127,81 @@ describe("PlayerList", () => {
     thanos2.choiceOfSide = "HEROES";
     expect(playerList.onceAsThanosAndRestAsHeroes).toBe(true);
   });
+
+  it("should map the players to a new array", () => {
+    const player1 = new Player("1", "Player 1");
+    const player2 = new Player("2", "Player 2");
+    playerList.addPlayer(player1);
+    playerList.addPlayer(player2);
+
+    const mappedPlayers = playerList.map((player) => player.name);
+
+    expect(mappedPlayers).toEqual(["Player 1", "Player 2"]);
+  });
+
+  it("should filter the players based on a predicate function", () => {
+    const player1 = new Player("1", "Player 1", "HEROES");
+    const player2 = new Player("2", "Player 2", "THANOS");
+    playerList.addPlayer(player1);
+    playerList.addPlayer(player2);
+
+    const heroes = playerList.filter(
+      (player) => player.choiceOfSide === "HEROES"
+    );
+    expect(heroes).toEqual([player1]);
+
+    const thanos = playerList.filter(
+      (player) => player.choiceOfSide === "THANOS"
+    );
+    expect(thanos).toEqual([player2]);
+  });
+
+  it("should get the current player", () => {
+    const player1 = new Player("1", "Player 1");
+    const player2 = new Player("2", "Player 2");
+    playerList.addPlayer(player1);
+    playerList.addPlayer(player2);
+
+    expect(playerList.currentPlayer).toBe(player1);
+
+    playerList.moveFirstPlayerToEnd();
+    expect(playerList.currentPlayer).toBe(player2);
+
+    playerList.moveFirstPlayerToEnd();
+    expect(playerList.currentPlayer).toBe(player1);
+  });
+
+  // ... Vos autres tests ...
+
+  it("should get all players without the specified player", () => {
+    const player1 = new Player("1", "Player 1");
+    const player2 = new Player("2", "Player 2");
+    const player3 = new Player("3", "Player 3");
+    playerList.addPlayer(player1);
+    playerList.addPlayer(player2);
+    playerList.addPlayer(player3);
+
+    const allPlayersWithoutPlayer1 = playerList.allWithoutPlayer("1");
+    expect(allPlayersWithoutPlayer1).toEqual([player2, player3]);
+
+    const allPlayersWithoutPlayer2 = playerList.allWithoutPlayer("2");
+    expect(allPlayersWithoutPlayer2).toEqual([player1, player3]);
+
+    const allPlayersWithoutPlayer3 = playerList.allWithoutPlayer("3");
+    expect(allPlayersWithoutPlayer3).toEqual([player1, player2]);
+  });
+
+  it("should not add a player with duplicate ID", () => {
+    const player1 = new Player("1", "Player 1");
+    const player2 = new Player("1", "Player 2");
+
+    playerList.addPlayer(player1);
+    expect(playerList.length).toBe(1);
+
+    // Adding a player with the same ID should throw an error
+    expect(() => playerList.addPlayer(player2)).toThrow(
+      "Player with ID 1 already exists."
+    );
+    expect(playerList.length).toBe(1);
+  });
 });

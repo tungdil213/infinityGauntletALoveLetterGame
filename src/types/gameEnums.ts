@@ -4,7 +4,7 @@ export type AddTo = "TOP" | "BOTTOM";
 
 export type DeckUsage = "DECK" | "DISCARD" | "HAND";
 
-export const MINUMUM_PLAYERS = 2;
+export const MINIMUM_PLAYERS = 2;
 
 export const MAXIMUM_PLAYERS = 6;
 

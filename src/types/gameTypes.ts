@@ -36,7 +36,7 @@ export interface IDeck {
 export interface ITeam {
   name: string;
   lives: number;
-  deckused: Deck;
+  discard: Deck;
   deck: Deck;
   players: Players;
 }

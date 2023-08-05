@@ -4,11 +4,11 @@ import { IPlayer, ITeam, Players } from "../types/gameTypes";
 import { Deck } from "./Deck";
 import { Player } from "./Player";
 
-export function winingAction(context: GameContext) {
+export const winingAction = (context: GameContext) => {
   return null; // TODO
-}
+};
 
-export function currentTeamName(context: GameContext): Side {
+export const currentTeamName = (context: GameContext): Side => {
   if (context.currentPlayer === null) {
     throw new Error("currentPlayer is null");
   }
@@ -18,9 +18,9 @@ export function currentTeamName(context: GameContext): Side {
   }
 
   return context.currentPlayer.teamName;
-}
+};
 
-export function currentTeam(context: GameContext): ITeam {
+export const currentTeam = (context: GameContext): ITeam => {
   if (context.currentPlayer === null) {
     throw new Error("currentPlayer is null");
   }
@@ -30,37 +30,40 @@ export function currentTeam(context: GameContext): ITeam {
   }
 
   return context.currentPlayer.team;
-}
+};
 
-export function getThanos(context: GameContext): Player {
+export const getThanos = (context: GameContext): Player => {
   if (context.THANOS.players[0] === undefined) {
     throw new Error("Impossible to recover thanos");
   }
   return context.THANOS.players[0];
-}
+};
 
-export function playersSide(context: GameContext, side: Side): Players {
+export const playersSide = (context: GameContext, side: Side): Players => {
   const players = context[side].players;
   if (players.length === 0) {
     throw new Error("Impossible to recover ${side}");
   }
   return players;
-}
+};
 
-export function playersChoiseSide(context: GameContext, side: Side): Players {
+export const playersChoiseSide = (
+  context: GameContext,
+  side: Side
+): Players => {
   const players = context.players.filter((p) => p.choiceOfSide === side);
   if (players.length === 0) {
     throw new Error("Impossible to recover the choise ${side}");
   }
   return players;
-}
+};
 
-export function heros(context: GameContext): Players {
+export const heros = (context: GameContext): Players => {
   const players = playersSide(context, "HEROES");
   return players;
-}
+};
 
-export function assignPlayerOrderAndTeams(context: GameContext): Players {
+export const assignPlayerOrderAndTeams = (context: GameContext): Players => {
   const PlayersWantingToPlayThanos = playersChoiseSide(context, "THANOS");
 
   const theThanosPlayer: IPlayer =
@@ -76,40 +79,49 @@ export function assignPlayerOrderAndTeams(context: GameContext): Players {
     .sort(() => Math.random() - 0.5);
 
   return [theThanosPlayer, ...heroPlayers] as Players;
-}
+};
 
-export function isPlayerTurn(context: GameContext, playerId: string): boolean {
+export const isPlayerTurn = (
+  context: GameContext,
+  playerId: string
+): boolean => {
   return context.currentPlayer.id === playerId;
-}
+};
 
-export function isGameOver(context: GameContext): boolean {
+export const isGameOver = (context: GameContext): boolean => {
   return context.players.length === 0;
-}
+};
 
-export function swapDeckUsedToDeck(
+export const swapAndShuffleDiscardToDeck = (
   context: GameContext,
   side: Side
-): GameContext {
+): GameContext => {
   const team = context[side];
-  team.swapDeckUsedToDeck();
+  team.swapDiscardToDeck();
   return context;
-}
+};
 
-export function shuffleDeck(context: GameContext, side: Side): GameContext {
+export const shuffleDeck = (context: GameContext, side: Side): GameContext => {
   context[side].deck.shuffle();
   return context;
-}
+};
 
-export function getHandOfThanos(context: GameContext): Deck {
+export const getHandOfThanos = (context: GameContext): Deck => {
   const thanosHand = getThanos(context).hand;
   if (thanosHand.length === 0) {
     throw new Error("Impossible to recover thanos hand");
   }
   return thanosHand;
-}
+};
 
-export function drawCard(context: GameContext): GameContext {
-  const team = context.currentPlayer.team;
-  team.drawCard(context.currentPlayer);
+export const drawCard = (
+  context: GameContext,
+  player: Player = context.currentPlayer
+): GameContext => {
+  if (player.team === null) {
+    throw new Error("Impossible to draw card for a player without team");
+  }
+  const team = player.team;
+  team.drawCard(player);
   return context;
-}
+};

@@ -1,69 +1,201 @@
-// import { beforeEach, describe, expect, it } from "vitest";
-// import { Player } from "../../src/func/Player";
-// import { Team } from "../../src/func/Team";
+import { beforeEach, describe, expect, it } from "vitest";
+import { Deck } from "../../src/func/Deck";
+import { Player } from "../../src/func/Player";
+import { Team } from "../../src/func/Team";
+import { ICard } from "../../src/types/gameTypes";
 
-// describe('Player', () => {
-//   let player: Player;
-//   let team: Team;
+describe("Player", () => {
+  let player: Player;
+  const playerId = "1";
+  const playerName = "John Doe";
+  const playerSide = "HEROES";
 
-//   beforeEach(() => {
-//     player = new Player('player1', 'John Doe', "HEROES");
-//     team = new Team("HEROES");
-//   });
+  beforeEach(() => {
+    player = new Player(playerId, playerName, playerSide);
+  });
 
-//   it('should create a player with the specified id, name, and side', () => {
-//     expect(player.id).toBe('player1');
-//     expect(player.name).toBe('John Doe');
-//     expect(player.choiceOfSide).toBe("HEROES");
-//   });
+  it("should create a player with the provided properties", () => {
+    expect(player.id).toBe(playerId);
+    expect(player.name).toBe(playerName);
+    expect(player.choiceOfSide).toBe(playerSide);
+    expect(player.powerTokens).toBe(0);
+    expect(player.ready).toBe(false);
+    expect(() => player.hand).toThrow("Player must have a hand");
+    expect(() => player.team).toThrow("Player must have a team");
+  });
 
-//   it('should have a default empty hand and 0 power tokens', () => {
-//     expect(player.hand).toHaveLength(0);
-//     expect(player.powerTokens).toBe(0);
-//   });
+  it("should throw an error when created without an id", () => {
+    expect(() => new Player("", "John Doe", "HEROES")).toThrow(
+      "Player must have an id"
+    );
+  });
 
-//   it('should not be ready by default', () => {
-//     expect(player.ready).toBe(false);
-//   });
+  it("should throw an error when created without a name", () => {
+    expect(() => new Player("1", "", "HEROES")).toThrow(
+      "Player must have a name"
+    );
+  });
 
-//   it('should be able to toggle ready state', () => {
-//     player.toggleReady();
-//     expect(player.ready).toBe(true);
-//     player.toggleReady();
-//     expect(player.ready).toBe(false);
-//   });
+  it("should toggle player readiness", () => {
+    expect(player.ready).toBe(false);
+    player.toggleReady();
+    expect(player.ready).toBe(true);
+    player.toggleReady();
+    expect(player.ready).toBe(false);
+  });
 
-//   it('should be able to set a team', () => {
-//     player.team = team;
-//     expect(player.team).toBe(team);
-//     expect(player.teamName).toBe("HEROES");
-//   });
+  it("should set and get the player team", () => {
+    const teamName = "THANOS";
+    const team = new Team(teamName);
+    player.team = team;
 
-//   it('should throw an error when trying to set team for a player already in a team', () => {
-//     player.team = team;
-//     const anotherTeam = new Team("THANOS");
-//     expect(() => {
-//       player.team = anotherTeam;
-//     }).toThrowError('Player already has a team');
-//   });
+    expect(player.team).toBe(team);
+    expect(player.teamName).toBe(teamName);
+  });
 
-//   it('should throw an error when trying to get team name for a player without a team', () => {
-//     expect(() => {
-//       const teamName = player.teamName;
-//     }).toThrowError('Player must have a team');
-//   });
+  it("should throw an error when trying to set team when player already has a team", () => {
+    const team1 = new Team("THANOS");
+    const team2 = new Team("HEROES");
+    player.team = team1;
 
-//   it('should add power tokens based on the team earnTokens method', () => {
-//     player.team = team;
-//     expect(player.addPowerTokens()).toBe(1);
-//     team = new Team("THANOS");
-//     player.team = team;
-//     expect(player.addPowerTokens()).toBe(3);
-//   });
+    expect(() => (player.team = team2)).toThrow("Player already has a team");
+  });
 
-//   it('should add a card to the player hand', () => {
-//     const card = /* create a card object */;
-//     player.addCard(card);
-//     expect(player.hand).toContain(card);
-//   });
-// });
+  it("should add power tokens to the player - THANOS SIDE", () => {
+    const teamName = "THANOS";
+    const team = new Team(teamName);
+    player.team = team;
+
+    player.addPowerTokens();
+    expect(player.powerTokens).toBe(3);
+
+    player.addPowerTokens();
+    expect(player.powerTokens).toBe(6);
+  });
+
+  it("should remove power tokens from the player - HEROES SIDE", () => {
+    const teamName = "HEROES";
+    const team = new Team(teamName);
+    player.team = team;
+
+    player.addPowerTokens();
+    expect(player.powerTokens).toBe(1);
+
+    player.addPowerTokens();
+    expect(player.powerTokens).toBe(2);
+
+    player.removePowerTokens();
+    expect(player.powerTokens).toBe(1);
+
+    player.removePowerTokens();
+    expect(player.powerTokens).toBe(0);
+  });
+
+  it("should throw an error when trying to remove power tokens from a player with 0 tokens", () => {
+    expect(() => player.removePowerTokens()).toThrow(
+      "Player doesn't have enough power tokens"
+    );
+  });
+
+  it("should add a card to the player hand", () => {
+    const card: ICard = {
+      id: 1,
+      name: "Card 1",
+      ability: "MAY_FIGHT_THANOS",
+      side: playerSide, // Corrected to use player's side
+      power: 3,
+      numberOf: 1,
+    };
+    const deck = new Deck("HAND", playerSide); // Corrected to use player's side
+    player["_hand"] = deck;
+
+    player.addCard(card);
+
+    expect(player.hand.cards).toContain(card);
+  });
+
+  it("should throw an error when trying to add a card to a player without a hand", () => {
+    const card: ICard = {
+      id: 1,
+      name: "Card 1",
+      ability: "MAY_FIGHT_THANOS",
+      side: "HEROES",
+      power: 3,
+      numberOf: 1,
+    };
+    player["_hand"] = undefined;
+
+    expect(() => player.addCard(card)).toThrow("Player must have a hand");
+  });
+
+  it("should remove a card from the player hand", () => {
+    const card1: ICard = {
+      id: 1,
+      name: "Card 1",
+      ability: "MAY_FIGHT_THANOS",
+      side: "HEROES",
+      power: 3,
+      numberOf: 1,
+    };
+    const card2: ICard = {
+      id: 2,
+      name: "Card 2",
+      ability: "TEAMMATE_SEES_CARD",
+      side: "HEROES",
+      power: 2,
+      numberOf: 2,
+    };
+    const deck = new Deck("HAND", "HEROES", [card1, card2]);
+    player["_hand"] = deck;
+
+    player.removeCard(card1);
+
+    expect(player.hand.cards).not.toContain(card1);
+    expect(player.hand.cards).toContain(card2);
+  });
+
+  it("should throw an error when trying to remove a card from a player without a hand", () => {
+    const card: ICard = {
+      id: 1,
+      name: "Card 1",
+      ability: "MAY_FIGHT_THANOS",
+      side: "HEROES",
+      power: 3,
+      numberOf: 1,
+    };
+    player["_hand"] = undefined;
+
+    expect(() => player.removeCard(card)).toThrow("Player must have a hand");
+  });
+
+  it("should check if the player is the current player", () => {
+    const currentPlayerId = "1";
+    expect(player.isCurentPlayer(currentPlayerId)).toBe(true);
+
+    const anotherPlayerId = "2";
+    expect(player.isCurentPlayer(anotherPlayerId)).toBe(false);
+  });
+
+  it("should reset player attributes", () => {
+    player.toggleReady();
+    player.choiceOfSide = "THANOS";
+    player.team = new Team("THANOS");
+    player.addPowerTokens();
+    player["_hand"] = new Deck("HAND", "HEROES");
+    player.addCard({
+      id: 1,
+      name: "Card 1",
+      ability: "MAY_FIGHT_THANOS",
+      side: "HEROES",
+      power: 3,
+      numberOf: 1,
+    });
+
+    player.initialisePlayer();
+
+    expect(player.ready).toBe(false);
+    expect(player.powerTokens).toBe(0);
+    expect(player.choiceOfSide).toBe("HEROES");
+    expect(player.hand.cards.length).toBe(0);
+  });
+});
