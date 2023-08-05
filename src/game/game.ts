@@ -46,7 +46,7 @@ export const getThanos = (context: GameContext): Player => {
 export const playersSide = (context: GameContext, side: Side): Players => {
   const players = context[side].players;
   if (players.length === 0) {
-    throw new Error("Impossible to recover ${side}");
+    throw new Error(`Impossible to recover ${side}`);
   }
   return players;
 };
@@ -57,7 +57,7 @@ export const playersChoiseSide = (
 ): Players => {
   const players = context.players.filter((p) => p.choiceOfSide === side);
   if (players.length === 0) {
-    throw new Error("Impossible to recover the choise ${side}");
+    throw new Error(`Impossible to recover the choise ${side}`);
   }
   return players;
 };
@@ -79,7 +79,10 @@ export const assignPlayerOrderAndTeams = (context: GameContext): Players => {
 
   const heroPlayers = context.players
     .allWithoutPlayer(theThanosPlayer.id)
-    .map((p: IPlayer) => ({ ...p, team: context["HEROES"] }))
+    .map((p: IPlayer) => {
+      p.team = context["HEROES"];
+      return p;
+    })
     .sort(() => Math.random() - 0.5);
 
   return [theThanosPlayer, ...heroPlayers] as Players;
