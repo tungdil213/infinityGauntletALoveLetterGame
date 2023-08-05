@@ -17,6 +17,10 @@ export const currentTeamName = (context: GameContext): Side => {
     throw new Error("currentPlayer has no team");
   }
 
+  if (context.currentPlayer.teamName === undefined) {
+    throw new Error("currentPlayer has no team");
+  }
+
   return context.currentPlayer.teamName;
 };
 

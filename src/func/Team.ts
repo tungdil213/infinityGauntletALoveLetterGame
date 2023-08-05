@@ -178,7 +178,7 @@ export class Team implements ITeam {
     }
 
     this._players.push(player);
-    if (player?.teamName !== this._name) {
+    if (player.teamName !== this._name) {
       player.team = this;
     }
   }
