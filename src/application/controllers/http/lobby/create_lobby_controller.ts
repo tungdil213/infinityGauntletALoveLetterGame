@@ -6,9 +6,14 @@ import { HttpContext } from '@adonisjs/core/http'
 export default class CreateLobbyController {
   constructor(private createNewLobbyUseCase: CreateNewLobbyUseCase) {}
 
-  async handle({ request, response }: HttpContext) {
-    const { playerID } = request.only(['playerID'])
-    const lobby = await this.createNewLobbyUseCase.handle(playerID)
-    return response.created({ lobby })
+  async handle({ response, auth }: HttpContext) {
+    const playerID = auth.user?.id
+
+    if (!playerID) {
+      return response.unauthorized({ message: 'Unauthorized' })
+    }
+
+    const lobby = await this.createNewLobbyUseCase.handle(playerID.toString())
+    return response.redirect().toRoute('lobby.show', { lobbyId: lobby.id })
   }
 }

@@ -6,7 +6,7 @@ import { HttpContext } from '@adonisjs/core/http'
 export default class LeaveLobbyController {
   constructor(private leaveExistingLobbyUseCase: LeaveExistingLobbyUseCase) {}
 
-  async leave({ request, response }: HttpContext) {
+  async handle({ request, response }: HttpContext) {
     const { lobbyId, playerID } = request.only(['lobbyId', 'playerID'])
     await this.leaveExistingLobbyUseCase.handle(lobbyId, playerID)
     return response.noContent()

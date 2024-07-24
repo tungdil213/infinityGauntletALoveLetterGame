@@ -26,7 +26,7 @@ router.post('/reset-password/:email', [ResetPasswordController]).as('auth.reset-
 router.get('/forgot-password', [ForgotPasswordController, 'show']).as('auth.forgot-password.show')
 router.post('/forgot-password', [ForgotPasswordController]).as('auth.forgot-password')
 
-router.post('logout', [LogoutController]).as('auth.logout').use(middleware.auth())
+router.post('/logout', [LogoutController]).as('auth.logout').use(middleware.auth())
 
 /**
  * Legal information
