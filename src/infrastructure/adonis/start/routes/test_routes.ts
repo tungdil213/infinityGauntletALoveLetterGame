@@ -1,8 +1,8 @@
-const TestCompleteController = () => import('#app/controllers/http/test/test_complete_controller')
+const TestCompleteController = () => import('#app/http/test/test_complete_controller')
+const CreateLobbyController = () => import('#app/http/lobby/controllers/create_lobby_controller')
+const ShowMeUserController = () => import('#app/http/user/show_me_user_controller')
 import router from '@adonisjs/core/services/router'
 import { middleware } from '../kernel.js'
-const CreateLobbyController = () => import('#app/controllers/http/lobby/create_lobby_controller')
-const ShowMeUserController = () => import('#app/controllers/http/user/show_me_user_controller')
 
 router
   .group(() => {

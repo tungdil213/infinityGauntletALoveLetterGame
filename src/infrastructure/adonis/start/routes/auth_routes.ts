@@ -1,16 +1,13 @@
-const LogoutController = () => import('#app/controllers/auth/logout/logout_controller')
+const EmailVerificationsController = () => import('#app/email/email_verifications_controller')
+const ForgotPasswordController = () =>
+  import('#app/http/auth/controllers/forgot_password_controller')
+const LoginController = () => import('#app/http/auth/controllers/login_controller')
+const RegisterController = () => import('#app/http/auth/controllers/register_controller')
+const ResetPasswordController = () => import('#app/http/auth/controllers/reset_password_controller')
+const LogoutController = () => import('#app/http/auth/controllers/logout_controller')
 import { middleware } from '#start/kernel'
 import { HttpContext } from '@adonisjs/core/http'
 import router from '@adonisjs/core/services/router'
-
-const ForgotPasswordController = () =>
-  import('#app/controllers/auth/forgotPassword/forgot_password_controller')
-const LoginController = () => import('#app/controllers/auth/login/login_controller')
-const RegisterController = () => import('#app/controllers/auth/register/register_controller')
-const EmailVerificationsController = () =>
-  import('#app/controllers/email/email_verifications_controller')
-const ResetPasswordController = () =>
-  import('#app/controllers/http/auth/resetPassword/reset_password_controller')
 
 /**
  * Authentication

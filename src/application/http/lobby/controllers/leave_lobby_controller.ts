@@ -1,4 +1,4 @@
-import LeaveExistingLobbyUseCase from '#app/useCases/manage_lobby/leave_existing_lobby_use_case'
+import LeaveExistingLobbyUseCase from '#app/http/lobby/services/leave_existing_lobby_use_case'
 import { inject } from '@adonisjs/core'
 import { HttpContext } from '@adonisjs/core/http'
 

@@ -1,10 +1,8 @@
-import ShowLobbyController from '#app/controllers/http/lobby/show_lobby_controller'
+import ShowLobbyController from '#app/http/lobby/controllers/show_lobby_controller'
 import type { InferPageProps } from '@adonisjs/inertia/types'
 import { Head } from '@inertiajs/react'
 
 export default function Home(props: Readonly<InferPageProps<ShowLobbyController, 'handle'>>) {
-  console.log(props)
-
   return (
     <>
       <Head title="Show Lobby" />

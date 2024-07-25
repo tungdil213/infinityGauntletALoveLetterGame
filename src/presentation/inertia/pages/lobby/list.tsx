@@ -1,10 +1,8 @@
-import ListLobbiesController from '#app/controllers/http/lobby/list_lobbies_controller'
+import ListLobbiesController from '#app/http/lobby/controllers/list_lobbies_controller'
 import type { InferPageProps } from '@adonisjs/inertia/types'
 import { Head } from '@inertiajs/react'
 
 export default function Home(props: Readonly<InferPageProps<ListLobbiesController, 'handle'>>) {
-  console.log(props)
-
   return (
     <>
       <Head title="List Lobby" />

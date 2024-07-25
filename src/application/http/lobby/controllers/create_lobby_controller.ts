@@ -1,4 +1,4 @@
-import CreateNewLobbyUseCase from '#app/useCases/manage_lobby/create_new_lobby_use_case'
+import CreateNewLobbyUseCase from '#app/http/lobby/services/create_new_lobby_use_case'
 import { inject } from '@adonisjs/core'
 import { HttpContext } from '@adonisjs/core/http'
 

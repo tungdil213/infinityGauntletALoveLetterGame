@@ -1,4 +1,4 @@
-import ListExistingLobbiesUseCase from '#app/useCases/manage_lobby/list_existing_lobbies_use_case'
+import ListExistingLobbiesUseCase from '#app/http/lobby/services/list_existing_lobbies_use_case'
 import { inject } from '@adonisjs/core'
 import { HttpContext } from '@adonisjs/core/http'
 
@@ -8,7 +8,7 @@ export default class ListLobbiesController {
 
   async handle({ inertia }: HttpContext) {
     const lobbies = await this.listExistingLobbiesUseCase.handle()
-    console.log(lobbies)
+    console.log('IICI ET LEA', await this.listExistingLobbiesUseCase.handle())
     return inertia.render('lobby/list', { lobbies: lobbies })
   }
 }

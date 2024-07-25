@@ -1,6 +1,8 @@
+import ShowBackofficeController from '#app/http/backoffice/controllers/show_backoffice_controller'
+import { InferPageProps } from '@adonisjs/inertia/types'
 import { Head, router } from '@inertiajs/react'
 
-export default function Home(props: Readonly<{ version: number }>) {
+export default function index(props: Readonly<InferPageProps<ShowBackofficeController, 'handle'>>) {
   function onSubmit(e: React.FormEvent<EventTarget>) {
     e.preventDefault()
     router.post('/logout')
@@ -9,10 +11,10 @@ export default function Home(props: Readonly<{ version: number }>) {
   return (
     <>
       <Head title="BackOffice" />
-
-      <button className="btn btn-primary" onClick={onSubmit}>
-        Logout
-      </button>
+      <div className="container">
+        <p>User: {JSON.stringify(props.user)}</p>
+        <button onClick={onSubmit}>Logout</button>
+      </div>
     </>
   )
 }

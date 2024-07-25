@@ -1,5 +1,5 @@
 import LobbyRepository from '#domain/gameHub/lobby/repositories/lobby_repository'
-import { InMemoryLobbyRepository } from '#infrastructure/persistence/in_memory_lobby_repository'
+import { InMemoryLobbyRepository } from '#infrastructure/repositories/in_memory_lobby_repository'
 import type { ApplicationService } from '@adonisjs/core/types'
 
 export default class LobbyProvider {

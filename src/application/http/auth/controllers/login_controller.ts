@@ -1,21 +1,22 @@
-import AuthSocialService from '#app/services/auth_social_service'
 import { loginValidator } from '#infrastructure/http/validators/auth/sign_in_validator'
-import { inject } from '@adonisjs/core'
+import User from '#models/user'
 import type { HttpContext } from '@adonisjs/core/http'
 
-@inject()
 export default class LoginController {
-  constructor(private authService: AuthSocialService) {}
-
   async show({ inertia }: HttpContext) {
     return inertia.render('auth/login')
   }
 
   async handle({ auth, request, response, session }: HttpContext) {
+    let forward: string = '/dashboard'
     const { email, password, action } = await request.validateUsing(loginValidator)
-    await this.authService.verifyAndLogin(email, password, auth)
 
-    let forward: string = '/home'
+    const user = await User.verifyCredentials(email, password)
+    await auth.use('web').login(user)
+
+    /**
+     * Check if the user need to be redirected to the confirmation
+     */
     if (action === 'email_verification') {
       forward = session.get(action)
     }

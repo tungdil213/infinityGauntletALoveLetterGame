@@ -1,12 +1,10 @@
 const ShowDashboardController = () =>
   import('#app/http/dashboard/controllers/show_dashboard_controller')
-const ShowBackofficeController = () =>
-  import('#app/http/backoffice/controllers/show_backoffice_controller')
 import router from '@adonisjs/core/services/router'
 import { middleware } from '../kernel.js'
 
 router
   .group(() => {
-    router.get('/', [ShowBackofficeController]).as('dashboard.index').use(middleware.auth())
+    router.get('/', [ShowDashboardController]).as('backoffice.index').use(middleware.auth())
   })
-  .prefix('/backoffice')
+  .prefix('/dashboard')

@@ -35,7 +35,5 @@ export default class VerifyAccountNotification extends BaseMail {
       appName: env.get('VITE_APP_NAME'),
       lastName: this.user.lastName,
     })
-
-    console.log({ userObject })
   }
 }

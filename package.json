@@ -85,8 +85,8 @@
   },
   "hotHook": {
     "boundaries": [
-      "./app/controllers/**/*.ts",
-      "./app/middleware/*.ts"
+      "./src/**/controllers/**/*.ts",
+      "./src/**/middleware/*.ts"
     ]
   },
   "eslintConfig": {

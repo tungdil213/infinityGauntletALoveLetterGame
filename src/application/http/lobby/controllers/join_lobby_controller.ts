@@ -1,5 +1,5 @@
-import GetExistingLobbyUseCase from '#app/useCases/manage_lobby/get_existing_lobby_use_case'
-import JoinExistingLobbyUseCase from '#app/useCases/manage_lobby/join_existing_lobby_use_case'
+import GetExistingLobbyUseCase from '#app/http/lobby/services/get_existing_lobby_use_case'
+import JoinExistingLobbyUseCase from '#app/http/lobby/services/join_existing_lobby_use_case'
 import { inject } from '@adonisjs/core'
 import { HttpContext } from '@adonisjs/core/http'
 

@@ -1,4 +1,4 @@
-import { AuthContract } from '#app/types/auth_contract'
+import { AuthContract } from '#app/http/auth/types/auth_contract'
 import User from '#infrastructure/database/models/user'
 import { inject } from '@adonisjs/core'
 import { HttpContext } from '@adonisjs/core/http'
