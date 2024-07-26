@@ -21,12 +21,9 @@ export class InMemoryLobbyRepository implements LobbyRepository {
   }
 
   async findAll(): Promise<LobbyInterface[]> {
-    console.log('IICI ET LEA', this.lobbies.size)
     if (this.lobbies.size === 0) {
       throw new errors.E_HTTP_EXCEPTION('No lobbies found')
     }
-
-    console.log('IICI ET LEA2', [...this.lobbies.values()])
 
     return [...this.lobbies.values()]
   }

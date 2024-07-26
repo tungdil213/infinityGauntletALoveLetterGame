@@ -8,7 +8,6 @@ export default class ListLobbiesController {
 
   async handle({ inertia }: HttpContext) {
     const lobbies = await this.listExistingLobbiesUseCase.handle()
-    console.log('IICI ET LEA', await this.listExistingLobbiesUseCase.handle())
     return inertia.render('lobby/list', { lobbies: lobbies })
   }
 }
