@@ -1,4 +1,4 @@
-import { Head } from '@inertiajs/react'
+import { Head, Link } from '@inertiajs/react'
 import React from 'react'
 
 export default function Home(props: Readonly<{ version: number }>) {
@@ -14,10 +14,7 @@ export default function Home(props: Readonly<{ version: number }>) {
           Click me
         </button>
         {count}
-        <span>
-          Learn more about AdonisJS and Inertia.js by visiting the{' '}
-          <a href="https://docs.adonisjs.com/guides/inertia">AdonisJS documentation</a>.
-        </span>
+        <Link href="/dashboard">Dashboard</Link>
       </div>
     </>
   )
