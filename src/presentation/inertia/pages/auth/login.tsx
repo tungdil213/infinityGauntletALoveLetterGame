@@ -55,13 +55,6 @@ export default function SignInPage() {
             data-orientation="horizontal"
             role="separator"
           ></div>
-          <span className="mx-4 text-xs text-primary font-normal">OR</span>
-          <div
-            aria-hidden="true"
-            className="h-px w-full bg-primary-foreground"
-            data-orientation="horizontal"
-            role="separator"
-          ></div>
         </div>
       </form>
     </AuthContainer>

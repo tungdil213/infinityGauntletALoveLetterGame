@@ -60,7 +60,9 @@ export default function Home(props: Readonly<InferPageProps<ListLobbiesControlle
             </p>
           </div>
         ))}
-        <button onClick={onClickCreateLobby}>Create Lobby</button>
+        <Link href="/lobby/create" onClick={onClickCreateLobby}>
+          Create lobby
+        </Link>
       </div>
     </>
   )

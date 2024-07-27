@@ -1,5 +1,7 @@
 import { createInertiaApp } from '@inertiajs/react'
+import type { ReactNode } from 'react'
 import ReactDOMServer from 'react-dom/server'
+import DefaultLayout from '../layouts/default_layout'
 
 export default function render(page: any) {
   return createInertiaApp({
@@ -7,7 +9,16 @@ export default function render(page: any) {
     render: ReactDOMServer.renderToString,
     resolve: (name) => {
       const pages = import.meta.glob('../pages/**/*.tsx', { eager: true })
-      return pages[`../pages/${name}.tsx`]
+      // eslint-disable-next-line
+      const page = pages[`../pages/${name}.tsx`]
+      // @ts-expect-error
+      // eslint-disable-next-line
+      page.default.layout ??= (page: ReactNode) => {
+        return <DefaultLayout>{page}</DefaultLayout>
+      }
+
+      return page
+
     },
     setup: ({ App, props }) => <App {...props} />,
   })
