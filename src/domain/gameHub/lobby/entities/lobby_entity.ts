@@ -1,21 +1,19 @@
+import { PlayerInterface } from '#domain/basic/players/entities/basic_player_interface'
 import { randomUUID } from 'node:crypto'
 import { GAME_LOBBY_STATUS, GameLobbyStatus } from '../types/game_lobby_status.js'
-import { LobbyInterface } from './lobby_interface.js'
+import { LobbyFunctionInterface, LobbyInterface } from './lobby_interface.js'
 
-export class LobbyEntity implements LobbyInterface {
-  id: string
-  players: string[]
-  gameId?: string
+export class LobbyEntity implements LobbyInterface, LobbyFunctionInterface {
+  uuid: string
+  players: PlayerInterface[]
   status: GameLobbyStatus
-  createdAt: Date
-  updatedAt: Date
+  name: string
 
-  constructor(initialPlayerId: string) {
-    this.id = this.generateId()
-    this.players = [initialPlayerId]
+  constructor(initialPlayer: PlayerInterface) {
+    this.uuid = this.generateId()
+    this.players = [initialPlayer]
     this.status = GAME_LOBBY_STATUS.OPEN
-    this.createdAt = new Date()
-    this.updatedAt = new Date()
+    this.name = `Lobby ${this.uuid}`
   }
 
   private generateId(): string {
@@ -23,22 +21,21 @@ export class LobbyEntity implements LobbyInterface {
     return randomUUID()
   }
 
-  addPlayer(playerId: string): void {
-    if (this.status === GAME_LOBBY_STATUS.OPEN && !this.players.includes(playerId)) {
-      this.players.push(playerId)
-      this.updatedAt = new Date()
+  addPlayer(playerToAdd: PlayerInterface): void {
+    if (
+      this.status === GAME_LOBBY_STATUS.OPEN &&
+      !this.players.findIndex((player) => player.uuid === playerToAdd.uuid)
+    ) {
+      this.players.push(playerToAdd)
     }
   }
 
-  removePlayer(playerId: string): void {
-    this.players = this.players.filter((id) => id !== playerId)
-    this.updatedAt = new Date()
+  removePlayer(playerToRemove: PlayerInterface): void {
+    this.players = this.players.filter((player) => player.uuid !== playerToRemove.uuid)
   }
-
   startGame(): void {
     if (this.status === GAME_LOBBY_STATUS.OPEN) {
       this.status = GAME_LOBBY_STATUS.WAITING
-      this.updatedAt = new Date()
     }
   }
 }

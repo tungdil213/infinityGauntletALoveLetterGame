@@ -42,7 +42,7 @@ export default function Home(props: Readonly<InferPageProps<ListLobbiesControlle
         <b>lobby</b>
         {props.lobbies.map((lobby: LobbyInterface) => (
           <div key={lobby.id}>
-            <Link href={`/lobby/${lobby.id}`}>
+            <Link href={`/lobby/${lobby.uuid}`}>
               <b>id</b>
               {lobby.id}
             </Link>

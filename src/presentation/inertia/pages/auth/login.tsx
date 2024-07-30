@@ -54,7 +54,12 @@ export default function SignInPage() {
             className="h-px w-full bg-primary-foreground"
             data-orientation="horizontal"
             role="separator"
-          ></div>
+          >
+            <span className="text-primary-background text-sm px-4">or</span>
+            <Link href="/register" className="text-blue-500 text-sm">
+              Register
+            </Link>
+          </div>
         </div>
       </form>
     </AuthContainer>

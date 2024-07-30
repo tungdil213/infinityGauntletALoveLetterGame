@@ -25,6 +25,8 @@ export class InMemoryLobbyRepository implements LobbyRepository {
       throw new errors.E_HTTP_EXCEPTION('No lobbies found')
     }
 
+    console.log('this.lobbies', this.lobbies)
+
     return [...this.lobbies.values()]
   }
 }

@@ -1,15 +1,11 @@
-import { BasicPlayerInterface } from './basic_player_interface.js'
+import { PlayerInterface } from './basic_player_interface.js'
 
-export class BasicPlayer implements BasicPlayerInterface {
-  id: string
-  name: string
-  createdAt: Date
-  updatedAt: Date
+export class Player implements PlayerInterface {
+  uuid: string
+  nickName: string
 
-  constructor(id: string, name: string) {
-    this.id = id
-    this.name = name
-    this.createdAt = new Date()
-    this.updatedAt = new Date()
+  constructor(uuid: string, nickName: string) {
+    this.uuid = uuid
+    this.nickName = nickName
   }
 }

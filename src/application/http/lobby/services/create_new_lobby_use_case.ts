@@ -5,7 +5,7 @@ import { inject } from '@adonisjs/core'
 export default class CreateNewLobbyUseCase {
   constructor(private lobbyService: LobbyService) {}
 
-  async handle(playerId: string) {
+  async handle(playerId: number) {
     return await this.lobbyService.createLobby(playerId)
   }
 }

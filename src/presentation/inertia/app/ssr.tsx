@@ -18,7 +18,6 @@ export default function render(page: any) {
       }
 
       return page
-
     },
     setup: ({ App, props }) => <App {...props} />,
   })

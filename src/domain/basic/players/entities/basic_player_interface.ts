@@ -1,6 +1,4 @@
-export interface BasicPlayerInterface {
-  id: string
-  name: string
-  createdAt: Date
-  updatedAt: Date
+export interface PlayerInterface {
+  uuid: string
+  nickName: string
 }

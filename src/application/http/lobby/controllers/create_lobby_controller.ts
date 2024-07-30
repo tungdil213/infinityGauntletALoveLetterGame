@@ -13,7 +13,7 @@ export default class CreateLobbyController {
       return response.unauthorized({ message: 'Unauthorized' })
     }
 
-    const lobby = await this.createNewLobbyUseCase.handle(playerID.toString())
-    return response.redirect().toRoute('lobby.show', { lobbyId: lobby.id })
+    const lobby = await this.createNewLobbyUseCase.handle(playerID)
+    return response.redirect().toRoute('lobby.show', { lobbyId: lobby.uuid })
   }
 }

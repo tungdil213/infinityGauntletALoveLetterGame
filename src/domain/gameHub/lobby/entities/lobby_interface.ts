@@ -1,14 +1,15 @@
+import { PlayerInterface } from '#domain/basic/players/entities/basic_player_interface'
 import { GameLobbyStatus } from '../types/game_lobby_status.js'
 
 export interface LobbyInterface {
-  id: string
-  players: string[]
-  gameId?: string
+  uuid: string
+  players: PlayerInterface[]
   status: GameLobbyStatus
-  createdAt: Date
-  updatedAt: Date
+  name: string
+}
 
-  addPlayer(playerId: string): void
-  removePlayer(playerId: string): void
-  startGame(gameId: string): void
+export interface LobbyFunctionInterface {
+  addPlayer(player: PlayerInterface): void
+  removePlayer(player: PlayerInterface): void
+  startGame(): void
 }

@@ -5,6 +5,7 @@ export default function SignInPage() {
   const form = useForm({
     lastName: '',
     firstName: '',
+    nickName: '',
     email: '',
     password: '',
   })
@@ -39,6 +40,19 @@ export default function SignInPage() {
             disabled={form.processing}
             value={form.data.lastName}
             onChange={(e) => form.setData('lastName', e.target.value)}
+          />
+          <small>{form.errors?.lastName}</small>
+        </div>
+
+        <div className="grid gap-2">
+          <label htmlFor="nickName">NickName</label>
+          <input
+            id="nickName"
+            placeholder="JoD"
+            required
+            disabled={form.processing}
+            value={form.data.nickName}
+            onChange={(e) => form.setData('nickName', e.target.value)}
           />
           <small>{form.errors?.lastName}</small>
         </div>

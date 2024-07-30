@@ -7,6 +7,6 @@ export default class GetLobbyAction {
   constructor(private readonly lobbyRepository: LobbyRepository) {}
 
   async handle(lobbyId: string): Promise<LobbyInterface> {
-    return this.lobbyRepository.findById(lobbyId)
+    return this.lobbyRepository.findByUuid(lobbyId)
   }
 }

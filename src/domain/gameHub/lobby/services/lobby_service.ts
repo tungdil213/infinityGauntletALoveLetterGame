@@ -6,7 +6,7 @@ import { LobbyInterface } from '../entities/lobby_interface.js'
 export class LobbyService {
   constructor(private lobbyActions: LobbyActions) {}
 
-  async createLobby(playerId: string): Promise<LobbyInterface> {
+  async createLobby(playerId: number): Promise<LobbyInterface> {
     return this.lobbyActions.createLobbyAction.handle(playerId)
   }
 
@@ -22,8 +22,8 @@ export class LobbyService {
     return this.lobbyActions.startLobbyAction.handle(lobbyId)
   }
 
-  async getLobby(lobbyId: string): Promise<LobbyInterface> {
-    return this.lobbyActions.getLobbyAction.handle(lobbyId)
+  async getLobby(lobbyUuid: string): Promise<LobbyInterface> {
+    return this.lobbyActions.getLobbyAction.handle(lobbyUuid)
   }
 
   async listLobbies(): Promise<LobbyInterface[]> {
