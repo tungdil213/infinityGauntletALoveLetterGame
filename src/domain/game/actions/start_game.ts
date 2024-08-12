@@ -4,7 +4,7 @@ import { GameStateService } from '../services/game_state_service.js'
 export class StartGame {
   constructor(private gameState: GameStateInterface) {}
 
-  handle() {
+  private handle() {
     GameStateService.startGame(this.gameState)
   }
 }

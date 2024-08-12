@@ -7,7 +7,7 @@ export class RemovePlayerFromTeam {
     private playerId: string
   ) {}
 
-  handle() {
+  private handle() {
     return TeamService.removePlayer(this.team, this.playerId)
   }
 }

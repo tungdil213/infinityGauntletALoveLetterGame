@@ -6,8 +6,12 @@ import db from '@adonisjs/lucid/services/db'
 export class DBUserRepository implements UserRepository {
   protected tableName = 'users'
 
-  async save(user: UserInterface): Promise<void> {
-    db.from(this.tableName).where('uuid', user.uuid).update(user)
+  private paginated(page: number = 1, perPage: number = 20) {
+    return db.from(this.tableName).select('*').paginate(page, perPage)
+  }
+
+  async findAll(): Promise<UserInterface[]> {
+    return db.from(this.tableName).select('*')
   }
 
   async findById(id: number): Promise<UserInterface> {
@@ -20,11 +24,7 @@ export class DBUserRepository implements UserRepository {
     return db.from(this.tableName).where('uuid', uuid).firstOrFail()
   }
 
-  paginated(page: number = 1, perPage: number = 20) {
-    return db.from(this.tableName).select('*').paginate(page, perPage)
-  }
-
-  async findAll(): Promise<UserInterface[]> {
-    return db.from(this.tableName).select('*')
+  async save(user: UserInterface): Promise<void> {
+    db.from(this.tableName).where('uuid', user.uuid).update(user)
   }
 }

@@ -8,8 +8,13 @@ import console from 'node:console'
 export class DBPlayerRepository implements PlayerRepository {
   protected tableName = 'players'
 
-  async save(player: PlayerInterface): Promise<void> {
-    await Player.updateOrCreate({ uuid: player.uuid }, player)
+  private paginated(page: number = 1, perPage: number = 20) {
+    return db.from(this.tableName).select('*').paginate(page, perPage)
+  }
+
+  async findAll(): Promise<PlayerInterface[]> {
+    return Player.all()
+    //return db.from(this.tableName).select('*')
   }
 
   async findById(id: number): Promise<PlayerInterface> {
@@ -24,12 +29,7 @@ export class DBPlayerRepository implements PlayerRepository {
     return SinglePlayerPresenter.json(player)
   }
 
-  paginated(page: number = 1, perPage: number = 20) {
-    return db.from(this.tableName).select('*').paginate(page, perPage)
-  }
-
-  async findAll(): Promise<PlayerInterface[]> {
-    return Player.all()
-    //return db.from(this.tableName).select('*')
+  async save(player: PlayerInterface): Promise<void> {
+    await Player.updateOrCreate({ uuid: player.uuid }, player)
   }
 }

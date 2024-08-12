@@ -7,8 +7,8 @@ import PlayerServiceInterface from './player_service_interface.js'
 export class PlayerService implements PlayerServiceInterface {
   constructor(private playerRepository: PlayerRepositoryInterface) {}
 
-  async save(player: PlayerInterface): Promise<void> {
-    this.playerRepository.save(player)
+  async findAll(): Promise<PlayerInterface[]> {
+    return this.playerRepository.findAll()
   }
 
   async findById(playerId: number): Promise<PlayerInterface> {
@@ -19,7 +19,7 @@ export class PlayerService implements PlayerServiceInterface {
     return this.playerRepository.findByUuid(playerUuid)
   }
 
-  async findAll(): Promise<PlayerInterface[]> {
-    return this.playerRepository.findAll()
+  async save(player: PlayerInterface): Promise<void> {
+    this.playerRepository.save(player)
   }
 }

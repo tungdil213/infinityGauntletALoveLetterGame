@@ -6,8 +6,14 @@ import { errors } from '@adonisjs/core'
 export class InMemoryLobbyRepository implements LobbyRepository {
   private lobbies: Map<string, LobbyInterface> = new Map()
 
-  async save(lobby: LobbyInterface): Promise<void> {
-    this.lobbies.set(lobby.id, lobby)
+  async findAll(): Promise<LobbyInterface[]> {
+    if (this.lobbies.size === 0) {
+      throw new errors.E_HTTP_EXCEPTION('No lobbies found')
+    }
+
+    console.log('this.lobbies', this.lobbies)
+
+    return [...this.lobbies.values()]
   }
 
   async findById(id: string): Promise<LobbyInterface> {
@@ -20,13 +26,7 @@ export class InMemoryLobbyRepository implements LobbyRepository {
     return lobby
   }
 
-  async findAll(): Promise<LobbyInterface[]> {
-    if (this.lobbies.size === 0) {
-      throw new errors.E_HTTP_EXCEPTION('No lobbies found')
-    }
-
-    console.log('this.lobbies', this.lobbies)
-
-    return [...this.lobbies.values()]
+  async save(lobby: LobbyInterface): Promise<void> {
+    this.lobbies.set(lobby.id, lobby)
   }
 }

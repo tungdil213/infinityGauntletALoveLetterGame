@@ -3,10 +3,10 @@ import { GAME_STATUS, GameStatus } from '../types/game_status.js'
 import { GameInterface } from './game_interface.js'
 
 export class GameEntity implements GameInterface {
+  createdAt: Date
   id: string
   players: string[]
   status: GameStatus
-  createdAt: Date
   updatedAt: Date
 
   constructor(players: string[]) {
@@ -29,6 +29,17 @@ export class GameEntity implements GameInterface {
     }
   }
 
+  end(): void {
+    if (this.status === GAME_STATUS.IN_PROGRESS) {
+      this.status = GAME_STATUS.ENDED
+      this.updatedAt = new Date()
+    }
+  }
+
+  isInProgress(): boolean {
+    return this.status === GAME_STATUS.IN_PROGRESS
+  }
+
   removePlayer(playerId: string): void {
     this.players = this.players.filter((id) => id !== playerId)
     this.updatedAt = new Date()
@@ -39,16 +50,5 @@ export class GameEntity implements GameInterface {
       this.status = GAME_STATUS.IN_PROGRESS
       this.updatedAt = new Date()
     }
-  }
-
-  end(): void {
-    if (this.status === GAME_STATUS.IN_PROGRESS) {
-      this.status = GAME_STATUS.ENDED
-      this.updatedAt = new Date()
-    }
-  }
-
-  isInProgress(): boolean {
-    return this.status === GAME_STATUS.IN_PROGRESS
   }
 }

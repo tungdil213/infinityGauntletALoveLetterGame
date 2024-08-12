@@ -8,15 +8,12 @@ import db from '@adonisjs/lucid/services/db'
 export class DBLobbyRepository implements LobbyRepository {
   protected tableName = 'lobbies'
 
-  async save(lobby: LobbyInterface): Promise<void> {
-    const newlobby = await Lobby.updateOrCreate({ uuid: lobby.uuid }, lobby)
-    console.log('newlobby', lobby)
-    const players = await Player.query().whereIn(
-      'uuid',
-      lobby.players.map((p) => p.uuid)
-    )
-    console.log('players', players)
-    await newlobby.related('players').saveMany(players)
+  private paginated(page: number = 1, perPage: number = 20) {
+    return db.from(this.tableName).select('*').paginate(page, perPage)
+  }
+
+  async findAll(): Promise<LobbyInterface[]> {
+    return db.from(this.tableName).select('*')
   }
 
   async findById(id: number): Promise<LobbyInterface> {
@@ -31,11 +28,14 @@ export class DBLobbyRepository implements LobbyRepository {
     // return db.from(this.tableName).where('uuid', '=', uuid).firstOrFail()
   }
 
-  paginated(page: number = 1, perPage: number = 20) {
-    return db.from(this.tableName).select('*').paginate(page, perPage)
-  }
-
-  async findAll(): Promise<LobbyInterface[]> {
-    return db.from(this.tableName).select('*')
+  async save(lobby: LobbyInterface): Promise<void> {
+    const newlobby = await Lobby.updateOrCreate({ uuid: lobby.uuid }, lobby)
+    console.log('newlobby', lobby)
+    const players = await Player.query().whereIn(
+      'uuid',
+      lobby.players.map((p) => p.uuid)
+    )
+    console.log('players', players)
+    await newlobby.related('players').saveMany(players)
   }
 }

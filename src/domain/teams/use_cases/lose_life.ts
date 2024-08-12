@@ -4,7 +4,7 @@ import { TeamService } from '../services/team_service.js'
 export class LoseLife {
   constructor(private team: TeamInterface) {}
 
-  handle() {
+  private handle() {
     return TeamService.loseLife(this.team)
   }
 }

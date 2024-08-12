@@ -4,7 +4,7 @@ import { DeckService } from '../services/deck_service.js'
 export class ShuffleDeck {
   constructor(private deck: DeckInterface) {}
 
-  handle() {
+  private handle() {
     DeckService.shuffle(this.deck)
   }
 }

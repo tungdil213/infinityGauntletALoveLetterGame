@@ -10,7 +10,7 @@ export class PlayCard {
     private card: CardInterface
   ) {}
 
-  handle() {
+  private handle() {
     PlayService.playCard(this.play, this.player, this.card)
   }
 }

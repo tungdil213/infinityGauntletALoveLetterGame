@@ -5,6 +5,11 @@ import mail from '@adonisjs/mail/services/main'
 import { DateTime } from 'luxon'
 
 export default class EmailVerificationsController {
+  async resendVerificationEmail({ inertia, auth }: HttpContext) {
+    await mail.sendLater(new VerifyAccountNotification(auth.user!))
+    return inertia.render('auth/verify_email')
+  }
+
   async verify({ request, response, params, auth, session }: HttpContext) {
     if (!request.hasValidSignature('email_verification')) {
       session.flash(
@@ -37,10 +42,5 @@ export default class EmailVerificationsController {
     session.flash('success', 'Your email has been successfully verified, thank you!')
 
     return response.redirect().toPath('/dashboard')
-  }
-
-  async resendVerificationEmail({ inertia, auth }: HttpContext) {
-    await mail.sendLater(new VerifyAccountNotification(auth.user!))
-    return inertia.render('auth/verify_email')
   }
 }

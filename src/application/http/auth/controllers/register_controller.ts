@@ -11,10 +11,6 @@ export default class RegisterController {
     private registerPlayerService: RegisterPlayerService
   ) {}
 
-  async show({ inertia }: HttpContext) {
-    return inertia.render('auth/register')
-  }
-
   @inject()
   async handle({ request, response, auth }: HttpContext) {
     const { nickName, ...payload } = await request.validateUsing(registerValidator)
@@ -22,5 +18,9 @@ export default class RegisterController {
     await this.registerPlayerService.register(user, nickName)
     await auth.use('web').login(user)
     return response.redirect().toRoute('verification.notice')
+  }
+
+  async show({ inertia }: HttpContext) {
+    return inertia.render('auth/register')
   }
 }

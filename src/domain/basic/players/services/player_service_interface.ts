@@ -1,8 +1,8 @@
 import { PlayerInterface } from '../entities/basic_player_interface.js'
 
 export default abstract class PlayerServiceInterface {
-  abstract save(player: PlayerInterface): Promise<void>
+  abstract findAll(): Promise<PlayerInterface[]>
   abstract findById(playerId: number): Promise<PlayerInterface>
   abstract findByUuid(playerId: string): Promise<PlayerInterface>
-  abstract findAll(): Promise<PlayerInterface[]>
+  abstract save(player: PlayerInterface): Promise<void>
 }

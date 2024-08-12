@@ -5,9 +5,18 @@ import { Side } from '../../shared/types/types.js'
 import { InfinityGauntletPlayer } from './infinitygauntlet_player_interface.js'
 
 export class InfinityGauntletPlayerEntity extends BasicPlayer implements InfinityGauntletPlayer {
+  private #hand?: DeckInterface | undefined
+  private #powerTokens?: number | undefined
   choiceOfSide: Side
-  #hand?: DeckInterface | undefined
-  #powerTokens?: number | undefined
+
+  get hand() {
+    return this.#hand
+  }
+
+  get powerTokens() {
+    return this.#powerTokens
+  }
+
   ready?: boolean | undefined
   team?: TeamInterface | undefined
 
@@ -17,16 +26,8 @@ export class InfinityGauntletPlayerEntity extends BasicPlayer implements Infinit
     this.#powerTokens = 0
   }
 
-  get hand() {
-    return this.#hand
-  }
-
   set hand(hand: DeckInterface | undefined) {
     this.#hand = hand
-  }
-
-  get powerTokens() {
-    return this.#powerTokens
   }
 
   set powerTokens(powerTokens: number | undefined) {

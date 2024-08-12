@@ -1,14 +1,13 @@
 import UserInterface from './user_interface.js'
 
 export class user implements UserInterface {
-  id?: number
-  uuid: string
+  avatarUrl?: string | undefined
   email: string
   firstName: string
+  id?: number
   lastName: string
   username: string
-  avatarUrl?: string | undefined
-
+  uuid: string
   constructor(
     uuid: string,
     email: string,

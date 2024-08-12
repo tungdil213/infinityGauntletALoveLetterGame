@@ -10,6 +10,10 @@ export class LobbyService {
     return this.lobbyActions.createLobbyAction.handle(playerId)
   }
 
+  async getLobby(lobbyUuid: string): Promise<LobbyInterface> {
+    return this.lobbyActions.getLobbyAction.handle(lobbyUuid)
+  }
+
   async joinLobby(lobbyId: string, playerId: string): Promise<void> {
     return this.lobbyActions.joinLobbyAction.handle(lobbyId, playerId)
   }
@@ -18,15 +22,11 @@ export class LobbyService {
     return this.lobbyActions.leaveLobbyAction.handle(lobbyId, playerId)
   }
 
-  async startLobby(lobbyId: string): Promise<void> {
-    return this.lobbyActions.startLobbyAction.handle(lobbyId)
-  }
-
-  async getLobby(lobbyUuid: string): Promise<LobbyInterface> {
-    return this.lobbyActions.getLobbyAction.handle(lobbyUuid)
-  }
-
   async listLobbies(): Promise<LobbyInterface[]> {
     return this.lobbyActions.listLobbyAction.handle()
+  }
+
+  async startLobby(lobbyId: string): Promise<void> {
+    return this.lobbyActions.startLobbyAction.handle(lobbyId)
   }
 }

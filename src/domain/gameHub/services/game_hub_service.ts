@@ -27,15 +27,15 @@ export class GameHubService implements GameHubServiceInterface {
     await this.lobbyRepository.save(lobby)
   }
 
+  async listGames(status?: string): Promise<Game[]> {
+    return this.gameRepository.findByStatus(status)
+  }
+
   async startGame(lobbyId: string): Promise<void> {
     const lobby = await this.lobbyRepository.findById(lobbyId)
     const game = new GameEntity(lobby.players[0])
     await this.gameRepository.save(game)
     lobby.startGame(game.id)
     await this.lobbyRepository.save(lobby)
-  }
-
-  async listGames(status?: string): Promise<Game[]> {
-    return this.gameRepository.findByStatus(status)
   }
 }

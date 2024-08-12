@@ -7,13 +7,13 @@ export class TeamService {
     return team
   }
 
-  static removePlayer(team: TeamInterface, playerId: string): TeamInterface {
-    team.players = team.players.filter((player) => player.id !== playerId)
+  static loseLife(team: TeamInterface): TeamInterface {
+    team.lives -= 1
     return team
   }
 
-  static loseLife(team: TeamInterface): TeamInterface {
-    team.lives -= 1
+  static removePlayer(team: TeamInterface, playerId: string): TeamInterface {
+    team.players = team.players.filter((player) => player.id !== playerId)
     return team
   }
 }

@@ -8,7 +8,7 @@ export class AddPlayerToTeam {
     private player: PlayerInterface
   ) {}
 
-  handle() {
+  private handle() {
     return TeamService.addPlayer(this.team, this.player)
   }
 }

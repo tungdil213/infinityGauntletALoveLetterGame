@@ -12,44 +12,34 @@ const AuthFinder = withAuthFinder(() => hash.use('scrypt'), {
 })
 
 export default class User extends compose(BaseModel, AuthFinder) {
-  @column({ isPrimary: true })
-  declare id: number
-
-  @column()
-  declare uuid: string
-
-  @column()
-  declare username: string
-
-  @column()
-  declare firstName: string | null
-
-  @column()
-  declare lastName: string | null
-
   @column()
   declare avatarUrl: string
+  @column.dateTime({ autoCreate: true })
+  declare createdAt: DateTime
+  @column()
+  declare email: string
+  @column.dateTime()
+  declare emailVerifiedAt: DateTime | null
+  @column()
+  declare firstName: string | null
 
   @computed()
   get fullName() {
     return this.firstName + ' ' + this.lastName
   }
 
+  @column({ isPrimary: true })
+  declare id: number
   @column()
-  declare email: string
-
-  @column.dateTime()
-  declare emailVerifiedAt: DateTime | null
-
+  declare lastName: string | null
   @column()
   declare password: string
-
-  @column.dateTime({ autoCreate: true })
-  declare createdAt: DateTime
-
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
-  declare updatedAt: DateTime
-
   @hasOne(() => Player)
   declare player: HasOne<typeof Player>
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime
+  @column()
+  declare username: string
+  @column()
+  declare uuid: string
 }

@@ -8,7 +8,7 @@ export default class LobbyProvider {
   /**
    * Register bindings to the container
    */
-  register() {}
+  private register() {}
 
   /**
    * The container bindings have booted
@@ -16,11 +16,6 @@ export default class LobbyProvider {
   async boot() {
     this.app.container.singleton(LobbyRepository, () => new DBLobbyRepository())
   }
-
-  /**
-   * The application has been booted
-   */
-  async start() {}
 
   /**
    * The process has been started
@@ -31,4 +26,9 @@ export default class LobbyProvider {
    * Preparing to shutdown the app
    */
   async shutdown() {}
+
+  /**
+   * The application has been booted
+   */
+  async start() {}
 }

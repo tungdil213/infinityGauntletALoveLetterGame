@@ -6,28 +6,24 @@ import { GAME_STATUS } from '../types/game_status.js'
 export class GameStateService {
   constructor(private gameState: GameStateRepository) {}
 
-  startGame(): void {
-    this.gameState.startGame()
+  private isFinished(): boolean {
+    return this.gameState.state === GAME_STATUS.ENDED
   }
 
-  endGame(): void {
-    this.gameState.endGame()
+  private isPlaying(): boolean {
+    return this.gameState.state === GAME_STATUS.PLAYING
   }
 
   cancelGame(): void {
     this.gameState.cancelGame()
   }
 
+  endGame(): void {
+    this.gameState.endGame()
+  }
+
   errorState(): void {
     this.gameState.errorState()
-  }
-
-  isPlaying(): boolean {
-    return this.gameState.state === GAME_STATUS.PLAYING
-  }
-
-  isFinished(): boolean {
-    return this.gameState.state === GAME_STATUS.ENDED
   }
 
   isEndStatus(): boolean {
@@ -36,5 +32,9 @@ export class GameStateService {
 
   isLobbyStatus(): boolean {
     return this.gameState.isLobbyStatus()
+  }
+
+  startGame(): void {
+    this.gameState.startGame()
   }
 }

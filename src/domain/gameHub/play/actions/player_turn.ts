@@ -10,7 +10,7 @@ export class PlayerTurn {
     private card: CardInterface
   ) {}
 
-  handle() {
+  private handle() {
     PlayService.playCard(this.play, this.player, this.card)
     PlayService.nextPlayer(this.play)
   }

@@ -6,34 +6,27 @@ import { GameStateInterface } from './game_state_interface.js'
 
 @inject()
 export class GameState implements GameStateInterface {
-  state: GameStatus
   id: string
-
+  state: GameStatus
   constructor(initialState: GameStatus = GAME_STATUS.WAITING) {
     this.state = initialState
     this.id = Math.random().toString(36).substr(2, 9)
-  }
-
-  startGame() {
-    if (this.state === GAME_STATUS.WAITING || this.state === GAME_STATUS.READY) {
-      this.changeState(GAME_STATUS.PLAYING)
-    }
-  }
-
-  endGame() {
-    this.changeState(GAME_STATUS.ENDED)
   }
 
   cancelGame() {
     this.changeState(GAME_STATUS.CANCELLED)
   }
 
-  errorState() {
-    this.changeState(GAME_STATUS.ERROR)
-  }
-
   changeState(newState: GameStatus) {
     this.state = newState
+  }
+
+  endGame() {
+    this.changeState(GAME_STATUS.ENDED)
+  }
+
+  errorState() {
+    this.changeState(GAME_STATUS.ERROR)
   }
 
   isEndStatus(): boolean {
@@ -42,5 +35,11 @@ export class GameState implements GameStateInterface {
 
   isLobbyStatus(): boolean {
     return isLobbyStatus(this.state)
+  }
+
+  startGame() {
+    if (this.state === GAME_STATUS.WAITING || this.state === GAME_STATUS.READY) {
+      this.changeState(GAME_STATUS.PLAYING)
+    }
   }
 }

@@ -3,13 +3,6 @@ import User from '#models/user'
 import type { HttpContext } from '@adonisjs/core/http'
 
 export default class ResetPasswordController {
-  async show({ inertia, request, response }: HttpContext) {
-    if (!request.hasValidSignature()) {
-      return response.redirect().toPath('/forgot-password')
-    }
-    return inertia.render('auth/reset_password')
-  }
-
   async handle({ request, response }: HttpContext) {
     if (!request.hasValidSignature()) {
       return response.redirect().toPath('/auth/forgot_password')
@@ -26,5 +19,12 @@ export default class ResetPasswordController {
     await user.save()
 
     return response.redirect().toPath('/login')
+  }
+
+  async show({ inertia, request, response }: HttpContext) {
+    if (!request.hasValidSignature()) {
+      return response.redirect().toPath('/forgot-password')
+    }
+    return inertia.render('auth/reset_password')
   }
 }

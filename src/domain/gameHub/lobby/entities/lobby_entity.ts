@@ -4,11 +4,10 @@ import { GAME_LOBBY_STATUS, GameLobbyStatus } from '../types/game_lobby_status.j
 import { LobbyFunctionInterface, LobbyInterface } from './lobby_interface.js'
 
 export class LobbyEntity implements LobbyInterface, LobbyFunctionInterface {
-  uuid: string
+  name: string
   players: PlayerInterface[]
   status: GameLobbyStatus
-  name: string
-
+  uuid: string
   constructor(initialPlayer: PlayerInterface) {
     this.uuid = this.generateId()
     this.players = [initialPlayer]

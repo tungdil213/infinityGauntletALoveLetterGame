@@ -5,27 +5,20 @@ import Lobby from './lobby.js'
 import User from './user.js'
 
 export default class Player extends BaseModel {
-  @column({ isPrimary: true })
-  declare id: number
-
-  @column()
-  declare uuid: string
-
-  @column()
-  declare userId: number
-
-  @column()
-  declare nickName: string
-
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime
-
-  @column.dateTime({ autoCreate: true, autoUpdate: true })
-  declare updatedAt: DateTime
-
+  @column({ isPrimary: true })
+  declare id: number
+  @column()
+  declare nickName: string
   @manyToMany(() => Lobby)
   declare players: ManyToMany<typeof Lobby>
-
+  @column.dateTime({ autoCreate: true, autoUpdate: true })
+  declare updatedAt: DateTime
   @belongsTo(() => User)
   declare user: BelongsTo<typeof User>
+  @column()
+  declare userId: number
+  @column()
+  declare uuid: string
 }

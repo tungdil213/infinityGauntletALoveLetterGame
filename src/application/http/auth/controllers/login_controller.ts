@@ -3,10 +3,6 @@ import User from '#models/user'
 import type { HttpContext } from '@adonisjs/core/http'
 
 export default class LoginController {
-  async show({ inertia }: HttpContext) {
-    return inertia.render('auth/login')
-  }
-
   async handle({ auth, request, response, session }: HttpContext) {
     let forward: string = '/dashboard'
     const { email, password, action } = await request.validateUsing(loginValidator)
@@ -21,5 +17,9 @@ export default class LoginController {
       forward = session.get(action)
     }
     return response.redirect().toPath(forward)
+  }
+
+  async show({ inertia }: HttpContext) {
+    return inertia.render('auth/login')
   }
 }
