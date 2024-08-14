@@ -12,4 +12,8 @@ export interface LobbyFunctionInterface {
   addPlayer(player: PlayerInterface): void
   removePlayer(player: PlayerInterface): void
   startGame(): void
+  get_uuid(): string
+  get_players(): PlayerInterface[]
+  get_status(): GameLobbyStatus
+  get_name(): string
 }

@@ -1,5 +1,5 @@
 import { GAME_LOBBY_STATUS } from '#domain/gameHub/lobby/types/game_lobby_status'
-import { ObjectValues } from '#domain/shared/object_values'
+import { ObjectValues } from '#domain/shared/types/object_values'
 
 export const GAME_END_STATUS = {
   ENDED: 'ENDED',

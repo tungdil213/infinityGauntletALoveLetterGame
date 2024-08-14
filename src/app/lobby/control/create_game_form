@@ -1,0 +1,28 @@
+export default class CreateGameForm {
+  private readonly _game: string;
+  private readonly _creator: string;
+  private savegame: string = '';
+
+  /**
+   * @param game nom du serveur de jeu enregistré
+   * @param creator nom du joueur qui a initié la session
+   * @param savegame identifiant d'une sauvegarde spécifique au service de jeu, ou une chaîne vide.
+   */
+  constructor(game: string, creator: string, savegame: string = '') {
+    this._game = game;
+    this._creator = creator;
+    this.savegame = savegame;
+  }
+
+  public getGame(): string {
+    return this._game;
+  }
+
+  public getCreator(): string {
+    return this._creator;
+  }
+
+  public getSavegame(): string {
+    return this.savegame;
+  }
+}

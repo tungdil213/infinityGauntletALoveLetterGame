@@ -42,7 +42,6 @@ export default defineConfig({
     () => import('@adonisjs/lucid/database_provider'),
     () => import('@adonisjs/auth/auth_provider'),
     () => import('@adonisjs/inertia/inertia_provider'),
-    () => import('#app/providers/lobby_provider'),
     () => import('#app/providers/user_provider'),
     () => import('#app/providers/player_provider'),
     () => import('@adonisjs/mail/mail_provider'),

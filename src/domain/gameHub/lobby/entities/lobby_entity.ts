@@ -37,4 +37,17 @@ export class LobbyEntity implements LobbyInterface, LobbyFunctionInterface {
       this.status = GAME_LOBBY_STATUS.WAITING
     }
   }
+
+  get_uuid(): string {
+    return this.uuid
+  }
+  get_players(): PlayerInterface[] {
+    return this.players
+  }
+  get_status(): GameLobbyStatus {
+    return this.status
+  }
+  get_name(): string {
+    return this.name
+  }
 }

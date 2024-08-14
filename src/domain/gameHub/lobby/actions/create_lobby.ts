@@ -10,10 +10,8 @@ export default class CreateLobbyAction {
     private readonly playerRepository: PlayerRepository
   ) {}
 
-  async handle(playerId: number) {
-    const player = await this.playerRepository.findById(playerId)
-
-    console.log('CreateLobbyAction player', player)
+  async handle(playerId: string) {
+    const player = await this.playerRepository.findByUuid(playerId)
 
     const lobby = new LobbyEntity(player)
     await this.lobbyRepository.save(lobby)

@@ -6,7 +6,7 @@ import { LobbyInterface } from '../entities/lobby_interface.js'
 export class LobbyService {
   constructor(private lobbyActions: LobbyActions) {}
 
-  async createLobby(playerId: number): Promise<LobbyInterface> {
+  async createLobby(playerId: string): Promise<LobbyInterface> {
     return this.lobbyActions.createLobbyAction.handle(playerId)
   }
 

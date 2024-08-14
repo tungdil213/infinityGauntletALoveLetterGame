@@ -1,7 +1,7 @@
 import { PlayerInterface } from '#domain/basic/players/entities/basic_player_interface'
 import type { GameStatus } from '../types/game_status.js'
 
-export interface GameInterface {
+export interface PartiesInterface {
   id: string
   players?: PlayerInterface[]
   status: GameStatus

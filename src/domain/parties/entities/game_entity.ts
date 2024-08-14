@@ -1,8 +1,8 @@
 import { GAME_LOBBY_STATUS } from '#domain/gameHub/lobby/types/game_lobby_status'
 import { GAME_STATUS, GameStatus } from '../types/game_status.js'
-import { GameInterface } from './game_interface.js'
+import { PartiesInterface } from './game_interface.js'
 
-export class GameEntity implements GameInterface {
+export class GameEntity implements PartiesInterface {
   createdAt: Date
   id: string
   players: string[]
