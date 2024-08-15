@@ -15,30 +15,23 @@
   },
   "imports": {
     "#app/*": "./src/application/*.js",
-    "#controllers/*": "./src/application/controllers/*.js",
-    "#middleware/*": "./src/application/middleware/*.js",
-    "#providers/*": "./src/application/providers/*.js",
-    "#services/*": "./src/application/services/*.js",
-    "#types/*": "./src/application/types/*.js",
-    "#useCases/*": "./src/application/useCases/*.js",
-    "#domain/*": "./src/domain/*.js",
+    "#features/*": "./src/features/*.js",
+    "#providers/*": "./src/infrastructure/providers/*.js",
+    "#types/*": "./src/features/shared/types/*.js",
     "#infrastructure/*": "./src/infrastructure/*.js",
     "#adonis/*": "./src/infrastructure/adonis/*.js",
     "#start/*": "./src/infrastructure/adonis/start/*.js",
     "#database/*": "./src/infrastructure/database/*.js",
     "#migrations/*": "./src/infrastructure/database/migrations/*.js",
     "#models/*": "./src/infrastructure/database/models/*.js",
-    "#http/*": "./src/infrastructure/http/*.js",
-    "#mails/*": "./src/infrastructure/mails/*.js",
-    "#persistence/*": "./src/infrastructure/persistence/*.js",
-    "#repositories/*": "./src/infrastructure/repositories/*.js",
-    "#presentation/*": "./src/presentation/*.js",
+    "#presentation/*": "./resources/*.js",
     "#tests/*": "./tests/*.js",
     "#config/*": "./config/*.js"
   },
   "devDependencies": {
     "@adonisjs/assembler": "^7.7.0",
     "@adonisjs/eslint-config": "^1.3.0",
+    "@adonisjs/eslint-plugin": "^1.3.0",
     "@adonisjs/prettier-config": "^1.3.0",
     "@adonisjs/tsconfig": "^1.3.0",
     "@japa/assert": "^3.0.0",
@@ -50,12 +43,18 @@
     "@types/node": "^20.14.11",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
+    "@typescript-eslint/eslint-plugin": "^7.17.0",
     "@vitejs/plugin-react": "^4.3.1",
+    "autoprefixer": "^10.4.19",
     "eslint": "^8.57.0",
+    "eslint-plugin-prettier": "^5.2.1",
+    "eslint-plugin-unicorn": "^55.0.0",
     "hot-hook": "^0.2.6",
     "pino-pretty": "^11.2.1",
     "playwright": "^1.45.2",
+    "postcss": "^8.4.40",
     "prettier": "^3.3.3",
+    "tailwindcss": "^3.4.7",
     "ts-node": "^10.9.2",
     "typescript": "^5.5.3",
     "vite": "^5.3.4"
@@ -77,6 +76,7 @@
     "clsx": "^2.1.1",
     "edge.js": "^6.0.2",
     "luxon": "^3.4.4",
+    "mjml": "^4.15.3",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "reflect-metadata": "^0.2.2",
@@ -85,8 +85,8 @@
   },
   "hotHook": {
     "boundaries": [
-      "./app/controllers/**/*.ts",
-      "./app/middleware/*.ts"
+      "./src/**/controllers/**/*.ts",
+      "./src/**/middleware/*.ts"
     ]
   },
   "eslintConfig": {

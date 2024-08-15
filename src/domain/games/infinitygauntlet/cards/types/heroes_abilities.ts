@@ -1,7 +1,0 @@
-export type HeroesAbilities =
-  | 'GUESS_THANOS_HAND'
-  | 'TEAMMATE_SEES_CARD'
-  | 'MAY_FIGHT_THANOS'
-  | 'GIVE_1_POWER_TOKEN'
-  | 'REARRANGE_TOP_3_CARDS'
-  | 'YOU_OR_TEAMMATE_MAY_FIGHT'
