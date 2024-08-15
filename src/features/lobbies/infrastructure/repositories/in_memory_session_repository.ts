@@ -13,12 +13,11 @@ export class InMemorySessionRepository extends SessionRepository {
 
   async getSessionByUUID(sessionUUID: string): Promise<SessionDTO | null> {
     const session = this.sessions.get(sessionUUID)
+    console.log('session', session)
     return session || null
   }
 
   async listSessions(): Promise<SessionDTO[]> {
-    // Retourne toutes les sessions sous forme de tableau
-    console.log('salut', Array.from(this.sessions.values()))
     return Array.from(this.sessions.values())
   }
 

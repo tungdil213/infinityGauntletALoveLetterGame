@@ -14,10 +14,6 @@ export default function Home(props: Readonly<InferPageProps<ShowLobbyController,
           <b>lobby</b>
           {JSON.stringify(props.lobby)}
         </p>
-        <p>
-          <b>user</b>
-          {JSON.stringify(props.user)}
-        </p>
       </div>
     </>
   )

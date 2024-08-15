@@ -1,5 +1,4 @@
 import PlayerRepository from '#features/players/domain/repositories/player_repository'
-import Player from '#infrastructure/database/models/player'
 import User from '#infrastructure/database/models/user'
 import { inject } from '@adonisjs/core'
 
@@ -8,8 +7,7 @@ export default class RegisterPlayerService {
   constructor(private playerRepository: PlayerRepository) {}
 
   async register(user: User, nickName: string): Promise<void> {
-    const player = new Player()
-    player.nickName = nickName
+    const player = { nickName: nickName, uuid: user.uuid }
     return this.playerRepository.save(player)
   }
 }
