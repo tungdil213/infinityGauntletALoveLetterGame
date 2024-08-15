@@ -1,6 +1,6 @@
+import { InMemorySessionRepository } from '#features/lobbies/infrastructure/repositories/in_memory_session_repository'
+import PlayerRepository from '#features/players/domain/repositories/player_repository'
 import { inject } from '@adonisjs/core'
-import PlayerRepository from '../../../players/domain/repositories/player_repository.js'
-import { InMemorySessionRepository } from '../../infrastructure/repositories/in_memory_session_repository.js'
 import Lobby from '../entities/lobby.js'
 
 @inject()

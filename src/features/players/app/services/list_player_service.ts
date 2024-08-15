@@ -1,11 +1,12 @@
-import user from '#infrastructure/database/models/user'
+import { PlayerInterface } from '#features/players/domain/entities/player_interface'
+import PlayerRepository from '#features/players/domain/repositories/player_repository'
 import { inject } from '@adonisjs/core'
 
 @inject()
 export default class ListPlayerService {
-  constructor() {}
+  constructor(private playerRepository: PlayerRepository) {}
 
-  async findAll(): Promise<void> {
-    return user.related('player').findAll
+  async findAll(): Promise<PlayerInterface[] | null> {
+    return await this.playerRepository.findAll()
   }
 }

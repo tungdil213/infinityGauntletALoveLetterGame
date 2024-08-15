@@ -1,5 +1,4 @@
-import { GAME_LOBBY_STATUS } from '#domain/gameHub/lobby/types/game_lobby_status'
-import { ObjectValues } from '../../../shared/types/object_values.js'
+import { ObjectValues } from '#features/shared/types/object_values'
 
 export const SESSION_STATUS = {
   LOBBY: 'LOBBY',
@@ -11,4 +10,4 @@ export const SESSION_STATUS = {
   FULL: 'FULL',
 } as const
 
-export type SessionStatus = ObjectValues<typeof GAME_LOBBY_STATUS>
+export type SessionStatus = ObjectValues<typeof SESSION_STATUS>

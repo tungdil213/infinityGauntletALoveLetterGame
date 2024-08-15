@@ -1,5 +1,6 @@
 /// <reference path="../../adonisrc.ts" />
 /// <reference path="../../config/inertia.ts" />
+/// <reference path="../../config/auth.ts" />
 
 import DefaultLayout from '#presentation/layouts/default_layout'
 import { resolvePageComponent } from '@adonisjs/inertia/helpers'

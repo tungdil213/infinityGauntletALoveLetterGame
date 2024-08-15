@@ -1,4 +1,4 @@
-import { PlayerInterface } from '#domain/basic/players/entities/basic_player_interface'
+import { PlayerInterface } from '#features/players/domain/entities/player_interface'
 import { test } from '@japa/runner'
 import Lobby from '../../entities/lobby.js'
 import { SESSION_STATUS } from '../../types/session_status.js'

@@ -1,6 +1,6 @@
 const ShowBackofficeController = () =>
-  import('../../../../features/backoffice/app/controllers/show_backoffice_controller.js')
-import { middleware } from '#start/kernel'
+  import('#features/backoffice/app/controllers/show_backoffice_controller')
+import { middleware } from '#infrastructure/adonis/start/kernel'
 import router from '@adonisjs/core/services/router'
 
 router

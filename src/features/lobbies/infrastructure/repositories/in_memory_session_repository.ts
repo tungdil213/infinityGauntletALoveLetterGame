@@ -1,10 +1,14 @@
-import { SessionDTO } from '../../domain/DTO/session_dto.js'
-import { SessionRepository } from '../../domain/repositories/session_repository.js'
-export class InMemorySessionRepository extends SessionRepository {
-  private sessions: Map<string, SessionDTO> = new Map()
+import { SessionDTO } from '#features/lobbies/domain/DTO/session_dto'
+import { SessionRepository } from '#features/lobbies/domain/repositories/session_repository'
+import console from 'node:console'
 
+const mapsessions: Map<string, SessionDTO> = new Map()
+
+export class InMemorySessionRepository extends SessionRepository {
+  private sessions = mapsessions
   async saveSession(session: SessionDTO): Promise<void> {
     this.sessions.set(session.uuid, session)
+    console.log('session', this.sessions)
   }
 
   async getSessionByUUID(sessionUUID: string): Promise<SessionDTO | null> {
@@ -14,6 +18,7 @@ export class InMemorySessionRepository extends SessionRepository {
 
   async listSessions(): Promise<SessionDTO[]> {
     // Retourne toutes les sessions sous forme de tableau
+    console.log('salut', Array.from(this.sessions.values()))
     return Array.from(this.sessions.values())
   }
 

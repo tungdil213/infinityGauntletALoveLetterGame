@@ -1,6 +1,6 @@
-import User from '#models/user'
-import type { HttpContext } from '@adonisjs/core/http'
-import { resetPasswordValidator } from '../../infrastructure/validators/auth/reset_password_validator.js'
+import { resetPasswordValidator } from '#features/users/infrastructure/validators/auth/reset_password_validator'
+import User from '#infrastructure/database/models/user'
+import { HttpContext } from '@adonisjs/core/http'
 
 export default class ResetPasswordController {
   async handle({ request, response }: HttpContext) {

@@ -1,6 +1,6 @@
+import { PlayerInterface } from '#features/players/domain/entities/player_interface'
+import PlayerRepository from '#features/players/domain/repositories/player_repository'
 import Player from '#infrastructure/database/models/player'
-import { PlayerInterface } from '../../domain/entities/player_interface.js'
-import PlayerRepository from '../../domain/repositories/player_repository.js'
 
 export class DatabasePlayerRepository extends PlayerRepository {
   async findAll(): Promise<PlayerInterface[]> {

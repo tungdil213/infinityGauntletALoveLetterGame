@@ -1,6 +1,6 @@
+import { SessionDTO } from '#features/lobbies/domain/DTO/session_dto'
+import { SessionRepository } from '#features/lobbies/domain/repositories/session_repository'
 import Session from '#infrastructure/database/models/session'
-import { SessionDTO } from '../../domain/DTO/session_dto.js'
-import { SessionRepository } from '../../domain/repositories/session_repository.js'
 
 export class DatabaseSessionRepository extends SessionRepository {
   async saveSession(session: SessionDTO): Promise<void> {

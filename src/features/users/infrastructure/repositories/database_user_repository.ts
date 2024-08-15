@@ -1,7 +1,7 @@
+import UserInterface from '#features/users/domain/entities/user_interface'
+import UserRepository from '#features/users/domain/repositories/user_repository'
 import User from '#infrastructure/database/models/user'
 import db from '@adonisjs/lucid/services/db'
-import UserInterface from '../../domain/entities/user_interface.js'
-import UserRepository from '../../domain/repositories/user_repository.js'
 
 export class DatabaseUserRepository extends UserRepository {
   protected tableName = 'users'

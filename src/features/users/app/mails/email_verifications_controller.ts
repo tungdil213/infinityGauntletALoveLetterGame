@@ -1,8 +1,8 @@
-import User from '#models/user'
-import type { HttpContext } from '@adonisjs/core/http'
+import VerifyAccountNotification from '#features/users/infrastructure/mails/verify_account_notification'
+import User from '#infrastructure/database/models/user'
+import { HttpContext } from '@adonisjs/core/http'
 import mail from '@adonisjs/mail/services/main'
 import { DateTime } from 'luxon'
-import VerifyAccountNotification from '../../infrastructure/mails/verify_account_notification.js'
 
 export default class EmailVerificationsController {
   async resendVerificationEmail({ inertia, auth }: HttpContext) {

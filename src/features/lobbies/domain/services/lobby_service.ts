@@ -22,7 +22,7 @@ export class LobbyService {
     return this.lobbyActions.leaveLobbyAction.handle(lobbyUUID, playerUUID)
   }
 
-  async listLobbies(): Promise<SessionDTO[]> {
+  async listLobbies(): Promise<SessionDTO[] | null> {
     return this.lobbyActions.listLobbyAction.handle()
   }
 

@@ -1,7 +1,8 @@
-import { PlayerInterface } from '../../domain/entities/player_interface.js'
-import PlayerRepository from '../../domain/repositories/player_repository.js'
+import { PlayerInterface } from '#features/players/domain/entities/player_interface'
+import PlayerRepository from '#features/players/domain/repositories/player_repository'
+const mapPlayers: Map<string, PlayerInterface> = new Map()
 export class InMemoryPlayerRepository extends PlayerRepository {
-  private players: Map<string, PlayerInterface> = new Map()
+  private players = mapPlayers
 
   async findAll(): Promise<PlayerInterface[]> {
     // Retourne toutes les joueurs sous forme de tableau

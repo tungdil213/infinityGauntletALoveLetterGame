@@ -1,4 +1,4 @@
-import { PlayerInterface } from '../../../players/domain/entities/player_interface.js'
+import { PlayerInterface } from '#features/players/domain/entities/player_interface'
 import SessionBase from './session_base.js'
 
 export default class PartyGame extends SessionBase {

@@ -1,5 +1,5 @@
+import { InMemorySessionRepository } from '#features/lobbies/infrastructure/repositories/in_memory_session_repository'
 import { inject } from '@adonisjs/core'
-import { InMemorySessionRepository } from '../../infrastructure/repositories/in_memory_session_repository.js'
 
 @inject()
 export default class JoinLobbyAction {

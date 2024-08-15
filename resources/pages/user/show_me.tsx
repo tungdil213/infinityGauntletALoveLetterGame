@@ -1,6 +1,6 @@
+import ShowMeUserController from '#features/users/app/controllers/show_me_user_controller'
 import { InferPageProps } from '@adonisjs/inertia/types'
 import { Head } from '@inertiajs/react'
-import ShowMeUserController from '../../../src/features/users/app/controllers/show_me_user_controller.js'
 
 export default function show_me_user(
   props: Readonly<InferPageProps<ShowMeUserController, 'handle'>>

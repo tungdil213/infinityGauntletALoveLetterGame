@@ -1,4 +1,4 @@
-import { PlayerDTO } from '../../../players/domain/DTO/players_dto.js'
+import { PlayerDTO } from '#features/players/domain/DTO/players_dto'
 
 export interface SessionDTO {
   uuid: string

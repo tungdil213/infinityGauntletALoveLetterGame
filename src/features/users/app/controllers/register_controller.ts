@@ -1,7 +1,7 @@
+import RegisterPlayerService from '#features/players/app/services/register_player_service'
+import { registerValidator } from '#features/users/infrastructure/validators/auth/register_validator'
 import { inject } from '@adonisjs/core'
 import { HttpContext } from '@adonisjs/core/http'
-import RegisterPlayerService from '../../../players/app/services/register_player_service.js'
-import { registerValidator } from '../../infrastructure/validators/auth/register_validator.js'
 import RegisterUserService from '../services/register_user_service.js'
 
 @inject()

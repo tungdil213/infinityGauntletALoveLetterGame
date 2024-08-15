@@ -1,5 +1,5 @@
+import { InMemorySessionRepository } from '#features/lobbies/infrastructure/repositories/in_memory_session_repository'
 import { inject } from '@adonisjs/core'
-import { InMemorySessionRepository } from '../../infrastructure/repositories/in_memory_session_repository.js'
 
 @inject()
 export default class StartLobbyAction {
@@ -7,6 +7,9 @@ export default class StartLobbyAction {
 
   async handle(lobbyId: string): Promise<void> {
     const lobby = await this.lobbyRepository.getSessionByUUID(lobbyId)
+    if (!lobby) {
+      throw new Error('Lobby not found')
+    }
     lobby.startGame('first_game_id')
     await this.lobbyRepository.save(lobby)
   }

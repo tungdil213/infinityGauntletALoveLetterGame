@@ -23,7 +23,7 @@ server.errorHandler(() => import('#adonis/exceptions/exception_handler'))
  * the request URL.
  */
 server.use([
-  () => import('../../../features/users/app/middleware/container_bindings_middleware.js'),
+  () => import('#features/users/app/middleware/container_bindings_middleware'),
   () => import('@adonisjs/static/static_middleware'),
   () => import('@adonisjs/cors/cors_middleware'),
   () => import('@adonisjs/vite/vite_middleware'),
@@ -46,6 +46,6 @@ router.use([
  * the routes or the routes group.
  */
 export const middleware = router.named({
-  guest: () => import('../../../features/users/app/middleware/guest_middleware.js'),
-  auth: () => import('../../../features/users/app/middleware/auth_middleware.js'),
+  guest: () => import('#features/users/app/middleware/guest_middleware'),
+  auth: () => import('#features/users/app/middleware/auth_middleware'),
 })

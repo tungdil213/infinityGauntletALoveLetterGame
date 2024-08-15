@@ -1,4 +1,4 @@
-import { PlayerInterface } from '../../../players/domain/entities/player_interface.js'
+import { PlayerInterface } from '#features/players/domain/entities/player_interface'
 import { SessionStatus } from '../types/session_status.js'
 import PartyGame from './party_game.js'
 import { SessionWithPlayers } from './session_with_players.js'

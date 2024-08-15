@@ -1,15 +1,13 @@
 const CreateLobbyController = () =>
-  import('../../../lobbies/app/controllers/create_lobby_controller.js')
-const JoinLobbyController = () =>
-  import('../../../lobbies/app/controllers/join_lobby_controller.js')
+  import('#features/lobbies/app/controllers/create_lobby_controller')
+const JoinLobbyController = () => import('#features/lobbies/app/controllers/join_lobby_controller')
 const LeaveLobbyController = () =>
-  import('../../../lobbies/app/controllers/leave_lobby_controller.js')
+  import('#features/lobbies/app/controllers/leave_lobby_controller')
 const ListLobbiesController = () =>
-  import('../../../lobbies/app/controllers/list_lobbies_controller.js')
-const ShowLobbyController = () =>
-  import('../../../lobbies/app/controllers/show_lobby_controller.js')
+  import('#features/lobbies/app/controllers/list_lobbies_controller')
+const ShowLobbyController = () => import('#features/lobbies/app/controllers/show_lobby_controller')
+import { middleware } from '#infrastructure/adonis/start/kernel'
 import router from '@adonisjs/core/services/router'
-import { middleware } from '../kernel.js'
 
 router
   .group(() => {

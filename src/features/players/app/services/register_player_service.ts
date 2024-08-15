@@ -1,7 +1,7 @@
+import PlayerRepository from '#features/players/domain/repositories/player_repository'
 import Player from '#infrastructure/database/models/player'
-import { default as User } from '#infrastructure/database/models/user'
+import User from '#infrastructure/database/models/user'
 import { inject } from '@adonisjs/core'
-import PlayerRepository from '../../domain/repositories/player_repository.js'
 
 @inject()
 export default class RegisterPlayerService {
