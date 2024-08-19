@@ -16,6 +16,7 @@ export default class CreateLobbyAction {
     console.log('CreateLobbyAction player', player)
 
     const lobby = new Lobby(player)
+
     await this.lobbyRepository.saveSession(lobby)
 
     return lobby

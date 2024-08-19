@@ -12,7 +12,7 @@ export class DatabasePlayerRepository extends PlayerRepository {
   async findByUUID(playerUUID: string): Promise<PlayerInterface> {
     const player = await Player.query()
       .preload('user', (postsQuery) => {
-        postsQuery.where('uuid', 'playerUUID')
+        postsQuery.where('uuid', playerUUID)
       })
       .first()
     if (!player) {
@@ -32,7 +32,7 @@ export class DatabasePlayerRepository extends PlayerRepository {
 
   private toPlayerInterface(playerModel: Player): PlayerInterface {
     return {
-      uuid: playerModel.$extras.uuid,
+      uuid: playerModel.user.uuid,
       nickName: playerModel.nickName,
     }
   }

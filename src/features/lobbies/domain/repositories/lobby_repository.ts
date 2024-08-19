@@ -1,4 +1,4 @@
-import { SessionDTO } from '../DTO/session_dto.js';
+import { SessionDTO } from '../DTO/session_dto.js'
 
 export abstract class LobbyRepository {
   abstract saveSession(session: SessionDTO): Promise<void>

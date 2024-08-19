@@ -2,18 +2,20 @@ import { SessionDTO } from '#features/lobbies/domain/DTO/session_dto'
 import { SessionRepository } from '#features/lobbies/domain/repositories/session_repository'
 import console from 'node:console'
 
-const mapsessions: Map<string, SessionDTO> = new Map()
+const mapSessions: Map<string, SessionDTO> = new Map()
 
 export class InMemorySessionRepository extends SessionRepository {
-  private sessions = mapsessions
+  private sessions = mapSessions
   async saveSession(session: SessionDTO): Promise<void> {
     this.sessions.set(session.uuid, session)
-    console.log('session', this.sessions)
+    console.log('Session saved:', session)
   }
 
   async getSessionByUUID(sessionUUID: string): Promise<SessionDTO | null> {
     const session = this.sessions.get(sessionUUID)
-    console.log('session', session)
+    if (!session) {
+      console.warn(`Session with UUID ${sessionUUID} not found`)
+    }
     return session || null
   }
 
@@ -22,6 +24,9 @@ export class InMemorySessionRepository extends SessionRepository {
   }
 
   async deleteSession(sessionUUID: string): Promise<void> {
-    this.sessions.delete(sessionUUID)
+    const sessionExisted = this.sessions.delete(sessionUUID)
+    if (!sessionExisted) {
+      console.warn(`Attempted to delete session with UUID ${sessionUUID}, but it was not found`)
+    }
   }
 }

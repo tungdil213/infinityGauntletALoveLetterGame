@@ -2,14 +2,14 @@ import { PlayerInterface } from '#features/players/domain/entities/player_interf
 import SessionBase from './session_base.js'
 
 export abstract class SessionWithPlayers extends SessionBase {
-  private _players: PlayerInterface[]
+  protected _players: PlayerInterface[]
 
   constructor(initialPlayer: PlayerInterface) {
     super()
     this._players = [initialPlayer]
   }
 
-  private removePlayers(player: PlayerInterface) {
+  private removePlayerFromSession(player: PlayerInterface) {
     this._players = this.players.filter((p) => p.uuid !== player.uuid)
   }
 
@@ -17,11 +17,11 @@ export abstract class SessionWithPlayers extends SessionBase {
     return this._players
   }
 
-  private sessionIsFull(): boolean {
+  private isSessionFull(): boolean {
     return this._players.length >= this.getMaxPlayers()
   }
 
-  private addPlayers(player: PlayerInterface) {
+  private addPlayerToSession(player: PlayerInterface) {
     this._players.push(player)
   }
 
@@ -34,10 +34,10 @@ export abstract class SessionWithPlayers extends SessionBase {
       throw new Error("Can't add players to a closed or in-progress session")
     }
 
-    if (this.sessionIsFull()) {
+    if (this.isSessionFull()) {
       throw new Error('Cannot add more players, the session is full')
     }
-    this.addPlayers(player)
+    this.addPlayerToSession(player)
   }
 
   protected validateAndRemovePlayer(player: PlayerInterface) {
@@ -49,7 +49,7 @@ export abstract class SessionWithPlayers extends SessionBase {
       throw new Error('Player not found in this session')
     }
 
-    this.removePlayers(player)
+    this.removePlayerFromSession(player)
   }
 
   protected searchPlayer(player: PlayerInterface): PlayerInterface | undefined {

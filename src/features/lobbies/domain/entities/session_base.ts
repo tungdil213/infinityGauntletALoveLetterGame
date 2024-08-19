@@ -2,14 +2,14 @@ import { randomUUID } from 'node:crypto'
 import { SESSION_STATUS, SessionStatus } from '../types/session_status.js'
 
 export default class SessionBase {
-  private name: string
-  private uuid: string
-  private status: SessionStatus
+  protected _name: string
+  protected _uuid: string
+  protected _status: SessionStatus
 
   constructor() {
-    this.uuid = this.generateId()
-    this.status = SESSION_STATUS.OPEN
-    this.name = `Lobby ${this.uuid}`
+    this._uuid = this.generateId()
+    this._status = SESSION_STATUS.OPEN
+    this._name = `Lobby ${this._uuid}`
   }
 
   private generateId(): string {
@@ -17,10 +17,10 @@ export default class SessionBase {
   }
 
   protected sessionIsOpen(): boolean {
-    return this.status === SESSION_STATUS.OPEN
+    return this._status === SESSION_STATUS.OPEN
   }
 
   protected changeStatus(status: SessionStatus): void {
-    this.status = status
+    this._status = status
   }
 }
