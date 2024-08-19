@@ -9,8 +9,8 @@ export abstract class SessionWithPlayers extends SessionBase {
     this._players = [initialPlayer]
   }
 
-  private removePlayerFromSession(player: PlayerInterface) {
-    this._players = this.players.filter((p) => p.uuid !== player.uuid)
+  private removePlayerFromSession(playerUUID: string) {
+    this._players = this.players.filter((p) => p.uuid !== playerUUID)
   }
 
   get players(): PlayerInterface[] {
@@ -40,11 +40,12 @@ export abstract class SessionWithPlayers extends SessionBase {
     this.addPlayerToSession(player)
   }
 
-  protected validateAndRemovePlayer(player: PlayerInterface) {
+  protected validateAndRemovePlayer(player: string) {
     if (!this.sessionIsOpen()) {
       throw new Error("Can't remove players from a closed or in-progress session")
     }
 
+    console.log('searchPlayer', player)
     if (this.searchPlayer(player) === undefined) {
       throw new Error('Player not found in this session')
     }
@@ -52,8 +53,8 @@ export abstract class SessionWithPlayers extends SessionBase {
     this.removePlayerFromSession(player)
   }
 
-  protected searchPlayer(player: PlayerInterface): PlayerInterface | undefined {
-    return this._players.find((p) => p.uuid === player.uuid)
+  protected searchPlayer(playerUUID: string): PlayerInterface | undefined {
+    return this._players.find((p) => p.uuid === playerUUID)
   }
 
   abstract getMaxPlayers(): number

@@ -5,9 +5,12 @@ import { inject } from '@adonisjs/core'
 export default class LeaveLobbyAction {
   constructor(private readonly lobbyRepository: InMemorySessionRepository) {}
 
-  async handle(lobbyUUID: string, playerId: string): Promise<void> {
+  async handle(lobbyUUID: string, playerUUID: string): Promise<void> {
     const lobby = await this.lobbyRepository.getSessionByUUID(lobbyUUID)
-    lobby.removePlayer(playerId)
+    if (!lobby) {
+      throw new Error('Lobby not found')
+    }
+    lobby.removePlayer(playerUUID)
     await this.lobbyRepository.save(lobby)
   }
 }

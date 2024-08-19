@@ -14,43 +14,37 @@ export default function Home(props: Readonly<InferPageProps<ListLobbiesControlle
       <div className="container">
         <h1>List Lobby</h1>
         <p>Here is the lobbies</p>
-        <p>
-          <b>user</b>
+        <b>user</b>
+
+        <div>
           <div>
-            <p>
-              <b>id</b>
-              {props.user?.id}
-            </p>
-            <p>
-              <b>username</b>
-              {props.user?.username}
-            </p>
-            <p>
-              <b>email</b>
-              {props.user?.email}
-            </p>
-            <p>
-              <b>created_at</b>
-              {props.user?.created_at}
-            </p>
-            <p>
-              <b>updated_at</b>
-              {props.user?.updated_at}
-            </p>
+            <b>uuid : </b>
+            <span>{props.user?.uuid}</span>
           </div>
-        </p>
+          <div>
+            <b>username : </b>
+            <span>{props.user?.username}</span>
+          </div>
+          <div>
+            <b>email : </b>
+            <span>{props.user?.email}</span>
+          </div>
+        </div>
         <b>lobby</b>
         {props.lobbies?.map((lobby) => (
           <div key={lobby.uuid}>
-            {JSON.stringify(lobby)}
             <Link href={`/lobby/${lobby.uuid}`}>
-              <b>id</b>
+              <b>uuid : </b>
               {lobby.uuid}
             </Link>
-            <p>
-              <b>status</b>
-              {lobby.status}
-            </p>
+            <div>
+              <b>status : </b>
+              <span>{lobby.status}</span>
+            </div>
+            <div>
+              <b>Players : </b>
+              <span>{lobby.players.length}</span>
+            </div>
           </div>
         ))}
         <Link href="/lobby/create" onClick={onClickCreateLobby}>

@@ -7,8 +7,10 @@ export default class LeaveLobbyController {
   constructor(private leaveExistingLobbyUseCase: LeaveExistingLobbyUseCase) {}
 
   async handle({ request, response }: HttpContext) {
-    const { lobbyId, playerID } = request.only(['lobbyId', 'playerID'])
-    await this.leaveExistingLobbyUseCase.handle(lobbyId, playerID)
+    console.log('LeaveLobbyController', request.all())
+    const { lobbyId, playerUUID } = request.only(['lobbyId', 'playerUUID'])
+    console.log('Leave', { lobbyId, playerUUID })
+    await this.leaveExistingLobbyUseCase.handle(lobbyId, playerUUID)
     return response.noContent()
   }
 }

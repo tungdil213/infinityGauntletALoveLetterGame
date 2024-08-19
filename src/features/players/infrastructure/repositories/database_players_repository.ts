@@ -5,7 +5,8 @@ import User from '#infrastructure/database/models/user'
 
 export class DatabasePlayerRepository extends PlayerRepository {
   async findAll(): Promise<PlayerInterface[]> {
-    const players = await Player.all()
+    const players = await Player.query().preload('user').exec()
+    console.log('players', players)
     return players.map((player) => this.toPlayerInterface(player))
   }
 

@@ -7,7 +7,7 @@ export default class LeaveExistingLobbyUseCase {
     this.lobbyService = lobbyService
   }
 
-  async handle(lobbyId: string, playerId: string) {
-    await this.lobbyService.leaveLobby(lobbyId, playerId)
+  async handle(lobbyId: string, playerUUID: string) {
+    await this.lobbyService.leaveLobby(lobbyId, playerUUID)
   }
 }

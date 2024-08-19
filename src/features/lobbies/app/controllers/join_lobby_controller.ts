@@ -11,8 +11,8 @@ export default class JoinLobbyController {
   ) {}
 
   async handle({ request, response }: HttpContext) {
-    const { lobbyId, playerID } = request.only(['lobbyId', 'playerID'])
-    await this.joinExistingLobbyUseCase.handle(lobbyId, playerID)
+    const { lobbyId, playerUUID } = request.only(['lobbyId', 'playerUUID'])
+    await this.joinExistingLobbyUseCase.handle(lobbyId, playerUUID)
     const lobby = this.getExistingLobbyUseCase.handle(lobbyId)
     return response.ok({ lobby })
   }
