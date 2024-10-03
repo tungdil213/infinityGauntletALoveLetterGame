@@ -25,16 +25,36 @@ export default class Lobby extends SessionWithPlayers {
     return this._players // Accède à la propriété protégée dans la classe parente
   }
 
+  set name(name: string) {
+    this._name = name // Modifie la propriété protégée dans la classe parente
+  }
+
+  set uuid(uuid: string) {
+    this._uuid = uuid // Modifie la propriété protégée dans la classe parente
+  }
+
   addPlayer(player: PlayerInterface): void {
     this.validateAndAddPlayer(player)
   }
 
   removePlayer(player: PlayerInterface): void {
-    this.validateAndRemovePlayer(player)
+    this.validateAndRemovePlayer(player.uuid)
+  }
+
+  removePlayerByUUID(uuid: string): void {
+    this.validateAndRemovePlayer(uuid)
   }
 
   getMaxPlayers(): number {
     return 4
+  }
+
+  playersCount(): number {
+    return this.players.length
+  }
+
+  isEmpty(): boolean {
+    return this.playersCount() === 0
   }
 
   changeStatus(status: SessionStatus): void {
