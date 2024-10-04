@@ -46,14 +46,14 @@ export abstract class SessionWithPlayers extends SessionBase {
     }
 
     console.log('searchPlayer', player)
-    if (this.searchPlayer(player) === undefined) {
+    if (this.searchPlayerByUUID(player) === undefined) {
       throw new Error('Player not found in this session')
     }
 
     this.removePlayerFromSession(player)
   }
 
-  protected searchPlayer(playerUUID: string): PlayerInterface | undefined {
+  protected searchPlayerByUUID(playerUUID: string): PlayerInterface | undefined {
     return this._players.find((p) => p.uuid === playerUUID)
   }
 

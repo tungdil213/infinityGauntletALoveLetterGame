@@ -21,7 +21,7 @@ export class SessionMapper {
       name: model.name,
       status: model.status,
       players: model.players.map((player) => ({
-        uuid: player.user.uuid,
+        uuid: player.uuid,
         nickName: player.nickName,
       })),
     }
