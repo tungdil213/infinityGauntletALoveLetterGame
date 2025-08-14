@@ -134,7 +134,11 @@ export interface SessionDTO {
 
 ## Modèles de Données
 
-### Entités Principales
+### Persistance Sélective
+
+**Principe clé** : Seules les parties **en cours** sont persistées en base de données. Les lobbies d'attente restent en mémoire.
+
+### Entités Persistées (Base de Données)
 
 ```typescript
 // User - Utilisateur authentifié
@@ -156,34 +160,75 @@ interface Player {
   user: User
 }
 
-// Session - Lobby/Partie
-interface Session {
+// Game - Partie en cours uniquement
+interface Game {
   id: number
   uuid: string
-  name: string
-  status: SessionStatus
+  status: 'IN_PROGRESS' | 'FINISHED'
+  currentRound: number
+  gameState: GameStateData // JSON des données de jeu
   players: Player[]
+  startedAt: DateTime
+  finishedAt?: DateTime
+}
+```
+
+### Entités En Mémoire (Non Persistées)
+
+```typescript
+// Lobby - Salle d'attente (en mémoire uniquement)
+interface Lobby {
+  uuid: string
+  name: string
+  status: LobbyStatus
+  players: PlayerInterface[]
+  createdAt: Date
+  maxPlayers: number
 }
 ```
 
 ### Relations
 
 - **User** `1:1` **Player** : Un utilisateur a un profil joueur
-- **Session** `N:M` **Player** : Une session peut avoir plusieurs joueurs
-- **Player** `N:M` **Session** : Un joueur peut participer à plusieurs sessions
+- **Game** `N:M` **Player** : Une partie peut avoir plusieurs joueurs (persisté)
+- **Lobby** : Gestion en mémoire, pas de relation DB
 
-## États des Sessions
+## Machine à États
+
+### États des Lobbies (En Mémoire)
 
 ```typescript
-export const SESSION_STATUS = {
-  LOBBY: 'LOBBY',     // En attente de joueurs
-  PARTY: 'PARTY',     // Partie en cours
-  FINISHED: 'FINISHED', // Partie terminée
-  WAITING: 'WAITING',   // En attente
-  OPEN: 'OPEN',        // Ouvert aux nouveaux joueurs
-  READY: 'READY',      // Prêt à commencer
-  FULL: 'FULL',        // Complet
+export const LOBBY_STATUS = {
+  OPEN: 'OPEN',           // Ouvert aux nouveaux joueurs
+  WAITING: 'WAITING',     // En attente de joueurs
+  READY: 'READY',         // Prêt à commencer
+  FULL: 'FULL',           // Complet
+  STARTING: 'STARTING',   // Démarrage en cours
 } as const
+```
+
+### États des Parties (Persistées)
+
+```typescript
+export const GAME_STATUS = {
+  IN_PROGRESS: 'IN_PROGRESS', // Partie en cours
+  PAUSED: 'PAUSED',           // Partie en pause
+  FINISHED: 'FINISHED',       // Partie terminée
+} as const
+```
+
+### Machine à États - Transitions
+
+```
+LOBBY FLOW (En mémoire):
+OPEN → WAITING → READY → FULL → STARTING → [GAME CREATED]
+  ↑      ↑        ↑       ↑
+  └──────┴────────┴───────┘ (retour possible)
+
+GAME FLOW (Persisté):
+[CREATED] → IN_PROGRESS → PAUSED → IN_PROGRESS → FINISHED
+                ↑           ↓         ↑
+                └───────────┴─────────┘
 ```
 
 ## Configuration et Providers

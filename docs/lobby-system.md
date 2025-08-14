@@ -2,32 +2,47 @@
 
 ## Vue d'ensemble
 
-Le système de lobbies permet aux joueurs de créer et rejoindre des salles de jeu pour des parties multijoueurs d'Infinity Gauntlet Love Letter. Il gère l'état des sessions, l'ajout/suppression de joueurs, et la transition vers les parties.
+Le système de lobbies permet aux joueurs de créer et rejoindre des salles de jeu **en mémoire** pour des parties multijoueurs d'Infinity Gauntlet Love Letter. Les lobbies ne sont **PAS persistés** en base de données - seules les parties effectivement démarrées le sont.
+
+**Principe clé** : Lobbies = En mémoire | Parties = Base de données
 
 ## Architecture du Système
 
 ### Entités Principales
 
-#### Session/Lobby
+#### Lobby (En Mémoire Uniquement)
 ```typescript
-interface SessionDTO {
-  uuid: string          // Identifiant unique
-  name: string          // Nom du lobby (ex: "Lobby abc123")
-  status: SessionStatus // État actuel
-  players: PlayerDTO[]  // Liste des joueurs
+interface LobbyState {
+  uuid: string              // Identifiant unique
+  name: string              // Nom du lobby
+  status: LobbyStatus       // État actuel
+  players: PlayerInterface[] // Liste des joueurs
+  maxPlayers: number        // Nombre max de joueurs (2-4)
+  createdAt: Date          // Date de création
+  createdBy: string        // UUID du créateur
 }
 ```
 
-#### États des Sessions
+#### États des Lobbies (Machine à États)
 ```typescript
-export const SESSION_STATUS = {
+export const LOBBY_STATUS = {
   OPEN: 'OPEN',           // Ouvert, accepte de nouveaux joueurs
-  LOBBY: 'LOBBY',         // En attente dans le lobby
-  READY: 'READY',         // Prêt à commencer la partie
-  FULL: 'FULL',           // Lobby complet
-  PARTY: 'PARTY',         // Partie en cours
-  WAITING: 'WAITING',     // En attente (pause, reconnexion)
-  FINISHED: 'FINISHED'    // Partie terminée
+  WAITING: 'WAITING',     // En attente de plus de joueurs
+  READY: 'READY',         // Prêt à commencer (min 2 joueurs)
+  FULL: 'FULL',           // Lobby complet (4 joueurs)
+  STARTING: 'STARTING',   // Démarrage en cours
+} as const
+```
+
+#### Game (Persisté en Base)
+```typescript
+interface GameState {
+  uuid: string
+  status: 'IN_PROGRESS' | 'PAUSED' | 'FINISHED'
+  players: PlayerInterface[]
+  gameData: GameStateData  // État complet du jeu
+  startedAt: Date
+  finishedAt?: Date
 }
 ```
 
@@ -219,18 +234,42 @@ export default function LobbyList({ lobbies }: LobbyListProps) {
 ### Transitions d'États
 
 ```
-OPEN → LOBBY → READY → PARTY → FINISHED
-  ↓      ↓       ↓       ↓
- FULL   FULL   FULL   WAITING
+OPEN → WAITING → READY → STARTING → [GAME CREATED]
+  ↓      ↓        ↓         ↓
+ FULL   FULL    FULL    [LOBBY DESTROYED]
+  ↑      ↑        ↑
+  └──────┴────────┘ (retour possible si joueurs partent)
 ```
 
-### Règles de Transition
+#### Règles de Transition
 
-1. **OPEN → LOBBY** : Premier joueur rejoint
-2. **LOBBY → READY** : Nombre minimum de joueurs atteint
-3. **READY → PARTY** : Démarrage de la partie
-4. **PARTY → FINISHED** : Fin de partie
-5. **\* → FULL** : Nombre maximum de joueurs atteint
+1. **OPEN → WAITING** : Premier joueur rejoint
+2. **WAITING → READY** : Minimum 2 joueurs atteints
+3. **READY → FULL** : Maximum 4 joueurs atteints
+4. **READY/FULL → STARTING** : Créateur démarre la partie
+5. **STARTING → [GAME]** : Partie créée en DB, lobby détruit
+6. **Retours possibles** : Si joueurs quittent, retour à l'état approprié
+
+#### Implémentation State Machine
+
+```typescript
+class LobbyStateMachine {
+  private state: LobbyStatus
+  private lobby: LobbyState
+
+  transition(event: LobbyEvent): void {
+    const newState = this.getNextState(this.state, event)
+    if (this.isValidTransition(this.state, newState)) {
+      this.state = newState
+      this.onStateChange(newState)
+    }
+  }
+
+  private getNextState(current: LobbyStatus, event: LobbyEvent): LobbyStatus {
+    // Logique de transition basée sur l'état actuel et l'événement
+  }
+}
+```
 
 ## Sécurité et Validation
 
