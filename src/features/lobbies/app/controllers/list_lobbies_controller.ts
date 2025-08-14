@@ -6,7 +6,7 @@ import ListExistingLobbiesUseCase from '../services/list_existing_lobbies_use_ca
 export default class ListLobbiesController {
   constructor(private listExistingLobbiesUseCase: ListExistingLobbiesUseCase) {}
 
-  async handle({ inertia }: HttpContext) {
+  async handle({ inertia, request }: HttpContext) {
     const lobbies = await this.listExistingLobbiesUseCase.handle()
     console.log('lobbies', lobbies)
     return inertia.render('lobby/list', { lobbies: lobbies })

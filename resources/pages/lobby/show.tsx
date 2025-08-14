@@ -11,14 +11,11 @@ export default function Home(props: Readonly<InferPageProps<ShowLobbyController,
         playerUUID: props.user?.uuid,
       }
 
-      // Convertir les données en une chaîne JSON
       const jsonData = JSON.stringify(data)
-
-      // Créer un Blob avec le bon type MIME
       const blob = new Blob([jsonData], { type: 'application/json' })
-
-      // Utiliser navigator.sendBeacon pour envoyer les données
-      navigator.sendBeacon('/lobby/leave', blob)
+      setTimeout(() => {
+        navigator.sendBeacon('/lobby/leave', blob)
+      }, 100)
     }
   }, [props.lobby?.uuid, props.user?.uuid])
 
